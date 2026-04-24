@@ -154,6 +154,19 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Galerie photos */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-0">
+        {[
+          { src: "/photos/celebration-m.jpg", alt: "L'équipe masculine célèbre" },
+          { src: "/photos/action-smash.jpg",  alt: "Action en match féminin" },
+          { src: "/photos/portrait-f.jpg",    alt: "Concentration avant le match" },
+        ].map((photo) => (
+          <div key={photo.src} className="relative aspect-[4/3] overflow-hidden">
+            <Image src={photo.src} alt={photo.alt} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" />
+          </div>
+        ))}
+      </section>
+
       {/* Dossier inscription */}
       <section className="bg-white py-10 px-4 border-t border-gray-100">
         <div className="max-w-7xl mx-auto">
@@ -186,8 +199,10 @@ export default function Home() {
       </section>
 
       {/* CTA rejoindre */}
-      <section className="py-20 bg-gvvb-navy">
-        <div className="max-w-7xl mx-auto px-4 text-center flex flex-col items-center gap-6">
+      <section className="relative py-20 overflow-hidden bg-gvvb-navy">
+        <Image src="/photos/celebration-f.jpg" alt="" fill className="object-cover object-top opacity-30" />
+        <div className="absolute inset-0 bg-gvvb-navy/75" />
+        <div className="relative max-w-7xl mx-auto px-4 text-center flex flex-col items-center gap-6">
           <h2 className="font-heading font-bold text-3xl md:text-5xl text-white">
             PRÊT À REJOINDRE L&apos;ÉQUIPE ?
           </h2>
@@ -203,6 +218,7 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
     </>
   );
 }

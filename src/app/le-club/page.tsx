@@ -50,6 +50,7 @@ export default function LeClub() {
         label="GVVB"
         title="Le Club"
         description="Découvrez l'histoire du Garches Vaucresson Volley-Ball, son bureau et ses installations."
+        bgImage="/photos/supporters.jpg"
       />
 
       {/* Présentation */}
