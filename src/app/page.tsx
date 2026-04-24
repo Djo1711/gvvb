@@ -173,21 +173,42 @@ export default function Home() {
           <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
             Partenaires
           </span>
-          <a
-            href="https://www.librairie-lecriture.fr"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="opacity-70 hover:opacity-100 transition-opacity"
-            aria-label="Librairie L'Écriture — partenaire du GVVB"
-          >
-            <Image
-              src="/sponsors/logo-lecriture.jpg"
-              alt="Librairie L'Écriture"
-              width={120}
-              height={120}
-              className="object-contain"
-            />
-          </a>
+          <div className="flex flex-col items-center gap-3">
+            <a
+              href="https://www.librairie-ecriture.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-70 hover:opacity-100 transition-opacity"
+              aria-label="Librairie L'Écriture — partenaire du GVVB"
+            >
+              <Image
+                src="/sponsors/logo-lecriture.jpg"
+                alt="Librairie L'Écriture"
+                width={120}
+                height={120}
+                className="object-contain"
+              />
+            </a>
+            <div className="flex items-center gap-4 text-sm">
+              <a
+                href="https://www.librairie-ecriture.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-heading text-xs uppercase tracking-wider text-gray-500 hover:text-gvvb-red transition-colors"
+              >
+                librairie-ecriture.com
+              </a>
+              <span className="text-gray-300">·</span>
+              <a
+                href="https://www.instagram.com/librairie_lecriture_vaucresson/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-heading text-xs uppercase tracking-wider text-gray-500 hover:text-gvvb-red transition-colors"
+              >
+                Instagram
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 

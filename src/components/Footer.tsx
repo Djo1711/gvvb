@@ -92,7 +92,7 @@ export default function Footer() {
           <div className="flex items-center gap-3">
             <span className="uppercase tracking-widest">Partenaire</span>
             <a
-              href="https://www.librairie-lecriture.fr"
+              href="https://www.librairie-ecriture.com"
               target="_blank"
               rel="noopener noreferrer"
               className="opacity-50 hover:opacity-90 transition-opacity"
