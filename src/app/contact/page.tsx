@@ -164,14 +164,46 @@ export default function Contact() {
               Nous trouver
             </h2>
             <div className="flex flex-col gap-3">
-              <div className="bg-gray-50 border border-gray-200 p-4">
-                <p className="font-heading font-bold text-gvvb-navy text-sm">Gymnase Yves du Manoir</p>
-                <p className="text-gray-500 text-sm mt-1">Vaucresson (92)</p>
-              </div>
-              <div className="bg-gray-50 border border-gray-200 p-4">
-                <p className="font-heading font-bold text-gvvb-navy text-sm">Gymnase Yves Bodin / Le Rallec</p>
-                <p className="text-gray-500 text-sm mt-1">Garches (92)</p>
-              </div>
+              {[
+                {
+                  nom: "Gymnase Yves du Manoir",
+                  adresse: "13 allée des Lauriers",
+                  ville: "92420 Vaucresson",
+                  maps: "https://www.google.com/maps/search/?api=1&query=13+all%C3%A9e+des+Lauriers+92420+Vaucresson",
+                },
+                {
+                  nom: "Gymnase Yves Bodin",
+                  adresse: "20 rue de Suresnes",
+                  ville: "92380 Garches",
+                  maps: "https://www.google.com/maps/search/?api=1&query=20+rue+de+Suresnes+92380+Garches",
+                },
+                {
+                  nom: "Gymnase Le Rallec",
+                  adresse: "86 Grande Rue",
+                  ville: "92380 Garches",
+                  maps: "https://www.google.com/maps/search/?api=1&query=86+Grande+Rue+92380+Garches",
+                },
+              ].map((gym) => (
+                <div key={gym.nom} className="bg-gray-50 border border-gray-200 p-4 flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-heading font-bold text-gvvb-navy text-sm">{gym.nom}</p>
+                    <p className="text-gray-500 text-sm mt-0.5">{gym.adresse}</p>
+                    <p className="text-gray-500 text-sm">{gym.ville}</p>
+                  </div>
+                  <a
+                    href={gym.maps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 flex items-center gap-1.5 font-heading text-xs uppercase tracking-wider text-gvvb-red hover:underline mt-1"
+                    aria-label={`Ouvrir ${gym.nom} dans Google Maps`}
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    Maps
+                  </a>
+                </div>
+              ))}
             </div>
           </div>
         </div>

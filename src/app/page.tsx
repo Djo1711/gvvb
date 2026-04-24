@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 };
 
 const teams = [
-  { name: "M Loisir OR", level: "Loisir", gender: "Masculin" },
-  { name: "M VSOP", level: "Loisir", gender: "Masculin" },
-  { name: "M N3", level: "Compétition", gender: "Masculin" },
-  { name: "F Loisir", level: "Loisir", gender: "Féminin" },
-  { name: "Jeunes M15", level: "Formation", gender: "Mixte" },
+  { name: "Départementale Masculine", level: "Compétition", gender: "Masculin", href: "/equipes#dep-masculine" },
+  { name: "Départementale Féminine", level: "Compétition", gender: "Féminin", href: "/equipes#dep-feminine" },
+  { name: "Loisir OR", level: "Loisir Compétition", gender: "Mixte", href: "/equipes#loisir-or" },
+  { name: "VSOP", level: "Ligue Loisir", gender: "Mixte", href: "/equipes#vsop" },
+  { name: "M15 Féminines", level: "Compétition Jeunes", gender: "Féminin", href: "/equipes#m15-feminine" },
 ];
 
 const news = [
@@ -95,8 +95,9 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {teams.map((team) => (
-              <div
+              <Link
                 key={team.name}
+                href={team.href}
                 className="border border-gray-200 p-6 hover:border-gvvb-red hover:shadow-md transition-all group"
               >
                 <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
@@ -105,7 +106,7 @@ export default function Home() {
                 <h3 className="font-heading font-bold text-xl text-gvvb-navy mt-1 group-hover:text-gvvb-red transition-colors">
                   {team.name}
                 </h3>
-              </div>
+              </Link>
             ))}
             <div className="border-2 border-dashed border-gray-200 p-6 flex items-center justify-center">
               <Link
@@ -147,6 +148,65 @@ export default function Home() {
                 </p>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* YouTube */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-end justify-between mb-10 gap-4 flex-wrap">
+            <div>
+              <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+                Médias
+              </span>
+              <h2 className="font-heading font-bold text-3xl md:text-4xl text-gvvb-navy mt-1">
+                Sur YouTube
+              </h2>
+              <p className="text-gray-500 mt-2 max-w-xl">
+                Notre coach Florian Champagne filme ses saisons et nos tournois 4x4 sur sa chaîne YouTube.
+              </p>
+            </div>
+            <a
+              href="https://www.youtube.com/@lepreneurdelecon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-heading text-sm uppercase tracking-wider text-gvvb-navy hover:text-gvvb-red transition-colors whitespace-nowrap"
+            >
+              Voir la chaîne →
+            </a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <a
+              href="https://www.youtube.com/@lepreneurdelecon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative bg-gvvb-navy aspect-video flex flex-col items-center justify-center gap-4 hover:bg-gvvb-navy-dark transition-colors overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gvvb-red/10 group-hover:bg-gvvb-red/20 transition-colors" />
+              <svg className="w-16 h-16 text-white relative z-10" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+              </svg>
+              <div className="relative z-10 text-center px-4">
+                <p className="font-heading font-bold text-white text-lg">Départementale Féminine</p>
+                <p className="text-gray-300 text-sm mt-1">Saison 2025/2026 — Suivie en vidéo</p>
+              </div>
+            </a>
+            <a
+              href="https://www.youtube.com/@lepreneurdelecon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative bg-gvvb-navy aspect-video flex flex-col items-center justify-center gap-4 hover:bg-gvvb-navy-dark transition-colors overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gvvb-red/10 group-hover:bg-gvvb-red/20 transition-colors" />
+              <svg className="w-16 h-16 text-white relative z-10" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>
+              </svg>
+              <div className="relative z-10 text-center px-4">
+                <p className="font-heading font-bold text-white text-lg">Tournois 4×4</p>
+                <p className="text-gray-300 text-sm mt-1">Les tournois du club filmés par Florian</p>
+              </div>
+            </a>
           </div>
         </div>
       </section>
