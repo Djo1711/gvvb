@@ -62,7 +62,13 @@ export function parseMatches(html: string): Match[] {
 export async function fetchPoule(poule: string): Promise<Match[]> {
   const url = `https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=${poule}`;
   try {
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+    const res = await fetch(url, {
+      next: { revalidate: 3600 },
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      },
+    });
     const buf = await res.arrayBuffer();
     const html = new TextDecoder("latin-1").decode(buf);
     return parseMatches(html);
