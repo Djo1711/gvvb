@@ -131,20 +131,40 @@ export default function Contact() {
             <h2 className="font-heading font-bold text-2xl text-gvvb-navy mt-2 mb-4">
               Rejoindre le club
             </h2>
+            {/* Télécharger le dossier */}
+            <a
+              href="/docs/dossier-inscription-2025-2026.pdf"
+              download
+              className="flex items-center gap-4 bg-gvvb-red text-white p-5 hover:bg-gvvb-red-dark transition-colors group"
+            >
+              <svg className="w-10 h-10 flex-shrink-0 opacity-80 group-hover:opacity-100" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 9v4.5l1.5-1.5 1.06 1.06L13 17.62l-2.56-2.56L11.5 14l1.5 1.5V11h1zm1-7 5 5h-5V4z"/>
+              </svg>
+              <div>
+                <p className="font-heading font-bold text-base uppercase tracking-wide">
+                  Dossier d&apos;inscription 2025-2026
+                </p>
+                <p className="text-red-100 text-sm mt-0.5">Télécharger le PDF · 333 Ko</p>
+              </div>
+              <svg className="w-5 h-5 ml-auto flex-shrink-0 opacity-70 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+            </a>
+
             <div className="bg-gray-50 border border-gray-200 p-6 flex flex-col gap-4">
               <p className="text-gray-600 text-sm leading-relaxed">
-                Pour vous inscrire au GVVB, contactez directement notre trésorier
-                Benoît Rousseau qui gère les inscriptions. Nous accueillons aussi
-                les essais — venez tester un créneau avant de vous engager.
+                Téléchargez et remplissez le dossier ci-dessus, puis transmettez-le
+                à notre trésorier Benoît Rousseau. Nous accueillons aussi les essais
+                — venez tester un créneau avant de vous engager.
               </p>
               <div className="flex flex-col gap-2 text-sm">
                 <div className="flex items-start gap-2">
                   <span className="text-gvvb-red font-bold mt-0.5">→</span>
-                  <span className="text-gray-600">Contactez Benoît Rousseau au <a href="tel:0680850237" className="text-gvvb-red hover:underline">06 80 85 02 37</a></span>
+                  <span className="text-gray-600">Benoît Rousseau au <a href="tel:0680850237" className="text-gvvb-red hover:underline">06 80 85 02 37</a></span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-gvvb-red font-bold mt-0.5">→</span>
-                  <span className="text-gray-600">Ou par email : <a href="mailto:contact@gvvb.fr" className="text-gvvb-red hover:underline">contact@gvvb.fr</a></span>
+                  <span className="text-gray-600">Par email : <a href="mailto:contact@gvvb.fr" className="text-gvvb-red hover:underline">contact@gvvb.fr</a></span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-gvvb-red font-bold mt-0.5">→</span>
