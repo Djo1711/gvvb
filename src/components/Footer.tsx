@@ -87,8 +87,27 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10 py-4 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-500">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500">
           <span>© {year} Garches Vaucresson Volley-Ball</span>
+          <div className="flex items-center gap-3">
+            <span className="uppercase tracking-widest">Partenaire</span>
+            <a
+              href="https://www.librairie-lecriture.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-50 hover:opacity-90 transition-opacity"
+              aria-label="Librairie L'Écriture"
+            >
+              <Image
+                src="/sponsors/logo-lecriture.jpg"
+                alt="Librairie L'Écriture"
+                width={48}
+                height={48}
+                className="object-contain"
+                style={{ filter: "brightness(0) invert(1)" }}
+              />
+            </a>
+          </div>
           <Link href="/mentions-legales" className="hover:text-gray-300 transition-colors">
             Mentions légales
           </Link>

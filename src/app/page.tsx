@@ -167,6 +167,30 @@ export default function Home() {
         ))}
       </section>
 
+      {/* Partenaires */}
+      <section className="py-10 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col items-center gap-6">
+          <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
+            Partenaires
+          </span>
+          <a
+            href="https://www.librairie-lecriture.fr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="opacity-70 hover:opacity-100 transition-opacity"
+            aria-label="Librairie L'Écriture — partenaire du GVVB"
+          >
+            <Image
+              src="/sponsors/logo-lecriture.jpg"
+              alt="Librairie L'Écriture"
+              width={120}
+              height={120}
+              className="object-contain"
+            />
+          </a>
+        </div>
+      </section>
+
       {/* Dossier inscription */}
       <section className="bg-white py-10 px-4 border-t border-gray-100">
         <div className="max-w-7xl mx-auto">
