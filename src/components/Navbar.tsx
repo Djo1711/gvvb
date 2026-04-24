@@ -20,7 +20,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-gvvb-navy text-white sticky top-0 z-50 shadow-lg">
+    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
           <Image
@@ -32,7 +32,7 @@ export default function Navbar() {
           />
           <span className="font-heading font-bold text-lg leading-none hidden sm:block">
             <span className="text-gvvb-red">GVVB</span>
-            <span className="block text-xs font-normal text-gray-300 tracking-wide">
+            <span className="block text-xs font-normal text-gray-400 tracking-wide">
               Garches Vaucresson VB
             </span>
           </span>
@@ -45,10 +45,10 @@ export default function Navbar() {
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className={`font-heading text-sm uppercase tracking-wide px-3 py-2 rounded transition-colors ${
+                  className={`font-heading text-sm uppercase tracking-wide px-3 py-2 transition-colors ${
                     active
-                      ? "text-gvvb-red"
-                      : "text-gray-200 hover:text-white hover:bg-gvvb-navy-light"
+                      ? "text-gvvb-red border-b-2 border-gvvb-red"
+                      : "text-gray-600 hover:text-gvvb-red"
                   }`}
                 >
                   {l.label}
@@ -66,18 +66,18 @@ export default function Navbar() {
         </Link>
 
         <button
-          className="md:hidden p-2 rounded hover:bg-gvvb-navy-light transition-colors"
+          className="md:hidden p-2 rounded hover:bg-gray-100 transition-colors"
           onClick={() => setOpen(!open)}
           aria-label="Ouvrir le menu"
         >
-          <span className={`block w-6 h-0.5 bg-white transition-transform duration-200 ${open ? "rotate-45 translate-y-1.5" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-white my-1.5 transition-opacity ${open ? "opacity-0" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-white transition-transform duration-200 ${open ? "-rotate-45 -translate-y-1.5" : ""}`} />
+          <span className={`block w-6 h-0.5 bg-gray-700 transition-transform duration-200 ${open ? "rotate-45 translate-y-1.5" : ""}`} />
+          <span className={`block w-6 h-0.5 bg-gray-700 my-1.5 transition-opacity ${open ? "opacity-0" : ""}`} />
+          <span className={`block w-6 h-0.5 bg-gray-700 transition-transform duration-200 ${open ? "-rotate-45 -translate-y-1.5" : ""}`} />
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden bg-gvvb-navy-dark border-t border-white/10">
+        <div className="md:hidden bg-white border-t border-gray-100 shadow-md">
           <ul className="flex flex-col px-4 py-3 gap-1">
             {links.map((l) => {
               const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
@@ -85,8 +85,8 @@ export default function Navbar() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className={`block font-heading text-sm uppercase tracking-wide py-2.5 px-3 rounded transition-colors ${
-                      active ? "text-gvvb-red bg-gvvb-navy-light" : "text-gray-200 hover:text-white hover:bg-gvvb-navy-light"
+                    className={`block font-heading text-sm uppercase tracking-wide py-2.5 px-3 transition-colors ${
+                      active ? "text-gvvb-red border-l-2 border-gvvb-red pl-2" : "text-gray-600 hover:text-gvvb-red"
                     }`}
                     onClick={() => setOpen(false)}
                   >
@@ -95,7 +95,7 @@ export default function Navbar() {
                 </li>
               );
             })}
-            <li className="mt-2 pt-2 border-t border-white/10">
+            <li className="mt-2 pt-2 border-t border-gray-100">
               <Link
                 href="/contact"
                 className="block bg-gvvb-red text-white font-heading text-sm uppercase tracking-wider px-4 py-2.5 text-center hover:bg-gvvb-red-dark transition-colors"

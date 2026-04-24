@@ -34,16 +34,16 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gvvb-navy overflow-hidden">
+      <section className="relative bg-gvvb-red overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.05) 40px, rgba(255,255,255,0.05) 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.05) 40px, rgba(255,255,255,0.05) 41px)",
+              "repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.15) 40px, rgba(255,255,255,0.15) 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.15) 40px, rgba(255,255,255,0.15) 41px)",
           }}
         />
         <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-36 flex flex-col gap-6 items-start">
-          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+          <span className="font-heading text-xs uppercase tracking-widest text-white/70">
             Garches · Vaucresson · Hauts-de-Seine
           </span>
           <h1 className="font-heading font-bold text-4xl sm:text-6xl md:text-7xl text-white leading-tight max-w-3xl">
@@ -51,7 +51,7 @@ export default function Home() {
             <br />
             VAUCRESSON
             <br />
-            <span className="text-gvvb-red">VOLLEY-BALL</span>
+            VOLLEY-BALL
           </h1>
           <p className="text-gray-300 text-lg max-w-lg">
             Rejoignez un club passionné dans les Hauts-de-Seine. Loisir,
@@ -60,13 +60,13 @@ export default function Home() {
           <div className="flex flex-wrap gap-4 mt-2">
             <Link
               href="/contact"
-              className="bg-gvvb-red text-white font-heading font-semibold px-8 py-3 uppercase tracking-wider hover:bg-gvvb-red-dark transition-colors"
+              className="bg-white text-gvvb-red font-heading font-semibold px-8 py-3 uppercase tracking-wider hover:bg-gray-100 transition-colors"
             >
               Nous rejoindre
             </Link>
             <Link
               href="/calendrier"
-              className="border-2 border-white text-white font-heading font-semibold px-8 py-3 uppercase tracking-wider hover:bg-white hover:text-gvvb-navy transition-colors"
+              className="border-2 border-white text-white font-heading font-semibold px-8 py-3 uppercase tracking-wider hover:bg-white hover:text-gvvb-red transition-colors"
             >
               Calendrier
             </Link>
@@ -152,18 +152,18 @@ export default function Home() {
       </section>
 
       {/* CTA rejoindre */}
-      <section className="py-20 bg-gvvb-red">
+      <section className="py-20 bg-gvvb-navy">
         <div className="max-w-7xl mx-auto px-4 text-center flex flex-col items-center gap-6">
           <h2 className="font-heading font-bold text-3xl md:text-5xl text-white">
             PRÊT À REJOINDRE L&apos;ÉQUIPE ?
           </h2>
-          <p className="text-red-100 max-w-md">
+          <p className="text-gray-300 max-w-md">
             Débutant ou confirmé, il y a une place pour vous au GVVB.
             Contactez-nous pour en savoir plus sur les inscriptions.
           </p>
           <Link
             href="/contact"
-            className="bg-white text-gvvb-red font-heading font-bold px-10 py-4 uppercase tracking-wider hover:bg-gray-100 transition-colors"
+            className="bg-gvvb-red text-white font-heading font-bold px-10 py-4 uppercase tracking-wider hover:bg-gvvb-red-dark transition-colors"
           >
             Nous contacter
           </Link>
