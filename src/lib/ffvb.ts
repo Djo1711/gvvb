@@ -9,6 +9,16 @@ export interface Match {
   sets: string | null;
 }
 
+export interface Standing {
+  rank: number;
+  team: string;
+  pts: number;
+  played: number;
+  wins: number;
+  losses: number;
+  isGvvb: boolean;
+}
+
 const CLUB = "GARCHES";
 
 function parseCells(html: string): string[] {
@@ -67,7 +77,36 @@ export function parseMatches(html: string): Match[] {
   return matches.filter((m) => m.home.includes(CLUB) || m.away.includes(CLUB));
 }
 
-export async function fetchPoule(poule: string): Promise<Match[]> {
+export function parseStandings(html: string): Standing[] {
+  const cells = parseCells(html);
+  const rankRe = /^\d{1,2}\.$/;
+  const numRe = /^\d+$/;
+  const standings: Standing[] = [];
+
+  for (let i = 0; i < cells.length - 5; i++) {
+    if (!rankRe.test(cells[i])) continue;
+    const rank = parseInt(cells[i]);
+    const team = cells[i + 1];
+    const pts = cells[i + 2];
+    const played = cells[i + 3];
+    const wins = cells[i + 4];
+    const losses = cells[i + 5];
+    if (!numRe.test(pts) || !numRe.test(played) || !numRe.test(wins) || !numRe.test(losses)) continue;
+    standings.push({
+      rank,
+      team,
+      pts: parseInt(pts),
+      played: parseInt(played),
+      wins: parseInt(wins),
+      losses: parseInt(losses),
+      isGvvb: team.includes(CLUB),
+    });
+  }
+
+  return standings;
+}
+
+export async function fetchPoule(poule: string): Promise<{ matches: Match[]; standings: Standing[] }> {
   const url = `https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=${poule}`;
   try {
     const res = await fetch(url, {
@@ -79,9 +118,9 @@ export async function fetchPoule(poule: string): Promise<Match[]> {
     });
     const buf = await res.arrayBuffer();
     const html = new TextDecoder("iso-8859-1").decode(buf);
-    return parseMatches(html);
+    return { matches: parseMatches(html), standings: parseStandings(html) };
   } catch {
-    return [];
+    return { matches: [], standings: [] };
   }
 }
 

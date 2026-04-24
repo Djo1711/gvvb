@@ -19,7 +19,7 @@ const poules = [
 
 export default async function Calendrier() {
   const results = await Promise.all(poules.map((p) => fetchPoule(p.code)));
-  const pouleData = poules.map((p, i) => ({ ...p, matches: results[i] }));
+  const pouleData = poules.map((p, i) => ({ ...p, matches: results[i].matches, standings: results[i].standings }));
 
   return (
     <>

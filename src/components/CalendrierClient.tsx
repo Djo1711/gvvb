@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { formatDate, matchResult, opponentName, type Match } from "@/lib/ffvb";
+import { formatDate, matchResult, opponentName, type Match, type Standing } from "@/lib/ffvb";
 
 interface PouleData {
   code: string;
   label: string;
   matches: Match[];
+  standings: Standing[];
 }
 
 function dateToNum(ddmmyy: string): number {
@@ -90,7 +91,66 @@ function MatchRow({ match }: { match: Match }) {
   );
 }
 
-function AccordionSection({ label, matches }: { label: string; matches: Match[] }) {
+function StandingsTable({ standings }: { standings: Standing[] }) {
+  if (standings.length === 0) return null;
+  return (
+    <div className="border-b border-gray-200 bg-gray-50">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="border-b border-gray-200">
+              <th className="py-2 px-4 text-left font-heading text-xs uppercase tracking-wide text-gray-400 w-8">#</th>
+              <th className="py-2 px-4 text-left font-heading text-xs uppercase tracking-wide text-gray-400">Équipe</th>
+              <th className="py-2 px-3 text-center font-heading text-xs uppercase tracking-wide text-gray-400">Pts</th>
+              <th className="py-2 px-3 text-center font-heading text-xs uppercase tracking-wide text-gray-400 hidden sm:table-cell">J</th>
+              <th className="py-2 px-3 text-center font-heading text-xs uppercase tracking-wide text-gray-400 hidden sm:table-cell">V</th>
+              <th className="py-2 px-3 text-center font-heading text-xs uppercase tracking-wide text-gray-400 hidden sm:table-cell">D</th>
+            </tr>
+          </thead>
+          <tbody>
+            {standings.map((s) => (
+              <tr
+                key={s.rank}
+                className={`border-b border-gray-100 ${s.isGvvb ? "bg-gvvb-red text-white font-bold" : "hover:bg-white"}`}
+              >
+                <td className={`py-2 px-4 font-heading font-bold text-center ${s.isGvvb ? "text-white" : "text-gray-400"}`}>
+                  {s.rank}
+                </td>
+                <td className={`py-2 px-4 ${s.isGvvb ? "text-white" : "text-gray-700"}`}>
+                  {s.isGvvb ? "GVVB" : s.team.split(" ").slice(0, 4).join(" ")}
+                </td>
+                <td className={`py-2 px-3 text-center font-heading font-bold ${s.isGvvb ? "text-white" : "text-gvvb-navy"}`}>
+                  {s.pts}
+                </td>
+                <td className={`py-2 px-3 text-center hidden sm:table-cell ${s.isGvvb ? "text-red-100" : "text-gray-500"}`}>
+                  {s.played}
+                </td>
+                <td className={`py-2 px-3 text-center hidden sm:table-cell ${s.isGvvb ? "text-red-100" : "text-gray-500"}`}>
+                  {s.wins}
+                </td>
+                <td className={`py-2 px-3 text-center hidden sm:table-cell ${s.isGvvb ? "text-red-100" : "text-gray-500"}`}>
+                  {s.losses}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="px-4 py-2 text-right">
+          <a
+            href="https://www.ffvbbeach.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-heading text-xs text-gray-400 hover:text-gvvb-red transition-colors"
+          >
+            Source : ffvbbeach.org ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AccordionSection({ label, matches, standings }: { label: string; matches: Match[]; standings: Standing[] }) {
   const [open, setOpen] = useState(false);
 
   if (matches.length === 0) return null;
@@ -134,9 +194,10 @@ function AccordionSection({ label, matches }: { label: string; matches: Match[] 
         </div>
       </button>
 
-      {/* Tableau des matchs */}
+      {/* Contenu déroulant */}
       {open && (
         <div className="border-t border-gray-200">
+          <StandingsTable standings={standings} />
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -169,7 +230,7 @@ function AccordionSection({ label, matches }: { label: string; matches: Match[] 
 }
 
 export default function CalendrierClient({ pouleData }: { pouleData: PouleData[] }) {
-  const hasData = pouleData.some((p) => p.matches.length > 0);
+  const hasData = pouleData.some((p) => p.matches.length > 0 || p.standings.length > 0);
 
   if (!hasData) {
     return (
@@ -195,7 +256,7 @@ export default function CalendrierClient({ pouleData }: { pouleData: PouleData[]
   return (
     <div className="flex flex-col gap-3">
       {pouleData.map((p) => (
-        <AccordionSection key={p.code} label={p.label} matches={p.matches} />
+        <AccordionSection key={p.code} label={p.label} matches={p.matches} standings={p.standings} />
       ))}
     </div>
   );
