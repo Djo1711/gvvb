@@ -168,7 +168,7 @@ export default function Home() {
               </p>
             </div>
             <a
-              href="https://www.youtube.com/@lepreneurdelecon"
+              href="https://www.youtube.com/@LPDL-florian"
               target="_blank"
               rel="noopener noreferrer"
               className="font-heading text-sm uppercase tracking-wider text-gvvb-navy hover:text-gvvb-red transition-colors whitespace-nowrap"
@@ -178,7 +178,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a
-              href="https://www.youtube.com/@lepreneurdelecon"
+              href="https://www.youtube.com/@LPDL-florian"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative bg-gvvb-navy aspect-video flex flex-col items-center justify-center gap-4 hover:bg-gvvb-navy-dark transition-colors overflow-hidden"
@@ -193,7 +193,7 @@ export default function Home() {
               </div>
             </a>
             <a
-              href="https://www.youtube.com/@lepreneurdelecon"
+              href="https://www.youtube.com/@LPDL-florian"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative bg-gvvb-navy aspect-video flex flex-col items-center justify-center gap-4 hover:bg-gvvb-navy-dark transition-colors overflow-hidden"
