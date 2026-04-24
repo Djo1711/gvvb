@@ -64,24 +64,26 @@ function MatchRow({ match }: { match: Match }) {
       <td className="py-3 px-4 text-sm text-gray-700 font-medium">
         {opponent || <span className="text-gray-400 italic">À déterminer</span>}
       </td>
-      <td className="py-3 px-4 text-center">
+      <td className="py-3 px-4">
         {result ? (
-          <div className="inline-flex flex-col items-center gap-0.5">
+          <div className="flex items-center justify-end gap-3">
+            {match.sets && (
+              <span className="text-xs text-gray-400 text-right leading-tight hidden sm:block">
+                {match.sets}
+              </span>
+            )}
             <span
-              className={`font-heading font-bold text-sm px-3 py-1 ${
+              className={`font-heading font-bold text-sm px-3 py-1 whitespace-nowrap flex-shrink-0 ${
                 result.win ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
               }`}
             >
               {result.gvvbScore} – {result.opponentScore}
             </span>
-            {match.sets && (
-              <span className="text-xs text-gray-400 max-w-[160px] text-center leading-tight">
-                {match.sets}
-              </span>
-            )}
           </div>
         ) : (
-          <span className="text-gray-300 text-xs italic">À jouer</span>
+          <div className="flex justify-end">
+            <span className="text-gray-300 text-xs italic">À jouer</span>
+          </div>
         )}
       </td>
     </tr>

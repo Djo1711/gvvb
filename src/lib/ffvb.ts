@@ -1,7 +1,7 @@
 export interface Match {
   code: string;
   date: string;   // DD/MM/YY
-  time: string;
+  time: string | null;
   home: string;
   away: string;
   scoreHome: string | null;
@@ -34,26 +34,34 @@ export function parseMatches(html: string): Match[] {
   const scoreRe = /^\d$/;
 
   const matches: Match[] = [];
-  for (let i = 0; i < cells.length - 4; i++) {
+
+  for (let i = 0; i < cells.length - 3; i++) {
     if (!codeRe.test(cells[i])) continue;
     if (!dateRe.test(cells[i + 1])) continue;
-    if (!timeRe.test(cells[i + 2])) continue;
 
-    const home = cells[i + 3] ?? "";
-    let away = cells[i + 4] ?? "";
+    // Deux formats possibles: avec heure (standard) ou sans heure (2e match de journée M15)
+    const hasTime = timeRe.test(cells[i + 2]);
+    const offset = hasTime ? 0 : -1; // décale les index si pas d'heure
+
+    const time = hasTime ? cells[i + 2] : null;
+    const home = cells[i + 3 + offset] ?? "";
+    let away = cells[i + 4 + offset] ?? "";
     let scoreHome: string | null = null;
     let scoreAway: string | null = null;
     let sets: string | null = null;
 
+    // Sans heure, vérifier que home ressemble à un nom d'équipe (pas un code match ou date)
+    if (!hasTime && (codeRe.test(home) || dateRe.test(home) || timeRe.test(home))) continue;
+
     if (away === "xxxxx") {
       away = "";
-    } else if (cells[i + 5] && scoreRe.test(cells[i + 5])) {
-      scoreHome = cells[i + 5];
-      scoreAway = cells[i + 6] ?? null;
-      sets = cells[i + 7] ?? null;
+    } else if (cells[i + 5 + offset] && scoreRe.test(cells[i + 5 + offset])) {
+      scoreHome = cells[i + 5 + offset];
+      scoreAway = cells[i + 6 + offset] ?? null;
+      sets = cells[i + 7 + offset] ?? null;
     }
 
-    matches.push({ code: cells[i], date: cells[i + 1], time: cells[i + 2], home, away, scoreHome, scoreAway, sets });
+    matches.push({ code: cells[i], date: cells[i + 1], time, home, away, scoreHome, scoreAway, sets });
   }
 
   return matches.filter((m) => m.home.includes(CLUB) || m.away.includes(CLUB));
@@ -83,7 +91,7 @@ export function formatDate(ddmmyy: string): string {
   return `${parseInt(d)} ${months[parseInt(m) - 1]} 20${y}`;
 }
 
-export function matchResult(match: Match): { gvvbScore: string; opponentScore: string; win: boolean | null } | null {
+export function matchResult(match: Match): { gvvbScore: string; opponentScore: string; win: boolean } | null {
   if (match.scoreHome === null) return null;
   const gvvbHome = match.home.includes(CLUB);
   const gvvbScore = gvvbHome ? match.scoreHome! : match.scoreAway!;
