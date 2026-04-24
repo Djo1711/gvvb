@@ -74,6 +74,7 @@ export default function Entrainements() {
         label="Organisation"
         title="Entraînements & Horaires"
         description="Retrouvez tous les créneaux d'entraînement pour chaque catégorie dans nos gymnases."
+        bgImage="/equipes/dep-feminine.jpg"
       />
 
       {/* Catégories d'âge */}

@@ -122,27 +122,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Photo break */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <Image
-          src="/photos/volleyballs.jpg"
-          alt="Entraînement GVVB"
-          fill
-          className="object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gvvb-navy/60" />
-        <div className="relative h-full flex items-center justify-center text-center px-4">
-          <div>
-            <p className="font-heading text-xs uppercase tracking-widest text-white/60 mb-3">
-              Garches · Vaucresson · Hauts-de-Seine
-            </p>
-            <h2 className="font-heading font-bold text-3xl md:text-4xl text-white">
-              LA PASSION DU VOLLEY-BALL
-            </h2>
-          </div>
-        </div>
-      </section>
-
       {/* Actualités */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">

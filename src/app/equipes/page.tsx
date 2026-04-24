@@ -1,6 +1,7 @@
 import PageHeader from "@/components/PageHeader";
 import Image from "next/image";
 import Link from "next/link";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -79,6 +80,17 @@ export default function Equipes() {
         title="Nos équipes"
         description="Cinq équipes pour tous les niveaux : compétition, loisir et jeunes."
       />
+
+      {/* Photo break */}
+      <section className="relative h-52 md:h-72 overflow-hidden">
+        <Image
+          src="/photos/volleyballs.jpg"
+          alt="Entraînement GVVB"
+          fill
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gvvb-navy/50" />
+      </section>
 
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto flex flex-col gap-12">

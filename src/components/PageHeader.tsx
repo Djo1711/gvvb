@@ -1,13 +1,22 @@
+import Image from "next/image";
+
 interface PageHeaderProps {
   label: string;
   title: string;
   description?: string;
+  bgImage?: string;
 }
 
-export default function PageHeader({ label, title, description }: PageHeaderProps) {
+export default function PageHeader({ label, title, description, bgImage }: PageHeaderProps) {
   return (
-    <section className="bg-gvvb-red py-16 px-4">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative bg-gvvb-red py-16 px-4 overflow-hidden">
+      {bgImage && (
+        <>
+          <Image src={bgImage} alt="" fill className="object-cover object-center opacity-50" />
+          <div className="absolute inset-0 bg-gvvb-red/65" />
+        </>
+      )}
+      <div className="relative max-w-7xl mx-auto">
         <span className="font-heading text-xs uppercase tracking-widest text-white/70">
           {label}
         </span>
