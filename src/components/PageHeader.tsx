@@ -17,6 +17,7 @@ export default function PageHeader({ label, title, description, bgImage, objectP
             src={bgImage}
             alt=""
             fill
+            sizes="100vw"
             className="object-cover opacity-50"
             style={{ objectPosition }}
           />

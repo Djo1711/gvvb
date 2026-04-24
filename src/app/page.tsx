@@ -162,7 +162,7 @@ export default function Home() {
           { src: "/photos/portrait-f.jpg",    alt: "Concentration avant le match" },
         ].map((photo) => (
           <div key={photo.src} className="relative aspect-[4/3] overflow-hidden">
-            <Image src={photo.src} alt={photo.alt} fill className="object-cover object-center hover:scale-105 transition-transform duration-500" />
+            <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover object-center hover:scale-105 transition-transform duration-500" />
           </div>
         ))}
       </section>
