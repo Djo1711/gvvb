@@ -5,14 +5,21 @@ interface PageHeaderProps {
   title: string;
   description?: string;
   bgImage?: string;
+  objectPosition?: string;
 }
 
-export default function PageHeader({ label, title, description, bgImage }: PageHeaderProps) {
+export default function PageHeader({ label, title, description, bgImage, objectPosition = "center" }: PageHeaderProps) {
   return (
-    <section className="relative bg-gvvb-red py-16 px-4 overflow-hidden">
+    <section className="relative bg-gvvb-red py-20 md:py-28 px-4 overflow-hidden">
       {bgImage && (
         <>
-          <Image src={bgImage} alt="" fill className="object-cover object-center opacity-50" />
+          <Image
+            src={bgImage}
+            alt=""
+            fill
+            className="object-cover opacity-50"
+            style={{ objectPosition }}
+          />
           <div className="absolute inset-0 bg-gvvb-red/65" />
         </>
       )}

@@ -27,6 +27,7 @@ export default function Contact() {
         title="Contact & Inscription"
         description="Une question ? Envie de nous rejoindre ? Toutes les informations pour nous contacter."
         bgImage="/photos/banc-gvvb.jpg"
+        objectPosition="center 30%"
       />
 
       <section className="max-w-7xl mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2 gap-12">

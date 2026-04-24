@@ -28,6 +28,7 @@ export default async function Calendrier() {
         title="Calendrier & Résultats"
         description="Saison 2025/2026 — Cliquez sur une équipe pour voir ses matchs."
         bgImage="/photos/filet-m.jpg"
+        objectPosition="50% 20%"
       />
       <section className="max-w-7xl mx-auto px-4 py-16">
         <CalendrierClient pouleData={pouleData} />
