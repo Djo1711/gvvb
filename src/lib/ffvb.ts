@@ -70,7 +70,7 @@ export async function fetchPoule(poule: string): Promise<Match[]> {
       },
     });
     const buf = await res.arrayBuffer();
-    const html = new TextDecoder("latin-1").decode(buf);
+    const html = new TextDecoder("iso-8859-1").decode(buf);
     return parseMatches(html);
   } catch {
     return [];
