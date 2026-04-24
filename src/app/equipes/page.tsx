@@ -29,7 +29,7 @@ const equipes = [
     genre: "Féminin",
     description:
       "L'équipe féminine évolue en championnat départemental. Après la phase principale, l'équipe a disputé la poule basse.",
-    photo: null,
+    photo: "/equipes/dep-feminine.jpg",
     liens: [
       { label: "Poule principale (AFC)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=AFC" },
       { label: "Poule basse (AFF)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=AFF" },
@@ -64,7 +64,7 @@ const equipes = [
     genre: "Féminin",
     description:
       "Notre équipe de jeunes filles dispute le championnat départemental M15. Formation et compétition au programme pour nos futures championnes.",
-    photo: null,
+    photo: "/equipes/m15-feminine.jpg",
     liens: [
       { label: "Championnat M15 F (MFB)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=MFB" },
     ],

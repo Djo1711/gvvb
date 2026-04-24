@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -34,14 +35,15 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gvvb-red overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.15) 40px, rgba(255,255,255,0.15) 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.15) 40px, rgba(255,255,255,0.15) 41px)",
-          }}
+      <section className="relative bg-gvvb-navy overflow-hidden">
+        <Image
+          src="/photos/hero-bg.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center opacity-40"
         />
+        <div className="absolute inset-0 bg-gradient-to-r from-gvvb-navy/80 to-gvvb-red/60" />
         <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-36 flex flex-col gap-6 items-start">
           <span className="font-heading text-xs uppercase tracking-widest text-white/70">
             Garches · Vaucresson · Hauts-de-Seine
@@ -116,6 +118,27 @@ export default function Home() {
                 + Voir toutes les équipes
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Photo break */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <Image
+          src="/photos/volleyballs.jpg"
+          alt="Entraînement GVVB"
+          fill
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gvvb-navy/60" />
+        <div className="relative h-full flex items-center justify-center text-center px-4">
+          <div>
+            <p className="font-heading text-xs uppercase tracking-widest text-white/60 mb-3">
+              Garches · Vaucresson · Hauts-de-Seine
+            </p>
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-white">
+              LA PASSION DU VOLLEY-BALL
+            </h2>
           </div>
         </div>
       </section>
