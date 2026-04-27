@@ -52,18 +52,22 @@ export default function Home() {
           className="object-cover object-center opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gvvb-navy/80 to-gvvb-red/60" />
-        <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-36 flex flex-row items-center gap-12">
-          <div className="flex flex-col gap-6 items-start flex-1">
+        <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-36 flex flex-col gap-6 items-start">
           <span className="font-heading text-xs uppercase tracking-widest text-white/70">
             Garches · Vaucresson · Hauts-de-Seine
           </span>
-          <h1 className="font-heading font-bold text-4xl sm:text-6xl md:text-7xl text-white leading-tight max-w-3xl">
-            GARCHES
-            <br />
-            VAUCRESSON
-            <br />
-            VOLLEY-BALL
-          </h1>
+          <div className="flex flex-row gap-12 w-full" style={{ alignItems: "center" }}>
+            <h1 className="font-heading font-bold text-4xl sm:text-6xl md:text-7xl text-white leading-tight flex-1">
+              GARCHES
+              <br />
+              VAUCRESSON
+              <br />
+              VOLLEY-BALL
+            </h1>
+            <div className="hidden lg:block flex-shrink-0 pointer-events-none select-none" style={{ alignSelf: "center" }}>
+              <Image src="/logo-gvvb-blanc.png" alt="" width={240} height={240} className="h-60 w-auto" />
+            </div>
+          </div>
           <p className="text-gray-300 text-lg max-w-lg">
             Rejoignez un club passionné dans les Hauts-de-Seine. Loisir,
             compétition, jeunes - il y a une équipe pour vous.
@@ -81,10 +85,6 @@ export default function Home() {
             >
               Calendrier
             </Link>
-          </div>
-          </div>
-          <div className="hidden lg:block flex-shrink-0 pointer-events-none select-none">
-            <Image src="/logo-gvvb-blanc.png" alt="" width={240} height={240} className="h-60 w-auto" />
           </div>
         </div>
       </section>
