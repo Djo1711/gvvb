@@ -24,6 +24,17 @@ export default function PageHeader({ label, title, description, bgImage, objectP
           <div className="absolute inset-0 bg-gvvb-red/65" />
         </>
       )}
+      {/* Logo filigrane */}
+      <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden md:block pointer-events-none select-none">
+        <Image
+          src="/logo-gvvb-blanc.png"
+          alt=""
+          width={180}
+          height={180}
+          className="opacity-10"
+        />
+      </div>
+
       <div className="relative max-w-7xl mx-auto">
         <span className="font-heading text-xs uppercase tracking-widest text-white/70">
           {label}

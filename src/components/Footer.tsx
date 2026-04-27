@@ -8,9 +8,9 @@ export default function Footer() {
     <footer className="bg-gvvb-navy text-white">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-3">
-            <Image src="/logo-gvvb.png" alt="Logo GVVB" width={36} height={36} className="h-9 w-auto" />
-            <span className="font-heading text-gvvb-red font-bold text-lg">GVVB</span>
+          <div className="flex items-center gap-4">
+            <Image src="/logo-gvvb-blanc.png" alt="Logo GVVB" width={56} height={56} className="h-14 w-auto" />
+            <span className="font-heading text-white font-bold text-xl">GVVB</span>
           </div>
           <p className="text-sm text-gray-400 leading-relaxed">
             Garches Vaucresson Volley-Ball<br />
