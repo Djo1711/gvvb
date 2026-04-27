@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 
 interface PageHeaderProps {
   label: string;
@@ -6,9 +7,10 @@ interface PageHeaderProps {
   description?: string;
   bgImage?: string;
   objectPosition?: string;
+  children?: ReactNode;
 }
 
-export default function PageHeader({ label, title, description, bgImage, objectPosition = "center" }: PageHeaderProps) {
+export default function PageHeader({ label, title, description, bgImage, objectPosition = "center", children }: PageHeaderProps) {
   return (
     <section className="relative bg-gvvb-red py-20 md:py-28 px-4 overflow-hidden">
       {bgImage && (
@@ -45,6 +47,7 @@ export default function PageHeader({ label, title, description, bgImage, objectP
         {description && (
           <p className="text-red-100 mt-4 max-w-2xl">{description}</p>
         )}
+        {children && <div className="mt-4">{children}</div>}
       </div>
     </section>
   );
