@@ -52,14 +52,10 @@ export default function Home() {
           className="object-cover object-center opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gvvb-navy/80 to-gvvb-red/60" />
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none select-none">
+          <Image src="/logo-gvvb-blanc.png" alt="" width={260} height={260} className="h-64 w-auto" />
+        </div>
         <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-36 flex flex-col gap-6 items-start">
-          <Image
-            src="/logo-gvvb-blanc.png"
-            alt="Logo GVVB"
-            width={110}
-            height={110}
-            className="h-24 w-auto md:h-28"
-          />
           <span className="font-heading text-xs uppercase tracking-widest text-white/70">
             Garches · Vaucresson · Hauts-de-Seine
           </span>
