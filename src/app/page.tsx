@@ -53,13 +53,6 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gvvb-navy/80 to-gvvb-red/60" />
         <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-36 flex flex-col gap-6 items-start">
-          <Image
-            src="/logo-gvvb-blanc.png"
-            alt="Logo GVVB"
-            width={120}
-            height={120}
-            className="h-24 w-auto md:h-28"
-          />
           <span className="font-heading text-xs uppercase tracking-widest text-white/70">
             Garches · Vaucresson · Hauts-de-Seine
           </span>
@@ -276,7 +269,7 @@ export default function Home() {
         <Image src="/photos/celebration-f.jpg" alt="" fill className="object-cover object-top opacity-30" />
         <div className="absolute inset-0 bg-gvvb-navy/75" />
         <div className="absolute right-0 bottom-0 pointer-events-none select-none hidden lg:block">
-          <Image src="/logo-gvvb-blanc.png" alt="" width={320} height={320} className="opacity-5" />
+          <Image src="/logo-gvvb-blanc.png" alt="" width={320} height={320} className="opacity-15" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 text-center flex flex-col items-center gap-6">
           <h2 className="font-heading font-bold text-3xl md:text-5xl text-white">

@@ -31,7 +31,7 @@ export default function PageHeader({ label, title, description, bgImage, objectP
           alt=""
           width={180}
           height={180}
-          className="opacity-10"
+          className="opacity-25"
         />
       </div>
 
