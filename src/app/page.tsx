@@ -64,9 +64,8 @@ export default function Home() {
               <br />
               VOLLEY-BALL
             </h1>
-            <div className="hidden lg:block flex-shrink-0 pointer-events-none select-none" style={{ alignSelf: "center" }}>
-              <Image src="/logo-gvvb-blanc.png" alt="" width={240} height={240} className="h-60 w-auto" />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-gvvb-blanc.png" alt="" className="hidden lg:block flex-shrink-0 pointer-events-none select-none" style={{ height: "15rem", width: "auto", alignSelf: "center" }} />
           </div>
           <p className="text-gray-300 text-lg max-w-lg">
             Rejoignez un club passionné dans les Hauts-de-Seine. Loisir,
