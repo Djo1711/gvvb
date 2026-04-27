@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 const poules = [
-  { code: "AMA", label: "Départementale M — Poule principale" },
-  { code: "AMF", label: "Départementale M — Poule intermédiaire 2" },
-  { code: "AFC", label: "Départementale F — Poule principale" },
-  { code: "AFF", label: "Départementale F — Poule basse" },
+  { code: "AMA", label: "Départementale M - Poule principale" },
+  { code: "AMF", label: "Départementale M - Poule intermédiaire 2" },
+  { code: "AFC", label: "Départementale F - Poule principale" },
+  { code: "AFF", label: "Départementale F - Poule basse" },
   { code: "ORA", label: "Loisir OR" },
   { code: "MFB", label: "M15 Féminines" },
 ];
@@ -26,7 +26,7 @@ export default async function Calendrier() {
       <PageHeader
         label="Compétition"
         title="Calendrier & Résultats"
-        description="Saison 2025/2026 — Cliquez sur une équipe pour voir ses matchs."
+        description="Saison 2025/2026 - Cliquez sur une équipe pour voir ses matchs."
         bgImage="/photos/filet-m.jpg"
         objectPosition="20% 30%"
       />

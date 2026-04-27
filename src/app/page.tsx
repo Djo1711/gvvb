@@ -21,7 +21,7 @@ const news = [
     date: "Janvier 2026",
     title: "Nouveaux maillots et nouveau logo !",
     excerpt:
-      "Le GVVB dévoile sa nouvelle identité visuelle pour la saison 2025-2026. Les maillots Décathlon Pro sont arrivés début janvier — rouge pour les joueurs de champ, marine pour le libéro — et arborent fièrement notre nouveau logo.",
+      "Le GVVB dévoile sa nouvelle identité visuelle pour la saison 2025-2026. Les maillots Décathlon Pro sont arrivés début janvier : rouge pour les joueurs de champ, marine pour le libéro, arborant fièrement notre nouveau logo.",
     images: ["/news/maillot-rouge.png", "/news/maillot-bleu.png"],
     featured: true,
   },
@@ -65,7 +65,7 @@ export default function Home() {
           </h1>
           <p className="text-gray-300 text-lg max-w-lg">
             Rejoignez un club passionné dans les Hauts-de-Seine. Loisir,
-            compétition, jeunes — il y a une équipe pour vous.
+            compétition, jeunes - il y a une équipe pour vous.
           </p>
           <div className="flex flex-wrap gap-4 mt-2">
             <Link

@@ -14,7 +14,7 @@ const contacts = [
   },
   {
     nom: "Benoît Rousseau",
-    role: "Trésorier — Inscriptions",
+    role: "Trésorier - Inscriptions",
     tel: "06 80 85 02 37",
   },
 ];
@@ -157,7 +157,7 @@ export default function Contact() {
               <p className="text-gray-600 text-sm leading-relaxed">
                 Téléchargez et remplissez le dossier ci-dessus, puis transmettez-le
                 à notre trésorier Benoît Rousseau. Nous accueillons aussi les essais
-                — venez tester un créneau avant de vous engager.
+                - venez tester un créneau avant de vous engager.
               </p>
               <div className="flex flex-col gap-2 text-sm">
                 <div className="flex items-start gap-2">

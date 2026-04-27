@@ -79,8 +79,8 @@ export default function Footer() {
               <span className="block font-heading text-xs uppercase tracking-widest text-gray-500 mb-1">
                 Gymnases
               </span>
-              <span>Yves du Manoir — Garches</span><br />
-              <span>Yves Bodin — Vaucresson</span>
+              <span>Yves du Manoir - Garches</span><br />
+              <span>Yves Bodin - Vaucresson</span>
             </li>
           </ul>
         </div>
