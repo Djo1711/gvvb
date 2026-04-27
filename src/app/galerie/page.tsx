@@ -50,10 +50,11 @@ export default function Galerie() {
       <PageHeader
         label="Médias"
         title="Galerie photos"
-        description="Saison 2025/2026 — Photos David Adot Photo & Vidéo."
+        description="Saison 2025/2026 — Photos David Adet Photo & Vidéo."
         bgImage="/photos/celebration-m.jpg"
         objectPosition="center 40%"
       />
+
 
       <div className="max-w-7xl mx-auto px-4 py-16 flex flex-col gap-16">
         {sections.map((section) => (
@@ -84,7 +85,15 @@ export default function Galerie() {
         ))}
 
         <p className="text-center text-xs text-gray-400 font-heading uppercase tracking-widest">
-          Photos © David Adot Photo & Vidéo
+          Photos ©{" "}
+          <a
+            href="https://www.instagram.com/davidadet_photo_video/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-gvvb-red transition-colors"
+          >
+            David Adet Photo & Vidéo
+          </a>
         </p>
       </div>
     </>

@@ -10,7 +10,7 @@ const contacts = [
   {
     nom: "Stéphane Feldman",
     role: "Président",
-    tel: "06 83 89 27 62",
+    tel: "07 62 92 04 94",
   },
   {
     nom: "Benoît Rousseau",

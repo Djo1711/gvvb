@@ -18,6 +18,14 @@ const teams = [
 
 const news = [
   {
+    date: "Janvier 2026",
+    title: "Nouveaux maillots et nouveau logo !",
+    excerpt:
+      "Le GVVB dévoile sa nouvelle identité visuelle pour la saison 2025-2026. Les maillots Décathlon Pro sont arrivés début janvier — rouge pour les joueurs de champ, marine pour le libéro — et arborent fièrement notre nouveau logo.",
+    images: ["/news/maillot-rouge.png", "/news/maillot-bleu.png"],
+    featured: true,
+  },
+  {
     date: "Avril 2026",
     title: "Nouveau site en ligne !",
     excerpt:
@@ -27,7 +35,7 @@ const news = [
     date: "Avril 2026",
     title: "Inscriptions 2026-2027 bientôt ouvertes",
     excerpt:
-      "La prochaine saison approche. Les inscriptions ouvriront en juin. Contactez-nous pour plus d'infos.",
+      "La prochaine saison approche. Les inscriptions ouvriront en septembre. Contactez-nous pour plus d'infos.",
   },
 ];
 
@@ -45,6 +53,13 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gvvb-navy/80 to-gvvb-red/60" />
         <div className="relative max-w-7xl mx-auto px-4 py-24 md:py-36 flex flex-col gap-6 items-start">
+          <Image
+            src="/logo-gvvb.png"
+            alt="Logo GVVB"
+            width={100}
+            height={100}
+            className="h-20 w-auto md:h-24"
+          />
           <span className="font-heading text-xs uppercase tracking-widest text-white/70">
             Garches · Vaucresson · Hauts-de-Seine
           </span>
@@ -137,7 +152,7 @@ export default function Home() {
             {news.map((item) => (
               <article
                 key={item.title}
-                className="bg-white p-8 border-l-4 border-gvvb-red shadow-sm hover:shadow-md transition-shadow"
+                className={`bg-white p-8 border-l-4 border-gvvb-red shadow-sm hover:shadow-md transition-shadow ${"featured" in item && item.featured ? "md:col-span-2" : ""}`}
               >
                 <time className="font-heading text-xs uppercase tracking-widest text-gray-400">
                   {item.date}
@@ -148,6 +163,15 @@ export default function Home() {
                 <p className="text-gray-600 text-sm leading-relaxed">
                   {item.excerpt}
                 </p>
+                {"images" in item && item.images && (
+                  <div className="grid grid-cols-2 gap-4 mt-5">
+                    {item.images.map((src: string) => (
+                      <div key={src} className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
+                        <Image src={src} alt="Nouveau maillot GVVB" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-contain" />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -168,45 +192,49 @@ export default function Home() {
       </section>
 
       {/* Partenaires */}
-      <section className="py-10 bg-gray-50 border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col items-center gap-6">
-          <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
-            Partenaires
-          </span>
-          <div className="flex flex-col items-center gap-3">
+      <section className="py-14 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center gap-4 mb-8">
+            <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">Partenaires</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+          <div className="flex flex-col sm:flex-row items-center gap-8 bg-gray-50 border border-gray-200 p-8">
             <a
               href="https://www.librairie-ecriture.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-70 hover:opacity-100 transition-opacity"
-              aria-label="Librairie L'Écriture — partenaire du GVVB"
+              className="flex-shrink-0 opacity-80 hover:opacity-100 transition-opacity"
+              aria-label="Librairie L'Écriture"
             >
               <Image
                 src="/sponsors/logo-lecriture.jpg"
                 alt="Librairie L'Écriture"
-                width={120}
-                height={120}
+                width={160}
+                height={160}
                 className="object-contain"
               />
             </a>
-            <div className="flex items-center gap-4 text-sm">
-              <a
-                href="https://www.librairie-ecriture.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-heading text-xs uppercase tracking-wider text-gray-500 hover:text-gvvb-red transition-colors"
-              >
-                librairie-ecriture.com
-              </a>
-              <span className="text-gray-300">·</span>
-              <a
-                href="https://www.instagram.com/librairie_lecriture_vaucresson/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-heading text-xs uppercase tracking-wider text-gray-500 hover:text-gvvb-red transition-colors"
-              >
-                Instagram
-              </a>
+            <div className="text-center sm:text-left">
+              <p className="font-heading font-bold text-gvvb-navy text-xl mb-1">Librairie L&apos;Écriture</p>
+              <p className="text-gray-500 text-sm mb-4">Partenaire du GVVB · Vaucresson</p>
+              <div className="flex flex-wrap justify-center sm:justify-start gap-3">
+                <a
+                  href="https://www.librairie-ecriture.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-heading text-xs uppercase tracking-wider text-gvvb-red border border-gvvb-red px-4 py-2 hover:bg-gvvb-red hover:text-white transition-colors"
+                >
+                  librairie-ecriture.com
+                </a>
+                <a
+                  href="https://www.instagram.com/librairie_lecriture_vaucresson/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-heading text-xs uppercase tracking-wider text-gray-500 border border-gray-300 px-4 py-2 hover:border-gvvb-red hover:text-gvvb-red transition-colors"
+                >
+                  Instagram
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -26,9 +26,9 @@ export default function Navbar() {
           <Image
             src="/logo-gvvb.png"
             alt="Logo GVVB"
-            width={40}
-            height={40}
-            className="h-10 w-auto"
+            width={48}
+            height={48}
+            className="h-12 w-auto"
           />
           <span className="font-heading font-bold text-lg leading-none hidden sm:block">
             <span className="text-gvvb-red">GVVB</span>
