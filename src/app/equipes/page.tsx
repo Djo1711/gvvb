@@ -89,7 +89,7 @@ export default function Equipes() {
               className={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-8 items-start`}
             >
               {/* Photo */}
-              <div className="w-full md:w-2/5 flex-shrink-0">
+              <div className="w-full md:w-2/5 flex-shrink-0 order-2 md:order-1">
                 {equipe.photo ? (
                   <div className="relative aspect-video overflow-hidden">
                     <Image
@@ -109,7 +109,7 @@ export default function Equipes() {
               </div>
 
               {/* Texte */}
-              <div className="flex-1 py-2">
+              <div className="flex-1 py-2 order-1 md:order-2">
                 <div className="flex items-center gap-3 mb-3">
                   <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
                     {equipe.niveau}

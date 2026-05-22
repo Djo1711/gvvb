@@ -53,8 +53,9 @@ export default function LeClub() {
         bgImage="/photos/supporters.jpg"
       />
 
+      <div className="flex flex-col md:block">
       {/* Présentation */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="order-3 md:order-none max-w-7xl mx-auto px-4 py-16 w-full">
         <div className="max-w-3xl">
           <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
             Notre histoire
@@ -75,7 +76,7 @@ export default function LeClub() {
       </section>
 
       {/* Bureau */}
-      <section className="bg-gray-50 py-16 px-4">
+      <section className="order-1 md:order-none bg-gray-50 py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
             Gouvernance
@@ -137,7 +138,7 @@ export default function LeClub() {
       </section>
 
       {/* Coachs */}
-      <section className="py-16 px-4">
+      <section className="order-2 md:order-none py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
             Encadrement
@@ -171,6 +172,8 @@ export default function LeClub() {
           </div>
         </div>
       </section>
+
+      </div>
 
       {/* Gymnases */}
       <section className="bg-gray-50 py-16 px-4">

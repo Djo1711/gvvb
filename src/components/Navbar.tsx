@@ -29,7 +29,7 @@ export default function Navbar() {
             height={48}
             className="h-12 w-auto"
           />
-          <span className="font-heading font-bold text-lg leading-none hidden sm:block">
+          <span className="font-heading font-bold text-lg leading-none">
             <span className="text-gvvb-red">GVVB</span>
             <span className="block text-xs font-normal text-gray-400 tracking-wide">
               Garches Vaucresson VB
