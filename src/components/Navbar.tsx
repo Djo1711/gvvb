@@ -11,7 +11,6 @@ const links = [
   { href: "/equipes", label: "Équipes" },
   { href: "/entrainements", label: "Entraînements" },
   { href: "/calendrier", label: "Calendrier" },
-  { href: "/galerie", label: "Galerie" },
   { href: "/contact", label: "Contact" },
 ];
 

@@ -49,7 +49,6 @@ export default function Footer() {
               { href: "/equipes", label: "Équipes" },
               { href: "/entrainements", label: "Entraînements & Horaires" },
               { href: "/calendrier", label: "Calendrier & Résultats" },
-              { href: "/galerie", label: "Galerie photos" },
             ].map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="text-gray-400 hover:text-white transition-colors">
