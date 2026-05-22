@@ -151,27 +151,6 @@ export default function LeClub() {
         </div>
       </section>
 
-      {/* Présentation */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="max-w-3xl">
-          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
-            Notre histoire
-          </span>
-          <h2 className="font-heading font-bold text-3xl text-gvvb-navy mt-2 mb-6">
-            Garches Vaucresson Volley-Ball
-          </h2>
-          <p className="text-gray-600 leading-relaxed mb-4">
-            Le GVVB est un club de volley-ball implanté dans les communes de Garches et Vaucresson,
-            dans les Hauts-de-Seine (92). Affilié à la Fédération Française de Volley-Ball (FFVolley),
-            le club accueille joueurs de tous niveaux : loisir, compétition et formations jeunes.
-          </p>
-          <p className="text-gray-600 leading-relaxed">
-            Nous évoluons principalement dans deux gymnases : le gymnase Yves du Manoir à Vaucresson
-            et le gymnase Yves Bodin / Le Rallec à Garches.
-          </p>
-        </div>
-      </section>
-
       {/* Gymnases */}
       <section className="bg-gray-50 py-16 px-4">
         <div className="max-w-7xl mx-auto">
