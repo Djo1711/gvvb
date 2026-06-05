@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Le Club",
-  description: "Histoire, bureau et coachs du GVVB — Garches Vaucresson Volley-Ball.",
+  description: "Bureau, coachs et installations du GVVB — Garches Vaucresson Volley-Ball.",
 };
 
 const bureau = [
@@ -19,7 +19,7 @@ const bureau = [
     role: "Trésorier",
     tel: "06 80 85 02 37",
     email: "benrousseau@orange.fr",
-    responsabilites: ["Courrier", "Dépenses / Comptabilité", "Inscriptions", "Gestion matériel / tenues"],
+    responsabilites: [],
   },
   {
     nom: "Christelle Mazzuchelli",
@@ -38,9 +38,9 @@ const bureau = [
 ];
 
 const coachs = [
-  { nom: "Christelle Mazzuchelli", equipes: "Vice-présidente & Coach" },
-  { nom: "Florian Champagne", equipes: "Coach" },
-  { nom: "Lily", equipes: "Coach" },
+  { nom: "Christelle Mazzuchelli", equipes: "Coach · Dep M" },
+  { nom: "Florian", equipes: "Coach · Dep F" },
+  { nom: "Lily", equipes: "Coach · M15 F" },
 ];
 
 export default function LeClub() {
@@ -49,7 +49,7 @@ export default function LeClub() {
       <PageHeader
         label="GVVB"
         title="Le Club"
-        description="Découvrez l'histoire du Garches Vaucresson Volley-Ball, son bureau et ses installations."
+        description="Le bureau, les coachs et les installations du Garches Vaucresson Volley-Ball."
         bgImage="/photos/supporters.jpg"
       />
 
@@ -97,16 +97,6 @@ export default function LeClub() {
                     >
                       {membre.email}
                     </a>
-                  )}
-                  {membre.responsabilites.length > 0 && (
-                    <ul className="mt-3 space-y-1">
-                      {membre.responsabilites.map((r) => (
-                        <li key={r} className="text-xs text-gray-400 flex items-start gap-1.5">
-                          <span className="text-gvvb-red mt-0.5">·</span>
-                          {r}
-                        </li>
-                      ))}
-                    </ul>
                   )}
                 </div>
               </div>
