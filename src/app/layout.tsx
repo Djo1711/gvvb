@@ -18,14 +18,14 @@ const oswald = Oswald({
 
 export const metadata: Metadata = {
   title: {
-    default: "GVVB — Garches Vaucresson Volley-Ball",
+    default: "GVVB - Garches Vaucresson Volley-Ball",
     template: "%s | GVVB",
   },
   description:
     "Club de volley-ball de Garches et Vaucresson (92). Loisir, compétition et formations jeunes en Hauts-de-Seine.",
   keywords: ["volley-ball", "Garches", "Vaucresson", "92", "club", "sport"],
   openGraph: {
-    title: "GVVB — Garches Vaucresson Volley-Ball",
+    title: "GVVB - Garches Vaucresson Volley-Ball",
     description:
       "Club de volley-ball de Garches et Vaucresson (92). Rejoignez-nous !",
     url: "https://gvvb.fr",

@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "GVVB — Garches Vaucresson Volley-Ball",
+  title: "GVVB - Garches Vaucresson Volley-Ball",
   description:
     "Club de volley-ball de Garches et Vaucresson (92). Loisir, compétition et formations jeunes en Hauts-de-Seine.",
 };

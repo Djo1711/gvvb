@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Le Club",
-  description: "Bureau, coachs et installations du GVVB — Garches Vaucresson Volley-Ball.",
+  description: "Bureau, coachs et installations du GVVB - Garches Vaucresson Volley-Ball.",
 };
 
 const bureau = [
