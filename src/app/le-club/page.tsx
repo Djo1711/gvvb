@@ -38,9 +38,9 @@ const bureau = [
 ];
 
 const coachs = [
-  { nom: "Christelle Mazzuchelli", equipes: "Coach · Dep M" },
-  { nom: "Florian", equipes: "Coach · Dep F" },
-  { nom: "Lily", equipes: "Coach · M15 F" },
+  { nom: "Christelle Mazzuchelli", equipes: "Coach · Dep M", tel: "06 07 47 35 28" },
+  { nom: "Florian", equipes: "Coach · Dep F", tel: null },
+  { nom: "Lily Fayet", equipes: "Coach · M15 F", tel: "07 86 12 80 71" },
 ];
 
 export default function LeClub() {
@@ -134,6 +134,14 @@ export default function LeClub() {
                   <h3 className="font-heading font-bold text-lg text-gvvb-navy mt-1">
                     {coach.nom}
                   </h3>
+                  {coach.tel && (
+                    <a
+                      href={`tel:${coach.tel.replace(/\s/g, "")}`}
+                      className="block text-sm text-gray-500 mt-2 hover:text-gvvb-red transition-colors"
+                    >
+                      {coach.tel}
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
