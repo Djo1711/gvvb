@@ -39,8 +39,8 @@ const bureau = [
 
 const coachs = [
   { nom: "Christelle Mazzuchelli", equipes: "Coach · Dep M", tel: "06 07 47 35 28" },
-  { nom: "Florian Champagne", equipes: "Coach · Dep F", tel: "07 83 48 31 62" },
-  { nom: "Lily Fayet", equipes: "Coach · M15 F", tel: "07 86 12 80 71" },
+  { nom: "Florian Champagne", equipes: "Coach · Dep F · M18", tel: "07 83 48 31 62" },
+  { nom: "Lily Fayet", equipes: "Coach · M15 F · M9/M11 · M13", tel: "07 86 12 80 71" },
 ];
 
 export default function LeClub() {

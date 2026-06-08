@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -94,17 +93,10 @@ export default function Footer() {
               href="https://www.librairie-ecriture.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="opacity-50 hover:opacity-90 transition-opacity"
+              className="text-gray-400 hover:text-white transition-colors font-heading text-xs uppercase tracking-wider"
               aria-label="Librairie L'Écriture"
             >
-              <Image
-                src="/sponsors/logo-lecriture.jpg"
-                alt="Librairie L'Écriture"
-                width={48}
-                height={48}
-                className="object-contain"
-                style={{ filter: "brightness(0) invert(1)" }}
-              />
+              L&apos;Écriture
             </a>
           </div>
           <Link href="/mentions-legales" className="hover:text-gray-300 transition-colors">

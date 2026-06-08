@@ -14,6 +14,7 @@ const equipes = [
     nom: "Départementale Masculine",
     niveau: "Compétition",
     genre: "Masculin",
+    coach: "Christelle Mazzuchelli",
     description:
       "L'équipe phare du club évolue en championnat départemental dans les Hauts-de-Seine. Après une phase principale en poule A, l'équipe a disputé la poule intermédiaire 2.",
     photo: "/equipes/dep-masculine.jpg",
@@ -27,6 +28,7 @@ const equipes = [
     nom: "Départementale Féminine",
     niveau: "Compétition",
     genre: "Féminin",
+    coach: "Florian Champagne",
     description:
       "L'équipe féminine évolue en championnat départemental. Après la phase principale, l'équipe a disputé la poule basse.",
     photo: "/equipes/dep-feminine.jpg",
@@ -40,6 +42,7 @@ const equipes = [
     nom: "Loisir OR",
     niveau: "Loisir Compétition",
     genre: "Mixte",
+    coach: null,
     description:
       "L'équipe Loisir OR évolue dans la poule OR du championnat loisir. Une équipe mixte pour ceux qui veulent conjuguer compétition et plaisir du jeu.",
     photo: "/equipes/loisir-or.jpg",
@@ -52,6 +55,7 @@ const equipes = [
     nom: "VSOP",
     niveau: "Ligue Loisir",
     genre: "Mixte",
+    coach: null,
     description:
       "Le VSOP est une ligue loisir créée dans le sud-ouest parisien, réunissant des clubs de la région pour des rencontres conviviales à haut niveau de jeu.",
     photo: null,
@@ -62,6 +66,7 @@ const equipes = [
     nom: "M15 Féminines",
     niveau: "Compétition Jeunes",
     genre: "Féminin",
+    coach: "Lily Fayet",
     description:
       "Notre équipe de jeunes filles dispute le championnat départemental M15. Formation et compétition au programme pour nos futures championnes.",
     photo: "/equipes/m15-feminine.jpg",
@@ -86,7 +91,8 @@ export default function Equipes() {
           {equipes.map((equipe, idx) => (
             <article
               key={equipe.id}
-              className={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-8 items-start`}
+              id={equipe.id}
+              className={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-8 items-start scroll-mt-20`}
             >
               {/* Photo */}
               <div className="w-full md:w-2/5 flex-shrink-0 order-2 md:order-1">
@@ -123,6 +129,12 @@ export default function Equipes() {
                   {equipe.nom}
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-6">{equipe.description}</p>
+                {equipe.coach && (
+                  <p className="text-sm text-gray-500 mb-6">
+                    <span className="font-heading text-xs uppercase tracking-widest text-gray-400">Coach · </span>
+                    {equipe.coach}
+                  </p>
+                )}
                 {equipe.liens.length > 0 && (
                   <div className="flex flex-wrap gap-3">
                     {equipe.liens.map((lien) => (
