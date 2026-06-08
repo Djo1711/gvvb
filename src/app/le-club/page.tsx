@@ -39,7 +39,7 @@ const bureau = [
 
 const coachs = [
   { nom: "Christelle Mazzuchelli", equipes: "Coach · Dep M", tel: "06 07 47 35 28" },
-  { nom: "Florian", equipes: "Coach · Dep F", tel: null },
+  { nom: "Florian Champagne", equipes: "Coach · Dep F", tel: "07 83 48 31 62" },
   { nom: "Lily Fayet", equipes: "Coach · M15 F", tel: "07 86 12 80 71" },
 ];
 
