@@ -16,7 +16,7 @@ const equipes = [
     genre: "Masculin",
     coach: "Christelle Mazzuchelli",
     description:
-      "L'équipe phare du club évolue en championnat départemental dans les Hauts-de-Seine. Après une phase principale en poule A, l'équipe a disputé la poule intermédiaire 2.",
+      "L'équipe masculine évolue en championnat départemental dans les Hauts-de-Seine. Après une phase principale en poule A, l'équipe a disputé la poule intermédiaire 2.",
     photo: "/equipes/dep-masculine.jpg",
     liens: [
       { label: "Poule principale (AMA)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=AMA" },
