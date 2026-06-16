@@ -18,26 +18,6 @@ const teams = [
 
 const news = [
   {
-    date: "Janvier 2026",
-    title: "Nouveaux maillots et nouveau logo !",
-    excerpt:
-      "Le GVVB dévoile sa nouvelle identité visuelle pour la saison 2025-2026. Les maillots Décathlon Pro sont arrivés début janvier : rouge pour les joueurs de champ, marine pour le libéro, arborant fièrement notre nouveau logo.",
-    images: ["/news/maillot-rouge.png", "/news/maillot-bleu.png"],
-    featured: true,
-  },
-  {
-    date: "Avril 2026",
-    title: "Nouveau site en ligne !",
-    excerpt:
-      "Le site du GVVB fait peau neuve. Restez connectés pour toutes les actualités du club.",
-  },
-  {
-    date: "Avril 2026",
-    title: "Inscriptions 2026-2027 bientôt ouvertes",
-    excerpt:
-      "La prochaine saison approche. Les inscriptions ouvriront en septembre. Contactez-nous pour plus d'infos.",
-  },
-  {
     date: "Juin 2026",
     title: "Recrutement : nous cherchons des joueurs pour nos équipes départementales",
     excerpt:
@@ -49,6 +29,25 @@ const news = [
     title: "Nous recrutons un coach pour la Départementale Masculine",
     excerpt:
       "Le GVVB est à la recherche d'un coach pour encadrer son équipe Départementale Masculine. Nous avons une bonne base et souhaitons nous renforcer pour viser la montée en régional. Si vous êtes intéressé(e), contactez-nous au 06 52 18 41 42 ou sur Instagram @volley_gvvb.",
+  },
+  {
+    date: "Avril 2026",
+    title: "Inscriptions 2026-2027 bientôt ouvertes",
+    excerpt:
+      "La prochaine saison approche. Les inscriptions ouvriront en septembre. Contactez-nous pour plus d'infos.",
+  },
+  {
+    date: "Avril 2026",
+    title: "Nouveau site en ligne !",
+    excerpt:
+      "Le site du GVVB fait peau neuve. Restez connectés pour toutes les actualités du club.",
+  },
+  {
+    date: "Janvier 2026",
+    title: "Nouveaux maillots et nouveau logo !",
+    excerpt:
+      "Le GVVB dévoile sa nouvelle identité visuelle pour la saison 2025-2026. Les maillots Décathlon Pro sont arrivés début janvier : rouge pour les joueurs de champ, marine pour le libéro, arborant fièrement notre nouveau logo.",
+    images: ["/news/maillot-rouge.png", "/news/maillot-bleu.png"],
   },
 ];
 
