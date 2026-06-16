@@ -3,9 +3,9 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "GVVB - Garches Vaucresson Volley-Ball",
+  title: "GVVB - Club de Volley-Ball à Garches et Vaucresson (92)",
   description:
-    "Club de volley-ball de Garches et Vaucresson (92). Loisir, compétition et formations jeunes en Hauts-de-Seine.",
+    "Rejoignez le GVVB, club de volley-ball en Hauts-de-Seine ! Équipes compétition, loisir et jeunes à Garches et Vaucresson. Inscriptions ouvertes pour la saison 2026-2027.",
 };
 
 const teams = [
@@ -97,6 +97,47 @@ export default function Home() {
               Calendrier
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Accès rapide */}
+      <section className="bg-gvvb-navy border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+          <Link
+            href="/contact"
+            className="flex items-center gap-4 py-5 px-4 hover:bg-white/5 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-gvvb-red flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <p className="font-heading text-xs uppercase tracking-widest text-gray-400">Nous contacter</p>
+              <p className="font-heading font-bold text-white group-hover:text-gvvb-red transition-colors">Formulaire de contact</p>
+            </div>
+            <svg className="w-4 h-4 text-gray-500 group-hover:text-gvvb-red transition-colors ml-auto" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+          <a
+            href="/docs/dossier-inscription-2025-2026.pdf"
+            download
+            className="flex items-center gap-4 py-5 px-4 hover:bg-white/5 transition-colors group"
+          >
+            <div className="w-10 h-10 bg-gvvb-red flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 9v4.5l1.5-1.5 1.06 1.06L13 17.62l-2.56-2.56L11.5 14l1.5 1.5V11h1zm1-7 5 5h-5V4z"/>
+              </svg>
+            </div>
+            <div>
+              <p className="font-heading text-xs uppercase tracking-widest text-gray-400">Inscription</p>
+              <p className="font-heading font-bold text-white group-hover:text-gvvb-red transition-colors">Dossier 2025-2026</p>
+            </div>
+            <svg className="w-4 h-4 text-gray-500 group-hover:text-gvvb-red transition-colors ml-auto" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </a>
         </div>
       </section>
 
