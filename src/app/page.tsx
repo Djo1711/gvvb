@@ -37,6 +37,19 @@ const news = [
     excerpt:
       "La prochaine saison approche. Les inscriptions ouvriront en septembre. Contactez-nous pour plus d'infos.",
   },
+  {
+    date: "Juin 2026",
+    title: "Recrutement : nous cherchons des joueurs pour nos équipes départementales",
+    excerpt:
+      "Le GVVB recrute pour renforcer ses deux équipes compétition. La Départementale Féminine recherche une passeuse et une centrale. La Départementale Masculine recherche un passeur, un central et un pointu. Tous niveaux bienvenus. Pour toute question, contactez-nous au 06 52 18 41 42 ou sur Instagram @volley_gvvb.",
+    featured: true,
+  },
+  {
+    date: "Juin 2026",
+    title: "Nous recrutons un coach pour la Départementale Masculine",
+    excerpt:
+      "Le GVVB est à la recherche d'un coach pour encadrer son équipe Départementale Masculine. Nous avons une bonne base et souhaitons nous renforcer pour viser la montée en régional. Si vous êtes intéressé(e), contactez-nous au 06 52 18 41 42 ou sur Instagram @volley_gvvb.",
+  },
 ];
 
 export default function Home() {
