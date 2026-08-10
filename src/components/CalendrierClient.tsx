@@ -79,7 +79,7 @@ function MatchRow({ match }: { match: Match }) {
                 result.win ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
               }`}
             >
-              {result.gvvbScore} – {result.opponentScore}
+              {result.gvvbScore} - {result.opponentScore}
             </span>
           </div>
         ) : (

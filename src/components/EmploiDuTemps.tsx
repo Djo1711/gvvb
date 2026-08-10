@@ -286,7 +286,7 @@ export default function EmploiDuTemps({
             style={{ gridColumn: totalCols + 1, gridRow: corps }}
           />
 
-          {/* Colonne des heures — reste visible pendant le scroll horizontal */}
+          {/* Colonne des heures - reste visible pendant le scroll horizontal */}
           <div
             aria-hidden="true"
             className={`sticky left-0 z-20 ${fond}`}
@@ -311,7 +311,7 @@ export default function EmploiDuTemps({
           {layout.map((j, i) => (
             <div
               key={`tete-${j.jour}`}
-              title={j.vide ? `${j.jour} — pas d'entraînement` : undefined}
+              title={j.vide ? `${j.jour} - pas d'entraînement` : undefined}
               className={`bg-gvvb-navy text-white font-heading uppercase tracking-wider text-center py-2.5 px-1 ${
                 j.vide ? "text-gray-400 text-base" : "text-sm"
               } ${i > 0 ? "border-l-2 border-white/30" : ""}`}
@@ -320,7 +320,7 @@ export default function EmploiDuTemps({
               {j.vide ? (
                 <>
                   <span aria-hidden="true">…</span>
-                  <span className="sr-only">{j.jour} — pas d&apos;entraînement</span>
+                  <span className="sr-only">{j.jour} - pas d&apos;entraînement</span>
                 </>
               ) : (
                 j.jour

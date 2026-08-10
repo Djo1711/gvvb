@@ -15,7 +15,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Inscription",
-  description: `Tarifs, pièces à fournir et dossier d'inscription du GVVB pour la saison ${SAISON_CLUB} — club de volley-ball à Garches et Vaucresson.`,
+  description: `Tarifs, pièces à fournir et dossier d'inscription du GVVB pour la saison ${SAISON_CLUB} - club de volley-ball à Garches et Vaucresson.`,
 };
 
 export default function Inscription() {

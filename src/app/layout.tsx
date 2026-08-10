@@ -22,13 +22,13 @@ export const metadata: Metadata = {
     template: "%s | GVVB",
   },
   description:
-    "Garches Vaucresson Volley-Ball — club affilié FFVolley en Hauts-de-Seine. Équipes compétition, loisir et jeunes M15. Inscriptions ouvertes.",
+    "Garches Vaucresson Volley-Ball - club affilié FFVolley en Hauts-de-Seine. Équipes compétition, loisir et jeunes M15. Inscriptions ouvertes.",
   keywords: ["volley-ball", "Garches", "Vaucresson", "92", "Hauts-de-Seine", "club sportif", "FFVolley", "loisir", "compétition", "jeunes"],
   metadataBase: new URL("https://gvvb.fr"),
   openGraph: {
     title: "GVVB - Club de Volley-Ball à Garches et Vaucresson (92)",
     description:
-      "Garches Vaucresson Volley-Ball — club affilié FFVolley en Hauts-de-Seine. Équipes compétition, loisir et jeunes M15. Inscriptions ouvertes.",
+      "Garches Vaucresson Volley-Ball - club affilié FFVolley en Hauts-de-Seine. Équipes compétition, loisir et jeunes M15. Inscriptions ouvertes.",
     url: "https://gvvb.fr",
     siteName: "GVVB",
     locale: "fr_FR",

@@ -116,11 +116,11 @@ export default function Entrainements() {
             Du M11 au M21
           </span>
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-gvvb-navy mt-2 mb-2">
-            Emploi du temps — Jeunes
+            Emploi du temps - Jeunes
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl">
             Tous les créneaux jeunes ont lieu à Garches. Plusieurs catégories peuvent
-            partager le même gymnase au même horaire, sur deux terrains — et le
+            partager le même gymnase au même horaire, sur deux terrains - et le
             créneau M13 / M15 Filles accueille à la fois la compétition et le loisir.
           </p>
           <EmploiDuTemps creneaux={CRENEAUX_JEUNES} legende={["competition", "loisir"]} />
@@ -134,7 +134,7 @@ export default function Entrainements() {
             Seniors
           </span>
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-gvvb-navy mt-2 mb-2">
-            Emploi du temps — Adultes
+            Emploi du temps - Adultes
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl">
             Loisir et compétition départementale, du lundi au vendredi.

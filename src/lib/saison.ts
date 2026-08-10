@@ -48,12 +48,12 @@ export const CATEGORIES_AGE = [
 // Créneaux d'entraînement
 // ---------------------------------------------------------------------------
 
-/** Nature de la pratique — pilote le code couleur de l'emploi du temps. */
+/** Nature de la pratique - pilote le code couleur de l'emploi du temps. */
 export type CreneauType = "competition" | "loisir";
 
 export interface Creneau {
   jour: string;
-  /** "HH:MM" — source de vérité, utilisée pour positionner les blocs. */
+  /** "HH:MM" - source de vérité, utilisée pour positionner les blocs. */
   debut: string;
   fin: string;
   ville: string;
@@ -93,9 +93,9 @@ export function formatMinutes(minutes: number): string {
   return m === 0 ? `${minutes / 60}h` : `${Math.floor(minutes / 60)}h${String(m).padStart(2, "0")}`;
 }
 
-/** "17:00" + "18:30" → "17h – 18h30" */
+/** "17:00" + "18:30" → "17h - 18h30" */
 export function formatHoraire(c: Pick<Creneau, "debut" | "fin">): string {
-  return `${formatHeure(c.debut)} – ${formatHeure(c.fin)}`;
+  return `${formatHeure(c.debut)} - ${formatHeure(c.fin)}`;
 }
 
 /**
@@ -188,7 +188,7 @@ export const PIECES_DOSSIER = [
   { texte: "Le règlement de la cotisation", condition: "chèque à l'ordre de Garches Vaucresson Volley-Ball" },
   { texte: "Le formulaire officiel de demande de licence", condition: null },
   { texte: "Un certificat médical", condition: "en précisant si besoin le surclassement pour les mineurs" },
-  { texte: "Une autorisation du représentant légal", condition: "mineurs uniquement — à remplir au verso de la demande d'adhésion" },
+  { texte: "Une autorisation du représentant légal", condition: "mineurs uniquement - à remplir au verso de la demande d'adhésion" },
   { texte: "Une photocopie d'une pièce d'identité", condition: "nouveaux adhérents uniquement" },
 ] as const;
 
@@ -253,9 +253,9 @@ export const EQUIPES_COMPETITION: Equipe[] = [
       "L'équipe masculine évolue en championnat départemental dans les Hauts-de-Seine. Après une phase principale en poule A, l'équipe a disputé la poule intermédiaire 2.",
     photo: "/equipes/dep-masculine.jpg",
     creneaux: [
-      "Lundi 20h – 22h30 · Yves du Manoir (Vaucresson)",
-      "Mercredi 20h – 22h30 · Yves Bodin (Garches)",
-      "Dimanche 13h – 18h · Yves Bodin (Garches) — matchs",
+      "Lundi 20h - 22h30 · Yves du Manoir (Vaucresson)",
+      "Mercredi 20h - 22h30 · Yves Bodin (Garches)",
+      "Dimanche 13h - 18h · Yves Bodin (Garches) - matchs",
     ],
     liens: [
       { label: "Poule principale (AMA)", poule: "AMA" },
@@ -272,9 +272,9 @@ export const EQUIPES_COMPETITION: Equipe[] = [
       "L'équipe féminine évolue en championnat départemental. Après la phase principale, l'équipe a disputé la poule basse.",
     photo: "/equipes/dep-feminine.jpg",
     creneaux: [
-      "Mercredi 20h – 22h30 · Yves Bodin (Garches)",
-      "Vendredi 20h – 22h30 · Yves Bodin (Garches)",
-      "Dimanche 13h – 18h · Yves Bodin (Garches) — matchs",
+      "Mercredi 20h - 22h30 · Yves Bodin (Garches)",
+      "Vendredi 20h - 22h30 · Yves Bodin (Garches)",
+      "Dimanche 13h - 18h · Yves Bodin (Garches) - matchs",
     ],
     liens: [
       { label: "Poule principale (AFC)", poule: "AFC" },
@@ -293,7 +293,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     description:
       "Premiers pas sur le terrain : motricité, jeu en petits effectifs et découverte du volley dans la bonne humeur.",
     photo: null,
-    creneaux: ["Mardi 17h – 18h30 · Le Rallec (Garches)"],
+    creneaux: ["Mardi 17h - 18h30 · Le Rallec (Garches)"],
     liens: [],
   },
   {
@@ -305,7 +305,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     description:
       "Apprentissage des fondamentaux techniques et du jeu à 6, avec une progression vers la compétition départementale.",
     photo: null,
-    creneaux: ["Mardi 18h30 – 20h15 · Le Rallec (Garches)"],
+    creneaux: ["Mardi 18h30 - 20h15 · Le Rallec (Garches)"],
     liens: [],
   },
   {
@@ -318,7 +318,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     description:
       "Nos jeunes filles disputent le championnat départemental M15. Formation et compétition au programme pour nos futures championnes.",
     photo: "/equipes/m15-feminine.jpg",
-    creneaux: ["Mercredi 18h30 – 20h30 · Le Rallec (Garches)"],
+    creneaux: ["Mercredi 18h30 - 20h30 · Le Rallec (Garches)"],
     liens: [{ label: "Championnat M15 F (MFB)", poule: "MFB" }],
   },
   {
@@ -331,8 +331,8 @@ export const EQUIPES_JEUNES: Equipe[] = [
       "Groupe compétition pour les filles nées entre 2009 et 2011, avec deux entraînements hebdomadaires.",
     photo: null,
     creneaux: [
-      "Mardi 18h30 – 20h15 · Le Rallec (Garches)",
-      "Vendredi 18h30 – 20h30 · Yves Bodin (Garches)",
+      "Mardi 18h30 - 20h15 · Le Rallec (Garches)",
+      "Vendredi 18h30 - 20h30 · Yves Bodin (Garches)",
     ],
     liens: [],
   },
@@ -345,7 +345,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     description:
       "Créneau mixte pour les grands jeunes : perfectionnement technique et transition vers les équipes seniors.",
     photo: null,
-    creneaux: ["Vendredi 18h30 – 20h30 · Yves Bodin (Garches)"],
+    creneaux: ["Vendredi 18h30 - 20h30 · Yves Bodin (Garches)"],
     liens: [],
   },
 ];
@@ -360,7 +360,7 @@ export const EQUIPES_LOISIR: Equipe[] = [
     description:
       "L'équipe Loisir OR évolue dans la poule OR du championnat loisir. Une équipe mixte pour ceux qui veulent conjuguer compétition et plaisir du jeu.",
     photo: "/equipes/loisir-or.jpg",
-    creneaux: ["Jeudi 20h – 22h30 · Yves du Manoir (Vaucresson)"],
+    creneaux: ["Jeudi 20h - 22h30 · Yves du Manoir (Vaucresson)"],
     liens: [{ label: "Poule OR", poule: "ORA" }],
   },
   {
@@ -372,7 +372,7 @@ export const EQUIPES_LOISIR: Equipe[] = [
     description:
       "Un créneau féminin dédié au jeu à 4 contre 4 : plus de touches de balle, plus de rythme, dans une ambiance conviviale.",
     photo: null,
-    creneaux: ["Mercredi 20h30 – 22h30 · Le Rallec (Garches)"],
+    creneaux: ["Mercredi 20h30 - 22h30 · Le Rallec (Garches)"],
     liens: [],
   },
   {
@@ -385,10 +385,10 @@ export const EQUIPES_LOISIR: Equipe[] = [
       "Trois créneaux hebdomadaires sans compétition, plus le jeu libre du dimanche matin. Le format idéal pour reprendre le volley ou débuter.",
     photo: null,
     creneaux: [
-      "Mardi 20h15 – 22h30 · Le Rallec (Garches)",
-      "Mercredi 20h30 – 22h30 · Le Rallec (Garches)",
-      "Vendredi 20h30 – 22h30 · Yves Bodin (Garches)",
-      "Dimanche 10h30 – 13h · Yves Bodin (Garches) — jeu libre",
+      "Mardi 20h15 - 22h30 · Le Rallec (Garches)",
+      "Mercredi 20h30 - 22h30 · Le Rallec (Garches)",
+      "Vendredi 20h30 - 22h30 · Yves Bodin (Garches)",
+      "Dimanche 10h30 - 13h · Yves Bodin (Garches) - jeu libre",
     ],
     liens: [],
   },
