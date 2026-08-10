@@ -103,12 +103,12 @@ export function formatHoraire(c: Pick<Creneau, "debut" | "fin">): string {
  * c'est volontaire et conforme au dossier. L'emploi du temps les affiche
  * côte à côte dans la même largeur de colonne.
  *
- * Les créneaux M13 / M15 accueillent à la fois des joueurs en compétition et
- * des joueurs en loisir : ils apparaissent donc deux fois, une par type.
+ * Le créneau M13 / M15 Filles accueille à la fois des joueuses en compétition et
+ * des joueuses en loisir : il apparaît donc deux fois, une par type. Côté
+ * garçons il n'y a pas de groupe compétition, une seule entrée suffit.
  */
 export const CRENEAUX_JEUNES: Creneau[] = [
   { jour: "Mardi", debut: "17:00", fin: "18:30", ville: "Garches", gymnase: "Le Rallec", groupe: "M11", type: "loisir" },
-  { jour: "Mardi", debut: "18:30", fin: "20:15", ville: "Garches", gymnase: "Le Rallec", groupe: "M13 / M15 Garçons", type: "competition" },
   { jour: "Mardi", debut: "18:30", fin: "20:15", ville: "Garches", gymnase: "Le Rallec", groupe: "M13 / M15 Garçons", type: "loisir" },
   { jour: "Mardi", debut: "18:30", fin: "20:15", ville: "Garches", gymnase: "Le Rallec", groupe: "M18 Filles", type: "competition" },
   { jour: "Mercredi", debut: "18:30", fin: "20:30", ville: "Garches", gymnase: "Le Rallec", groupe: "M13 / M15 Filles", type: "competition" },

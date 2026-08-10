@@ -120,8 +120,8 @@ export default function Entrainements() {
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl">
             Tous les créneaux jeunes ont lieu à Garches. Plusieurs catégories peuvent
-            partager le même gymnase au même horaire, sur deux terrains — et les
-            créneaux M13 / M15 accueillent à la fois la compétition et le loisir.
+            partager le même gymnase au même horaire, sur deux terrains — et le
+            créneau M13 / M15 Filles accueille à la fois la compétition et le loisir.
           </p>
           <EmploiDuTemps creneaux={CRENEAUX_JEUNES} legende={["competition", "loisir"]} />
         </div>
