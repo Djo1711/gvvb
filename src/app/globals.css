@@ -4,17 +4,14 @@
   --color-gvvb-red: #C8102E;
   --color-gvvb-red-dark: #a00e24;
   --color-gvvb-red-light: #f8e6e9;
-  --color-gvvb-red-pale: #f0aebc;
   --color-gvvb-navy: #1B2A4A;
   --color-gvvb-navy-dark: #0f1a2e;
   --color-gvvb-navy-light: #243660;
-  /* Loisir dans l'emploi du temps. Teal plutôt qu'orange : le rouge et
-     l'orange sont un couple de confusion classique pour les daltonismes
-     rouge-vert, alors que le teal reste distinct du rouge et du marine.
-     Les variantes pâles servent à la grille des jeunes. */
-  --color-gvvb-teal: #0F766E;
-  --color-gvvb-teal-dark: #0b5b55;
-  --color-gvvb-teal-pale: #9bcdc7;
+  /* Loisir dans l'emploi du temps. Ce bleu doit rester nettement plus clair et
+     plus saturé que --color-gvvb-navy, qui sert aux en-têtes de la grille, et
+     garder un contraste suffisant avec du texte blanc (ici 6:1). */
+  --color-gvvb-blue: #1F63B0;
+  --color-gvvb-blue-dark: #17518f;
   --color-background: #ffffff;
   --color-foreground: #111111;
   --font-sans: var(--font-geist-sans);

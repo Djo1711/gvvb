@@ -123,11 +123,7 @@ export default function Entrainements() {
             partager le même gymnase au même horaire, sur deux terrains — et les
             créneaux M13 / M15 accueillent à la fois la compétition et le loisir.
           </p>
-          <EmploiDuTemps
-            creneaux={CRENEAUX_JEUNES}
-            legende={["competition", "loisir"]}
-            variante="pale"
-          />
+          <EmploiDuTemps creneaux={CRENEAUX_JEUNES} legende={["competition", "loisir"]} />
         </div>
       </section>
 

@@ -1,6 +1,7 @@
 import {
   JOURS_SEMAINE,
   LIBELLES_TYPE,
+  afficheCompetition,
   formatHoraire,
   formatMinutes,
   toMinutes,
@@ -15,20 +16,10 @@ const LARGEUR_VIDE = "2rem";
 /** Deux lignes d'en-tête : le jour, puis le gymnase. */
 const LIGNES_ENTETE = 2;
 
-/**
- * Mêmes deux couleurs dans les deux grilles ; la variante `pale` est réservée
- * à celle des jeunes. Les pâles inversent fond et texte pour garder un
- * contraste confortable.
- */
-const COULEURS: Record<"vif" | "pale", Record<CreneauType, string>> = {
-  vif: {
-    competition: "bg-gvvb-red text-white",
-    loisir: "bg-gvvb-teal text-white",
-  },
-  pale: {
-    competition: "bg-gvvb-red-pale text-gvvb-red-dark",
-    loisir: "bg-gvvb-teal-pale text-gvvb-teal-dark",
-  },
+/** Mêmes deux couleurs dans toutes les grilles, jeunes comme adultes. */
+const COULEURS: Record<CreneauType, string> = {
+  competition: "bg-gvvb-red text-white",
+  loisir: "bg-gvvb-blue text-white",
 };
 
 /** Créneau et sa position imbriquée au sein d'une largeur de colonne. */
@@ -170,12 +161,12 @@ function placerSemaine(
   return { layout, gabarit, minWidth, maxWidth };
 }
 
-function Legende({ types, variante }: { types: CreneauType[]; variante: "vif" | "pale" }) {
+function Legende({ types }: { types: CreneauType[] }) {
   return (
     <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
       {types.map((t) => (
         <li key={t} className="flex items-center gap-2">
-          <span className={`w-3.5 h-3.5 flex-shrink-0 ${COULEURS[variante][t]}`} aria-hidden="true" />
+          <span className={`w-3.5 h-3.5 flex-shrink-0 ${COULEURS[t]}`} aria-hidden="true" />
           <span className="font-heading text-xs uppercase tracking-widest text-gray-500">
             {LIBELLES_TYPE[t]}
           </span>
@@ -189,7 +180,6 @@ export default function EmploiDuTemps({
   creneaux,
   legende,
   jours = JOURS_SEMAINE,
-  variante = "vif",
   fond = "bg-white",
 }: {
   creneaux: Creneau[];
@@ -197,8 +187,6 @@ export default function EmploiDuTemps({
   legende: CreneauType[];
   /** Jours affichés en colonnes, dans l'ordre. */
   jours?: readonly string[];
-  /** `pale` pour la grille des jeunes. */
-  variante?: "vif" | "pale";
   /**
    * Couleur de fond de la section hôte. La colonne des heures est collante
    * pendant le scroll horizontal : il lui faut un fond opaque assorti.
@@ -243,7 +231,7 @@ export default function EmploiDuTemps({
 
   return (
     <>
-      <Legende types={legende} variante={variante} />
+      <Legende types={legende} />
 
       <div className="overflow-x-auto pb-2">
         <div
@@ -376,11 +364,9 @@ export default function EmploiDuTemps({
                     marginLeft: `${(100 / u.imbriques) * sub}%`,
                   }}
                 >
-                  <div
-                    className={`h-full px-2 py-1.5 overflow-hidden ${COULEURS[variante][creneau.type]}`}
-                  >
+                  <div className={`h-full px-2 py-1.5 overflow-hidden ${COULEURS[creneau.type]}`}>
                     <span className="sr-only">{j.jour} · </span>
-                    {creneau.type === "competition" && (
+                    {afficheCompetition(creneau) && (
                       <span className="font-heading text-[0.6rem] uppercase tracking-widest block opacity-70 leading-tight">
                         Compétition
                       </span>

@@ -60,7 +60,19 @@ export interface Creneau {
   gymnase: string;
   /** Catégorie (jeunes) ou type de pratique (seniors). */
   groupe: string;
+  /** Pilote la couleur du bloc dans l'emploi du temps. */
   type: CreneauType;
+  /**
+   * Porte la mention « Compétition » alors que le créneau garde la couleur
+   * loisir. Le 4×4 Féminine et le Loisir Compétition sont engagés en
+   * championnat loisir : la mention le signale sans les sortir du loisir.
+   */
+  mentionCompetition?: boolean;
+}
+
+/** Le bloc doit-il afficher la mention « Compétition » ? */
+export function afficheCompetition(c: Creneau): boolean {
+  return c.type === "competition" || c.mentionCompetition === true;
 }
 
 /** Minutes depuis minuit. */
@@ -108,8 +120,8 @@ export const CRENEAUX_JEUNES: Creneau[] = [
 export const CRENEAUX_LOISIR: Creneau[] = [
   { jour: "Mardi", debut: "20:15", fin: "22:30", ville: "Garches", gymnase: "Le Rallec", groupe: "Loisirs", type: "loisir" },
   { jour: "Mercredi", debut: "20:30", fin: "22:30", ville: "Garches", gymnase: "Le Rallec", groupe: "Loisirs", type: "loisir" },
-  { jour: "Mercredi", debut: "20:30", fin: "22:30", ville: "Garches", gymnase: "Le Rallec", groupe: "4×4 Féminine", type: "loisir" },
-  { jour: "Jeudi", debut: "20:00", fin: "22:30", ville: "Vaucresson", gymnase: "Yves du Manoir", groupe: "Loisirs Compétition", type: "loisir" },
+  { jour: "Mercredi", debut: "20:30", fin: "22:30", ville: "Garches", gymnase: "Le Rallec", groupe: "4×4 Féminine", type: "loisir", mentionCompetition: true },
+  { jour: "Jeudi", debut: "20:00", fin: "22:30", ville: "Vaucresson", gymnase: "Yves du Manoir", groupe: "Loisirs Compétition", type: "loisir", mentionCompetition: true },
   { jour: "Vendredi", debut: "20:30", fin: "22:30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Loisirs", type: "loisir" },
   { jour: "Dimanche", debut: "10:30", fin: "13:00", ville: "Garches", gymnase: "Yves Bodin", groupe: "Jeu libre", type: "loisir" },
 ];

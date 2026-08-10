@@ -148,7 +148,7 @@ Header : `volleyballs.jpg`
 
 Deux **emplois du temps hebdomadaires** (voir `EmploiDuTemps` ci-dessous) :
 jeunes puis adultes. Chaque case affiche la catégorie, l'horaire et le gymnase,
-avec un code couleur par `type` de créneau — pâle pour les jeunes.
+avec le même code couleur par `type` de créneau dans les deux grilles.
 
 La section adultes contient **deux grilles** : la semaine (lundi → vendredi,
 20h → 22h30) puis « Le week-end » (10h30 → 18h). Le dimanche a sa propre grille
@@ -265,8 +265,7 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
 <EmploiDuTemps
   creneaux={CRENEAUX_ADULTES}
   legende={["competition", "loisir"]}
-  jours={JOURS_AVEC_WEEKEND}   // défaut JOURS_SEMAINE (lundi → vendredi)
-  variante="pale"              // "vif" (défaut) ou "pale" pour les jeunes
+  jours={JOURS_WEEKEND}        // défaut JOURS_SEMAINE (lundi → vendredi)
   fond="bg-gray-50"            // fond de la section hôte (défaut "bg-white")
 />
 ```
@@ -302,23 +301,28 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
   horizontal sur mobile ; d'où le paramètre `fond`, qui lui donne un fond opaque
 - Chaque bloc porte du texte `sr-only` (jour, ville) pour rester compréhensible
   au lecteur d'écran, une grille CSS n'étant pas un tableau
-- Les créneaux de type `competition` portent la mention « Compétition »
+- La mention « Compétition » s'affiche selon `afficheCompetition()`, pas selon la
+  couleur (voir ci-dessous)
 
 Code couleur (`--color-gvvb-*` dans `globals.css`) — **mêmes deux couleurs dans
-les deux grilles**, la variante `pale` étant réservée aux jeunes :
+toutes les grilles**, jeunes comme adultes :
 
-| Type | Vif (adultes) | Pâle (jeunes) |
-|---|---|---|
-| `competition` | fond rouge GVVB, texte blanc | fond rose soutenu, texte rouge foncé |
-| `loisir` | fond teal, texte blanc | fond teal clair soutenu, texte teal foncé |
+| Type | Couleur |
+|---|---|
+| `competition` | fond rouge GVVB, texte blanc |
+| `loisir` | fond bleu, texte blanc |
 
-> Le loisir est en teal et non en orange : rouge et orange sont un couple de
-> confusion classique pour les daltonismes rouge-vert.
+> Le bleu du loisir doit rester nettement plus clair et plus saturé que
+> `--color-gvvb-navy`, qui sert aux en-têtes de la grille juste au-dessus des
+> blocs, et garder un contraste suffisant avec du texte blanc (ici 6:1).
 
-> Les variantes pâles inversent fond et texte plutôt que de délaver le rouge et
-> le teal : un rouge éclairci avec du texte blanc tombe sous le seuil de
-> contraste lisible. Elles doivent rester franchement teintées — un premier
-> essai en `#fbeef1` / `#e6f2f1` rendait la grille des jeunes quasi blanche.
+### Mention « Compétition » et couleur sont deux choses distinctes
+
+`type` pilote **la couleur**. Le champ optionnel `mentionCompetition` ajoute la
+mention « Compétition » sur un créneau qui **garde la couleur loisir** : le 4×4
+Féminine et le Loisir Compétition sont engagés en championnat loisir. Le helper
+`afficheCompetition(creneau)` combine les deux — c'est lui qu'il faut utiliser,
+pas un test sur `type`.
 
 ### `CalendrierClient`
 
