@@ -1,25 +1,72 @@
 import PageHeader from "@/components/PageHeader";
+import EmploiDuTemps from "@/components/EmploiDuTemps";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
   CATEGORIES_AGE,
+  CRENEAUX_ADULTES,
   CRENEAUX_COMPETITION,
   CRENEAUX_JEUNES,
   CRENEAUX_LOISIR,
+  JOURS_SEMAINE,
+  LIBELLES_TYPE,
   NOTE_CRENEAUX,
   SAISON_CLUB,
+  formatHoraire,
+  toMinutes,
   type Creneau,
 } from "@/lib/saison";
 
 export const metadata: Metadata = {
   title: "Entraînements & Horaires",
-  description: `Horaires et lieux d'entraînement du GVVB à Garches et Vaucresson pour la saison ${SAISON_CLUB}.`,
+  description: `Emploi du temps des entraînements du GVVB à Garches et Vaucresson pour la saison ${SAISON_CLUB}.`,
 };
 
-function ScheduleTable({ rows, groupeLabel }: { rows: Creneau[]; groupeLabel: string }) {
+const COULEURS_BORDURE = {
+  competition: "border-gvvb-red",
+  formation: "border-gvvb-navy",
+  loisir: "border-gvvb-teal",
+} as const;
+
+/** Les créneaux du week-end, sortis de la grille hebdomadaire. */
+function BandeauWeekEnd({ creneaux }: { creneaux: Creneau[] }) {
+  const weekEnd = creneaux
+    .filter((c) => !(JOURS_SEMAINE as readonly string[]).includes(c.jour))
+    .sort((a, b) => toMinutes(a.debut) - toMinutes(b.debut));
+
+  if (weekEnd.length === 0) return null;
+
+  const jour = weekEnd[0].jour;
+
+  return (
+    <div className="mt-8 border border-gray-200">
+      <h3 className="bg-gvvb-navy text-white font-heading text-xs uppercase tracking-wider px-4 py-2.5">
+        {jour}
+      </h3>
+      <ul className="divide-y divide-gray-200">
+        {weekEnd.map((c) => (
+          <li
+            key={`${c.debut}-${c.groupe}`}
+            className={`flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 px-4 py-3 border-l-4 ${COULEURS_BORDURE[c.type]}`}
+          >
+            <span className="font-heading text-sm text-gvvb-navy tabular-nums sm:w-32 flex-shrink-0">
+              {formatHoraire(c)}
+            </span>
+            <span className="font-heading font-bold text-gvvb-navy flex-1">{c.groupe}</span>
+            <span className="text-sm text-gray-500">
+              {c.gymnase} · {c.ville}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function TableauDetaille({ rows, groupeLabel }: { rows: Creneau[]; groupeLabel: string }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm border-collapse min-w-[36rem]">
+      <table className="w-full text-sm border-collapse min-w-[38rem]">
         <thead>
           <tr className="bg-gvvb-red text-white font-heading uppercase tracking-wide text-xs">
             <th scope="col" className="py-3 px-4 text-left">Jour</th>
@@ -27,21 +74,59 @@ function ScheduleTable({ rows, groupeLabel }: { rows: Creneau[]; groupeLabel: st
             <th scope="col" className="py-3 px-4 text-left">Ville</th>
             <th scope="col" className="py-3 px-4 text-left">Gymnase</th>
             <th scope="col" className="py-3 px-4 text-left">{groupeLabel}</th>
+            <th scope="col" className="py-3 px-4 text-left">Type</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={`${row.jour}-${row.horaire}-${row.groupe}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+            <tr key={`${row.jour}-${row.debut}-${row.groupe}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
               <td className="py-3 px-4 font-medium text-gvvb-navy">{row.jour}</td>
-              <td className="py-3 px-4 text-gray-700 whitespace-nowrap">{row.horaire}</td>
+              <td className="py-3 px-4 text-gray-700 whitespace-nowrap tabular-nums">{formatHoraire(row)}</td>
               <td className="py-3 px-4 text-gray-600">{row.ville}</td>
               <td className="py-3 px-4 text-gray-600">{row.gymnase}</td>
               <td className="py-3 px-4 text-gray-700">{row.groupe}</td>
+              <td className="py-3 px-4 text-gray-500">{LIBELLES_TYPE[row.type]}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
+  );
+}
+
+function ListeDetaillee() {
+  return (
+    <details className="border border-gray-200 mt-8 group">
+      <summary className="px-5 py-4 cursor-pointer font-heading text-sm uppercase tracking-wider text-gvvb-navy hover:text-gvvb-red transition-colors flex items-center gap-2">
+        <svg
+          className="w-4 h-4 transition-transform group-open:rotate-90"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        Voir la liste détaillée
+      </summary>
+      <div className="border-t border-gray-200 p-5 flex flex-col gap-8">
+        <div>
+          <h3 className="font-heading font-bold text-lg text-gvvb-navy mb-3">Jeunes</h3>
+          <TableauDetaille rows={CRENEAUX_JEUNES} groupeLabel="Catégorie" />
+        </div>
+        <div>
+          <h3 className="font-heading font-bold text-lg text-gvvb-navy mb-3">Seniors Loisirs Mixte</h3>
+          <TableauDetaille rows={CRENEAUX_LOISIR} groupeLabel="Type" />
+        </div>
+        <div>
+          <h3 className="font-heading font-bold text-lg text-gvvb-navy mb-3">
+            Seniors Compétition Départementale
+          </h3>
+          <TableauDetaille rows={CRENEAUX_COMPETITION} groupeLabel="Équipe" />
+        </div>
+      </div>
+    </details>
   );
 }
 
@@ -51,7 +136,7 @@ export default function Entrainements() {
       <PageHeader
         label={`Saison ${SAISON_CLUB}`}
         title="Entraînements & Horaires"
-        description="Retrouvez tous les créneaux d'entraînement pour chaque catégorie dans nos gymnases."
+        description="L'emploi du temps de la semaine, catégorie par catégorie et gymnase par gymnase."
         bgImage="/equipes/dep-feminine.jpg"
         objectPosition="center 40%"
       />
@@ -66,8 +151,43 @@ export default function Entrainements() {
         </div>
       </section>
 
-      {/* Catégories d'âge */}
-      <section className="bg-gray-50 py-12 px-4">
+      {/* Jeunes */}
+      <section className="py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+            Du M11 au M21
+          </span>
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-gvvb-navy mt-2 mb-2">
+            Emploi du temps — Jeunes
+          </h2>
+          <p className="text-gray-600 mb-6 max-w-2xl">
+            Tous les créneaux jeunes ont lieu à Garches. Plusieurs catégories peuvent
+            partager le même gymnase au même horaire, sur deux terrains.
+          </p>
+          <EmploiDuTemps creneaux={CRENEAUX_JEUNES} legende={["competition", "formation"]} />
+        </div>
+      </section>
+
+      {/* Adultes */}
+      <section className="bg-gray-50 py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+            Seniors
+          </span>
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-gvvb-navy mt-2 mb-2">
+            Emploi du temps — Adultes
+          </h2>
+          <p className="text-gray-600 mb-6 max-w-2xl">
+            Loisir et compétition départementale. Le dimanche, plus étalé, est
+            présenté à part sous la grille.
+          </p>
+          <EmploiDuTemps creneaux={CRENEAUX_ADULTES} legende={["competition", "loisir"]} fond="bg-gray-50" />
+          <BandeauWeekEnd creneaux={CRENEAUX_ADULTES} />
+        </div>
+      </section>
+
+      {/* Catégories d'âge + liste détaillée */}
+      <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
             Référence
@@ -83,48 +203,8 @@ export default function Entrainements() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Jeunes */}
-      <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
-            Formation
-          </span>
-          <h2 className="font-heading font-bold text-2xl text-gvvb-navy mt-2 mb-6">
-            Jeunes
-          </h2>
-          <ScheduleTable rows={CRENEAUX_JEUNES} groupeLabel="Catégorie" />
-        </div>
-      </section>
-
-      {/* Seniors Loisir */}
-      <section className="bg-gray-50 py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
-            Adultes
-          </span>
-          <h2 className="font-heading font-bold text-2xl text-gvvb-navy mt-2 mb-6">
-            Seniors Loisirs Mixte
-          </h2>
-          <ScheduleTable rows={CRENEAUX_LOISIR} groupeLabel="Type" />
-        </div>
-      </section>
-
-      {/* Compétition */}
-      <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
-            Adultes
-          </span>
-          <h2 className="font-heading font-bold text-2xl text-gvvb-navy mt-2 mb-6">
-            Seniors Compétition Départementale
-          </h2>
-          <ScheduleTable rows={CRENEAUX_COMPETITION} groupeLabel="Équipe" />
-          <p className="text-gray-500 text-sm mt-4">
-            Certains créneaux accueillent plusieurs équipes en parallèle dans le même gymnase.
-          </p>
+          <ListeDetaillee />
         </div>
       </section>
 

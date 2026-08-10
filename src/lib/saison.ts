@@ -48,45 +48,89 @@ export const CATEGORIES_AGE = [
 // Créneaux d'entraînement
 // ---------------------------------------------------------------------------
 
+/**
+ * Nature de la pratique — pilote le code couleur de l'emploi du temps.
+ * `formation` : groupes jeunes non engagés en championnat.
+ */
+export type CreneauType = "competition" | "formation" | "loisir";
+
 export interface Creneau {
   jour: string;
-  horaire: string;
+  /** "HH:MM" — source de vérité, utilisée pour positionner les blocs. */
+  debut: string;
+  fin: string;
   ville: string;
   gymnase: string;
   /** Catégorie (jeunes) ou type de pratique (seniors). */
   groupe: string;
+  type: CreneauType;
+}
+
+/** Minutes depuis minuit. */
+export function toMinutes(hhmm: string): number {
+  const [h, m] = hhmm.split(":").map(Number);
+  return h * 60 + m;
+}
+
+/** "17:00" → "17h" · "18:30" → "18h30" */
+export function formatHeure(hhmm: string): string {
+  const [h, m] = hhmm.split(":");
+  return m === "00" ? `${Number(h)}h` : `${Number(h)}h${m}`;
+}
+
+/** 1050 → "17h30" */
+export function formatMinutes(minutes: number): string {
+  const m = minutes % 60;
+  return m === 0 ? `${minutes / 60}h` : `${Math.floor(minutes / 60)}h${String(m).padStart(2, "0")}`;
+}
+
+/** "17:00" + "18:30" → "17h – 18h30" */
+export function formatHoraire(c: Pick<Creneau, "debut" | "fin">): string {
+  return `${formatHeure(c.debut)} – ${formatHeure(c.fin)}`;
 }
 
 /**
  * Plusieurs groupes partagent le même gymnase au même horaire (deux terrains) :
- * c'est volontaire et conforme au dossier.
+ * c'est volontaire et conforme au dossier. L'emploi du temps les affiche
+ * côte à côte dans la même colonne de jour.
  */
 export const CRENEAUX_JEUNES: Creneau[] = [
-  { jour: "Mardi", horaire: "17h – 18h30", ville: "Garches", gymnase: "Le Rallec", groupe: "M11" },
-  { jour: "Mardi", horaire: "18h30 – 20h15", ville: "Garches", gymnase: "Le Rallec", groupe: "M13 / M15 Garçons" },
-  { jour: "Mardi", horaire: "18h30 – 20h15", ville: "Garches", gymnase: "Le Rallec", groupe: "M18 Filles compétition" },
-  { jour: "Mercredi", horaire: "18h30 – 20h30", ville: "Garches", gymnase: "Le Rallec", groupe: "M13 / M15 Filles" },
-  { jour: "Vendredi", horaire: "18h30 – 20h30", ville: "Garches", gymnase: "Yves Bodin", groupe: "M18 / M21 Mixte" },
-  { jour: "Vendredi", horaire: "18h30 – 20h30", ville: "Garches", gymnase: "Yves Bodin", groupe: "M18 Filles compétition" },
+  { jour: "Mardi", debut: "17:00", fin: "18:30", ville: "Garches", gymnase: "Le Rallec", groupe: "M11", type: "formation" },
+  { jour: "Mardi", debut: "18:30", fin: "20:15", ville: "Garches", gymnase: "Le Rallec", groupe: "M13 / M15 Garçons", type: "formation" },
+  { jour: "Mardi", debut: "18:30", fin: "20:15", ville: "Garches", gymnase: "Le Rallec", groupe: "M18 Filles", type: "competition" },
+  { jour: "Mercredi", debut: "18:30", fin: "20:30", ville: "Garches", gymnase: "Le Rallec", groupe: "M13 / M15 Filles", type: "competition" },
+  { jour: "Vendredi", debut: "18:30", fin: "20:30", ville: "Garches", gymnase: "Yves Bodin", groupe: "M18 / M21 Mixte", type: "formation" },
+  { jour: "Vendredi", debut: "18:30", fin: "20:30", ville: "Garches", gymnase: "Yves Bodin", groupe: "M18 Filles", type: "competition" },
 ];
 
 export const CRENEAUX_LOISIR: Creneau[] = [
-  { jour: "Mardi", horaire: "20h15 – 22h30", ville: "Garches", gymnase: "Le Rallec", groupe: "Loisirs" },
-  { jour: "Mercredi", horaire: "20h30 – 22h30", ville: "Garches", gymnase: "Le Rallec", groupe: "Loisirs" },
-  { jour: "Mercredi", horaire: "20h30 – 22h30", ville: "Garches", gymnase: "Le Rallec", groupe: "4×4 Féminine" },
-  { jour: "Jeudi", horaire: "20h – 22h30", ville: "Vaucresson", gymnase: "Yves du Manoir", groupe: "Loisirs Compétition" },
-  { jour: "Vendredi", horaire: "20h30 – 22h30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Loisirs" },
-  { jour: "Dimanche", horaire: "10h30 – 13h", ville: "Garches", gymnase: "Yves Bodin", groupe: "Jeu libre" },
+  { jour: "Mardi", debut: "20:15", fin: "22:30", ville: "Garches", gymnase: "Le Rallec", groupe: "Loisirs", type: "loisir" },
+  { jour: "Mercredi", debut: "20:30", fin: "22:30", ville: "Garches", gymnase: "Le Rallec", groupe: "Loisirs", type: "loisir" },
+  { jour: "Mercredi", debut: "20:30", fin: "22:30", ville: "Garches", gymnase: "Le Rallec", groupe: "4×4 Féminine", type: "loisir" },
+  { jour: "Jeudi", debut: "20:00", fin: "22:30", ville: "Vaucresson", gymnase: "Yves du Manoir", groupe: "Loisirs Compétition", type: "loisir" },
+  { jour: "Vendredi", debut: "20:30", fin: "22:30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Loisirs", type: "loisir" },
+  { jour: "Dimanche", debut: "10:30", fin: "13:00", ville: "Garches", gymnase: "Yves Bodin", groupe: "Jeu libre", type: "loisir" },
 ];
 
 export const CRENEAUX_COMPETITION: Creneau[] = [
-  { jour: "Lundi", horaire: "20h – 22h30", ville: "Vaucresson", gymnase: "Yves du Manoir", groupe: "Masculin" },
-  { jour: "Mercredi", horaire: "20h – 22h30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Féminine" },
-  { jour: "Mercredi", horaire: "20h – 22h30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Masculin" },
-  { jour: "Vendredi", horaire: "20h – 22h30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Féminine" },
-  { jour: "Dimanche", horaire: "13h – 18h", ville: "Garches", gymnase: "Yves Bodin", groupe: "Match Féminine" },
-  { jour: "Dimanche", horaire: "13h – 18h", ville: "Garches", gymnase: "Yves Bodin", groupe: "Match Masculin" },
+  { jour: "Lundi", debut: "20:00", fin: "22:30", ville: "Vaucresson", gymnase: "Yves du Manoir", groupe: "Masculin", type: "competition" },
+  { jour: "Mercredi", debut: "20:00", fin: "22:30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Féminine", type: "competition" },
+  { jour: "Mercredi", debut: "20:00", fin: "22:30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Masculin", type: "competition" },
+  { jour: "Vendredi", debut: "20:00", fin: "22:30", ville: "Garches", gymnase: "Yves Bodin", groupe: "Féminine", type: "competition" },
+  { jour: "Dimanche", debut: "13:00", fin: "18:00", ville: "Garches", gymnase: "Yves Bodin", groupe: "Match Féminine", type: "competition" },
+  { jour: "Dimanche", debut: "13:00", fin: "18:00", ville: "Garches", gymnase: "Yves Bodin", groupe: "Match Masculin", type: "competition" },
 ];
+
+/** Tous les créneaux adultes, loisir et compétition confondus. */
+export const CRENEAUX_ADULTES: Creneau[] = [...CRENEAUX_LOISIR, ...CRENEAUX_COMPETITION];
+
+export const JOURS_SEMAINE = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"] as const;
+
+export const LIBELLES_TYPE: Record<CreneauType, string> = {
+  competition: "Compétition",
+  formation: "Formation",
+  loisir: "Loisir",
+};
 
 // ---------------------------------------------------------------------------
 // Tarifs

@@ -18,7 +18,8 @@ Toutes les données de référence du club vivent dans **un seul fichier** :
 | `DOSSIER` | chemin + taille du PDF d'inscription |
 | `DATE_LIMITE` | date limite de remise du dossier |
 | `CATEGORIES_AGE` | 6 catégories avec années de naissance |
-| `CRENEAUX_JEUNES` / `_LOISIR` / `_COMPETITION` | créneaux d'entraînement |
+| `CRENEAUX_JEUNES` / `_LOISIR` / `_COMPETITION` | créneaux d'entraînement (`debut`/`fin` en `"HH:MM"`, plus un `type`) |
+| `JOURS_SEMAINE` / `LIBELLES_TYPE` | axes et libellés de l'emploi du temps |
 | `TARIFS` / `TARIFS_ANNEXES` / `MODALITES_PAIEMENT` | cotisations |
 | `PIECES_DOSSIER` | les 7 pièces à fournir |
 | `BUREAU` | 4 membres, tél + email |
@@ -145,12 +146,19 @@ Header : `volleyballs.jpg`
 
 ### Entraînements (`/entrainements`)
 
-Catégories d'âge + 3 tableaux d'horaires (Jeunes, Seniors Loisirs, Seniors
-Compétition), lus depuis `CRENEAUX_*`. Bandeau navy rappelant que les créneaux
-sont confirmés à la mi-septembre.
+Deux **emplois du temps hebdomadaires** (voir `EmploiDuTemps` ci-dessous) :
+jeunes puis adultes. Chaque case affiche la catégorie, l'horaire et le gymnase,
+avec un code couleur par `type` de créneau.
 
-Certains créneaux apparaissent en doublon (même gymnase, même horaire) : c'est
-conforme au dossier, plusieurs équipes s'entraînent en parallèle sur deux terrains.
+Le **dimanche** est sorti des grilles et présenté en bandeau sous celle des
+adultes : ses créneaux courent de 10h30 à 18h alors que la semaine tient entre
+20h et 22h30, l'inclure étirerait la grille pour six colonnes vides.
+
+Suivent les catégories d'âge et un bloc `<details>` « Voir la liste détaillée »
+avec les 3 tableaux jour / horaire / ville / gymnase / catégorie / type — c'est
+le repli accessible et imprimable de l'information.
+
+Bandeau navy rappelant que les créneaux sont confirmés à la mi-septembre.
 
 Header : `dep-feminine.jpg`
 
@@ -247,6 +255,43 @@ En-tête réutilisé sur toutes les pages intérieures.
 - Logo partenaire L'Écriture (filtre CSS `brightness(0) invert(1)` pour le rendre blanc)
 - Liens : Instagram `volley_gvvb`, Facebook `gvvb.fr`
 - Mentions légales en bas à droite
+
+### `EmploiDuTemps`
+
+Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
+
+```tsx
+<EmploiDuTemps
+  creneaux={CRENEAUX_ADULTES}
+  legende={["competition", "loisir"]}
+  fond="bg-gray-50"            // fond de la section hôte (défaut "bg-white")
+/>
+```
+
+- **Lignes** = tranches de 15 minutes (`ROW_H` px chacune), plage calée
+  automatiquement sur les demi-heures encadrant les créneaux fournis
+- **Colonnes** = un jour par bloc, mais **chaque jour occupe autant de colonnes
+  de grille qu'il a de créneaux simultanés** (`placerSemaine`). Le mercredi
+  adultes en compte 4 : tous les blocs de la semaine gardent donc la même
+  largeur au lieu de s'écraser dans une colonne unique.
+- `placerJour` répartit les créneaux qui se chevauchent en sous-colonnes
+  (partitionnement glouton d'intervalles)
+- Les créneaux du week-end sont **ignorés** : la page les affiche à part
+- Colonne des heures **`sticky left-0`** — reste lisible pendant le scroll
+  horizontal sur mobile ; d'où le paramètre `fond`, qui lui donne un fond opaque
+- Chaque bloc porte du texte `sr-only` (jour, ville, type) pour rester
+  compréhensible au lecteur d'écran, une grille CSS n'étant pas un tableau
+
+Code couleur (`--color-gvvb-*` dans `globals.css`) :
+
+| Type | Couleur | Usage |
+|---|---|---|
+| `competition` | rouge GVVB | Départementales, matchs, M13/M15 Filles, M18 Filles |
+| `formation` | marine GVVB | M11, M13/M15 Garçons, M18/M21 Mixte |
+| `loisir` | teal | Loisirs, 4×4 Féminine, Loisir Compétition, jeu libre |
+
+> Le loisir est en teal et non en orange : rouge et orange sont un couple de
+> confusion classique pour les daltonismes rouge-vert.
 
 ### `CalendrierClient`
 
