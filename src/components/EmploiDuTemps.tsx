@@ -10,10 +10,10 @@ import {
 
 /** Hauteur d'une tranche de 15 minutes, en pixels. */
 const ROW_H = 22;
-/** Largeur minimale d'un créneau simultané — pilote le scroll horizontal. */
-const COL_MIN = "7rem";
 /** Largeur de la colonne des heures. */
 const GUTTER = "4.5rem";
+/** Deux lignes d'en-tête : le jour, puis le gymnase. */
+const LIGNES_ENTETE = 2;
 
 const COULEURS: Record<CreneauType, string> = {
   competition: "bg-gvvb-red text-white",
@@ -21,24 +21,50 @@ const COULEURS: Record<CreneauType, string> = {
   loisir: "bg-gvvb-teal text-white",
 };
 
-/** Créneau enrichi de sa sous-colonne, calculée par jour. */
+/** Créneau et sa position imbriquée au sein d'une largeur de colonne. */
 interface Place {
   creneau: Creneau;
-  /** Index de la sous-colonne au sein du jour (0 = la plus à gauche). */
+  /** Index d'imbrication (0 = à gauche). */
   sub: number;
+  /**
+   * Nombre de sous-colonnes occupées. Un créneau s'étale sur les sous-colonnes
+   * libres à sa droite : le M11 du mardi, que rien ne chevauche, prend toute la
+   * largeur du jour même si le créneau suivant se dédouble.
+   */
+  span: number;
 }
 
 /**
- * Répartit les créneaux d'un jour en sous-colonnes : deux créneaux qui se
- * chevauchent ne peuvent pas partager la même sous-colonne. Algorithme glouton
- * classique de partitionnement d'intervalles.
+ * Une largeur de colonne : un gymnase, un jour. Les créneaux qui s'y
+ * chevauchent s'imbriquent côte à côte à l'intérieur de cette largeur.
  */
-function placerJour(creneaux: Creneau[]): { places: Place[]; subCols: number } {
+interface Unite {
+  /** null pour un jour sans entraînement. */
+  gymnase: string | null;
+  places: Place[];
+  /** Nombre de créneaux imbriqués simultanément. */
+  imbriques: number;
+}
+
+interface JourLayout {
+  jour: string;
+  /** Au moins une unité, même pour un jour vide. */
+  unites: Unite[];
+  /** Première colonne de grille du jour (1 = colonne des heures). */
+  debutCol: number;
+}
+
+/**
+ * Répartit des créneaux d'un même gymnase en sous-positions : deux créneaux qui
+ * se chevauchent ne peuvent pas partager la même. Partitionnement glouton
+ * d'intervalles.
+ */
+function imbriquer(creneaux: Creneau[]): { places: Place[]; imbriques: number } {
   const tries = [...creneaux].sort(
     (a, b) => toMinutes(a.debut) - toMinutes(b.debut) || toMinutes(a.fin) - toMinutes(b.fin),
   );
   const finDeSousColonne: number[] = [];
-  const places: Place[] = [];
+  const attribues: { creneau: Creneau; sub: number }[] = [];
 
   for (const creneau of tries) {
     const debut = toMinutes(creneau.debut);
@@ -48,37 +74,60 @@ function placerJour(creneaux: Creneau[]): { places: Place[]; subCols: number } {
       finDeSousColonne.push(0);
     }
     finDeSousColonne[sub] = toMinutes(creneau.fin);
-    places.push({ creneau, sub });
+    attribues.push({ creneau, sub });
   }
 
-  // Un jour sans créneau occupe quand même une colonne, pour rester lisible.
-  return { places, subCols: Math.max(1, finDeSousColonne.length) };
-}
+  const imbriques = Math.max(1, finDeSousColonne.length);
 
-interface Colonne {
-  jour: string;
-  places: Place[];
-  subCols: number;
-  /** Première colonne de grille occupée par ce jour (1 = colonne des heures). */
-  debutCol: number;
+  const chevauche = (a: Creneau, b: Creneau) =>
+    toMinutes(a.debut) < toMinutes(b.fin) && toMinutes(b.debut) < toMinutes(a.fin);
+
+  const places: Place[] = attribues.map(({ creneau, sub }) => {
+    let span = 1;
+    while (
+      sub + span < imbriques &&
+      !attribues.some((autre) => autre.sub === sub + span && chevauche(creneau, autre.creneau))
+    ) {
+      span += 1;
+    }
+    return { creneau, sub, span };
+  });
+
+  return { places, imbriques };
 }
 
 /**
- * Attribue à chaque jour autant de colonnes de grille qu'il a de créneaux
- * simultanés : tous les blocs de la semaine gardent ainsi la même largeur,
- * quel que soit le jour.
+ * Un jour = une largeur de colonne par gymnase. Le mercredi adultes en compte
+ * donc deux (Yves Bodin et Le Rallec), tous les autres jours une seule.
  */
-function placerSemaine(semaine: Creneau[]): { colonnes: Colonne[]; totalSubCols: number } {
-  const colonnes: Colonne[] = [];
+function placerJour(creneaux: Creneau[]): Unite[] {
+  if (creneaux.length === 0) return [{ gymnase: null, places: [], imbriques: 1 }];
+
+  const parGymnase = new Map<string, Creneau[]>();
+  for (const c of creneaux) {
+    parGymnase.set(c.gymnase, [...(parGymnase.get(c.gymnase) ?? []), c]);
+  }
+
+  return [...parGymnase.entries()]
+    .map(([gymnase, liste]) => ({ gymnase, ...imbriquer(liste) }))
+    .sort(
+      (a, b) =>
+        toMinutes(a.places[0].creneau.debut) - toMinutes(b.places[0].creneau.debut) ||
+        a.gymnase.localeCompare(b.gymnase),
+    );
+}
+
+function placerSemaine(semaine: Creneau[]): { jours: JourLayout[]; totalUnites: number } {
+  const jours: JourLayout[] = [];
   let debutCol = 2;
 
   for (const jour of JOURS_SEMAINE) {
-    const { places, subCols } = placerJour(semaine.filter((c) => c.jour === jour));
-    colonnes.push({ jour, places, subCols, debutCol });
-    debutCol += subCols;
+    const unites = placerJour(semaine.filter((c) => c.jour === jour));
+    jours.push({ jour, unites, debutCol });
+    debutCol += unites.length;
   }
 
-  return { colonnes, totalSubCols: debutCol - 2 };
+  return { jours, totalUnites: debutCol - 2 };
 }
 
 function Legende({ types }: { types: CreneauType[] }) {
@@ -117,10 +166,16 @@ export default function EmploiDuTemps({
   const finMin = Math.ceil(Math.max(...semaine.map((c) => toMinutes(c.fin))) / 30) * 30;
   const nbLignes = (finMin - debutMin) / 15;
 
-  /** Ligne de grille correspondant à une heure (1 = en-tête). */
-  const ligne = (minutes: number) => (minutes - debutMin) / 15 + 2;
+  /** Ligne de grille correspondant à une heure. */
+  const ligne = (minutes: number) => (minutes - debutMin) / 15 + 1 + LIGNES_ENTETE;
+  const derniereLigne = nbLignes + LIGNES_ENTETE;
 
-  const { colonnes, totalSubCols } = placerSemaine(semaine);
+  const { jours, totalUnites } = placerSemaine(semaine);
+
+  // Toutes les colonnes ont la même largeur ; on la dimensionne sur l'unité la
+  // plus chargée pour que les créneaux imbriqués restent lisibles.
+  const maxImbriques = Math.max(...jours.flatMap((j) => j.unites.map((u) => u.imbriques)));
+  const largeurUnite = maxImbriques > 1 ? "10.5rem" : "7rem";
 
   const marques = Array.from(
     { length: (finMin - debutMin) / 30 + 1 },
@@ -135,12 +190,38 @@ export default function EmploiDuTemps({
         <div
           className="grid"
           style={{
-            minWidth: `calc(${GUTTER} + ${totalSubCols} * ${COL_MIN})`,
-            gridTemplateColumns: `${GUTTER} repeat(${totalSubCols}, minmax(0, 1fr))`,
-            gridTemplateRows: `auto repeat(${nbLignes}, ${ROW_H}px)`,
+            minWidth: `calc(${GUTTER} + ${totalUnites} * ${largeurUnite})`,
+            gridTemplateColumns: `${GUTTER} repeat(${totalUnites}, minmax(0, 1fr))`,
+            gridTemplateRows: `auto auto repeat(${nbLignes}, ${ROW_H}px)`,
           }}
         >
-          {/* Bandes de demi-heure + séparateurs verticaux (décor) */}
+          {/* Fond alterné par jour + frontières de jour, pour distinguer les colonnes */}
+          {jours.map((j, i) => (
+            <div
+              key={`fond-${j.jour}`}
+              aria-hidden="true"
+              className={`border-l-2 border-gvvb-navy/25 ${i % 2 === 1 ? "bg-black/[0.03]" : ""}`}
+              style={{
+                gridColumn: `${j.debutCol} / span ${j.unites.length}`,
+                gridRow: `${LIGNES_ENTETE + 1} / span ${nbLignes}`,
+              }}
+            />
+          ))}
+          {/* Séparation interne entre deux gymnases d'un même jour */}
+          {jours.flatMap((j) =>
+            j.unites.slice(1).map((u, k) => (
+              <div
+                key={`sep-${j.jour}-${u.gymnase}`}
+                aria-hidden="true"
+                className="border-l border-dashed border-gray-400"
+                style={{
+                  gridColumn: j.debutCol + k + 1,
+                  gridRow: `${LIGNES_ENTETE + 1} / span ${nbLignes}`,
+                }}
+              />
+            )),
+          )}
+          {/* Bandes de demi-heure */}
           {marques.slice(0, -1).map((t) => (
             <div
               key={`bande-${t}`}
@@ -152,16 +233,13 @@ export default function EmploiDuTemps({
           <div
             aria-hidden="true"
             className="border-b border-gray-300"
-            style={{ gridColumn: "2 / -1", gridRow: nbLignes + 1 }}
+            style={{ gridColumn: "2 / -1", gridRow: derniereLigne }}
           />
-          {colonnes.map((c) => (
-            <div
-              key={`sep-${c.jour}`}
-              aria-hidden="true"
-              className="border-l border-gray-200"
-              style={{ gridColumn: `${c.debutCol} / span ${c.subCols}`, gridRow: `2 / span ${nbLignes}` }}
-            />
-          ))}
+          <div
+            aria-hidden="true"
+            className="border-r-2 border-gvvb-navy/25"
+            style={{ gridColumn: totalUnites + 1, gridRow: `${LIGNES_ENTETE + 1} / span ${nbLignes}` }}
+          />
 
           {/* Colonne des heures — reste visible pendant le scroll horizontal */}
           <div
@@ -177,48 +255,69 @@ export default function EmploiDuTemps({
                 className={`sticky left-0 z-30 font-heading text-xs text-gray-400 tabular-nums pr-3 text-right ${
                   dernier ? "self-end pb-0.5" : "self-start pt-0.5"
                 }`}
-                style={{ gridColumn: 1, gridRow: dernier ? nbLignes + 1 : ligne(t) }}
+                style={{ gridColumn: 1, gridRow: dernier ? derniereLigne : ligne(t) }}
               >
                 {formatMinutes(t)}
               </span>
             );
           })}
 
-          {/* En-têtes de jours */}
-          {colonnes.map((c) => (
+          {/* En-têtes : le jour, puis le gymnase de chaque largeur de colonne */}
+          {jours.map((j, i) => (
             <div
-              key={`tete-${c.jour}`}
-              className="bg-gvvb-navy text-white font-heading text-xs uppercase tracking-wider text-center py-2.5 px-1"
-              style={{ gridColumn: `${c.debutCol} / span ${c.subCols}`, gridRow: 1 }}
+              key={`tete-${j.jour}`}
+              className={`bg-gvvb-navy text-white font-heading text-sm uppercase tracking-wider text-center py-2.5 px-1 ${
+                i > 0 ? "border-l-2 border-white/30" : ""
+              }`}
+              style={{ gridColumn: `${j.debutCol} / span ${j.unites.length}`, gridRow: 1 }}
             >
-              {c.jour}
+              {j.jour}
             </div>
           ))}
-
-          {/* Créneaux */}
-          {colonnes.flatMap((c) =>
-            c.places.map(({ creneau, sub }) => (
+          {jours.flatMap((j, i) =>
+            j.unites.map((u, k) => (
               <div
-                key={`${c.jour}-${creneau.debut}-${creneau.groupe}`}
-                className={`relative z-10 m-0.5 px-2 py-1.5 overflow-hidden ${COULEURS[creneau.type]}`}
-                style={{
-                  gridColumn: c.debutCol + sub,
-                  gridRow: `${ligne(toMinutes(creneau.debut))} / ${ligne(toMinutes(creneau.fin))}`,
-                }}
+                key={`gym-${j.jour}-${u.gymnase ?? "vide"}`}
+                className={`bg-gvvb-navy-dark text-white/70 text-[0.68rem] text-center py-1.5 px-1 truncate ${
+                  i > 0 && k === 0 ? "border-l-2 border-white/30" : ""
+                } ${k > 0 ? "border-l border-dashed border-white/30" : ""}`}
+                style={{ gridColumn: j.debutCol + k, gridRow: 2 }}
               >
-                <span className="sr-only">{c.jour} · </span>
-                <span className="font-heading font-bold text-xs sm:text-sm leading-tight block">
-                  {creneau.groupe}
-                </span>
-                <span className="text-[0.68rem] leading-tight block opacity-80 tabular-nums mt-0.5">
-                  {formatHoraire(creneau)}
-                </span>
-                <span className="text-[0.68rem] leading-tight block opacity-90 mt-0.5">
-                  {creneau.gymnase}
-                </span>
-                <span className="sr-only"> ({creneau.ville}) — {LIBELLES_TYPE[creneau.type]}</span>
+                {u.gymnase ?? "—"}
               </div>
             )),
+          )}
+
+          {/* Créneaux */}
+          {jours.flatMap((j) =>
+            j.unites.flatMap((u, k) =>
+              u.places.map(({ creneau, sub, span }) => (
+                <div
+                  key={`${j.jour}-${creneau.debut}-${creneau.groupe}`}
+                  className="relative z-10 p-px"
+                  style={{
+                    gridColumn: j.debutCol + k,
+                    gridRow: `${ligne(toMinutes(creneau.debut))} / ${ligne(toMinutes(creneau.fin))}`,
+                    width: `${(100 / u.imbriques) * span}%`,
+                    marginLeft: `${(100 / u.imbriques) * sub}%`,
+                  }}
+                >
+                  <div className={`h-full px-2 py-1.5 overflow-hidden ${COULEURS[creneau.type]}`}>
+                    <span className="sr-only">{j.jour} · </span>
+                    <span className="font-heading font-bold text-xs sm:text-sm leading-tight block">
+                      {creneau.groupe}
+                    </span>
+                    <span className="text-[0.68rem] leading-tight block opacity-80 tabular-nums mt-0.5">
+                      {formatHoraire(creneau)}
+                    </span>
+                    <span className="text-[0.68rem] leading-tight block opacity-90 mt-0.5">
+                      {creneau.gymnase}
+                    </span>
+                    <span className="sr-only"> ({creneau.ville}) — {LIBELLES_TYPE[creneau.type]}</span>
+                  </div>
+                </div>
+              )),
+            ),
           )}
         </div>
       </div>

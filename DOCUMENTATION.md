@@ -270,12 +270,18 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
 
 - **Lignes** = tranches de 15 minutes (`ROW_H` px chacune), plage calée
   automatiquement sur les demi-heures encadrant les créneaux fournis
-- **Colonnes** = un jour par bloc, mais **chaque jour occupe autant de colonnes
-  de grille qu'il a de créneaux simultanés** (`placerSemaine`). Le mercredi
-  adultes en compte 4 : tous les blocs de la semaine gardent donc la même
-  largeur au lieu de s'écraser dans une colonne unique.
-- `placerJour` répartit les créneaux qui se chevauchent en sous-colonnes
-  (partitionnement glouton d'intervalles)
+- **Colonnes de largeur égale** (`minmax(0, 1fr)`). Un jour occupe **une largeur
+  de colonne par gymnase** (`placerJour`) : le mercredi adultes en a deux, Yves
+  Bodin et Le Rallec, tous les autres jours une seule.
+- À l'intérieur d'une largeur de colonne, les créneaux qui se chevauchent
+  **s'imbriquent** en pourcentage de largeur (`imbriquer`, partitionnement
+  glouton d'intervalles). Un créneau s'étale sur les sous-colonnes libres
+  pendant sa durée : le M11 du mardi prend toute la largeur du jour, même si le
+  créneau suivant se dédouble.
+- Deux lignes d'en-tête (`LIGNES_ENTETE`) : le jour, puis le gymnase de chaque
+  largeur de colonne — c'est ce qui rend le regroupement par gymnase lisible.
+- Lecture des jours : bordures de jour épaisses (`border-l-2`), fond alterné un
+  jour sur deux, et séparation pointillée entre deux gymnases d'un même jour.
 - Les créneaux du week-end sont **ignorés** : la page les affiche à part
 - Colonne des heures **`sticky left-0`** — reste lisible pendant le scroll
   horizontal sur mobile ; d'où le paramètre `fond`, qui lui donne un fond opaque
