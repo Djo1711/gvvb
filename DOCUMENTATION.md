@@ -148,11 +148,11 @@ Header : `volleyballs.jpg`
 
 Deux **emplois du temps hebdomadaires** (voir `EmploiDuTemps` ci-dessous) :
 jeunes puis adultes. Chaque case affiche la catégorie, l'horaire et le gymnase,
-avec un code couleur par `type` de créneau.
+avec un code couleur par `type` de créneau — pâle pour les jeunes.
 
-Le **dimanche** est sorti des grilles et présenté en bandeau sous celle des
-adultes : ses créneaux courent de 10h30 à 18h alors que la semaine tient entre
-20h et 22h30, l'inclure étirerait la grille pour six colonnes vides.
+La grille adultes couvre **lundi → dimanche** : le dimanche porte le jeu libre du
+matin et les matchs de l'après-midi, et le samedi, sans créneau, se réduit à une
+colonne « … ». La plage horaire s'étend donc de 10h30 à 22h30.
 
 Suivent les catégories d'âge et un bloc `<details>` « Voir la liste détaillée »
 avec les 3 tableaux jour / horaire / ville / gymnase / catégorie / type — c'est
@@ -264,6 +264,8 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
 <EmploiDuTemps
   creneaux={CRENEAUX_ADULTES}
   legende={["competition", "loisir"]}
+  jours={JOURS_AVEC_WEEKEND}   // défaut JOURS_SEMAINE (lundi → vendredi)
+  variante="pale"              // "vif" (défaut) ou "pale" pour les jeunes
   fond="bg-gray-50"            // fond de la section hôte (défaut "bg-white")
 />
 ```
@@ -280,24 +282,35 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
   créneau suivant se dédouble.
 - Deux lignes d'en-tête (`LIGNES_ENTETE`) : le jour, puis le gymnase de chaque
   largeur de colonne — c'est ce qui rend le regroupement par gymnase lisible.
+- **Un jour sans créneau** devient une colonne étroite marquée « … »
+  (`LARGEUR_VIDE`) : le samedi côté adultes, le lundi et le jeudi côté jeunes.
+  Les jours occupés récupèrent la largeur ainsi libérée.
 - Lecture des jours : bordures de jour épaisses (`border-l-2`), fond alterné un
   jour sur deux, et séparation pointillée entre deux gymnases d'un même jour.
-- Les créneaux du week-end sont **ignorés** : la page les affiche à part
+- Hauteur de ligne adaptative : le dimanche étire la plage adultes à 12 h, les
+  lignes se resserrent alors (et les graduations passent à l'heure pleine) pour
+  que la grille reste d'une hauteur raisonnable.
 - Colonne des heures **`sticky left-0`** — reste lisible pendant le scroll
   horizontal sur mobile ; d'où le paramètre `fond`, qui lui donne un fond opaque
-- Chaque bloc porte du texte `sr-only` (jour, ville, type) pour rester
-  compréhensible au lecteur d'écran, une grille CSS n'étant pas un tableau
+- Chaque bloc porte du texte `sr-only` (jour, ville) pour rester compréhensible
+  au lecteur d'écran, une grille CSS n'étant pas un tableau
+- Les créneaux de type `competition` portent la mention « Compétition »
 
-Code couleur (`--color-gvvb-*` dans `globals.css`) :
+Code couleur (`--color-gvvb-*` dans `globals.css`) — **mêmes deux couleurs dans
+les deux grilles**, la variante `pale` étant réservée aux jeunes :
 
-| Type | Couleur | Usage |
+| Type | Vif (adultes) | Pâle (jeunes) |
 |---|---|---|
-| `competition` | rouge GVVB | Départementales, matchs, M13/M15 Filles, M18 Filles |
-| `formation` | marine GVVB | M11, M13/M15 Garçons, M18/M21 Mixte |
-| `loisir` | teal | Loisirs, 4×4 Féminine, Loisir Compétition, jeu libre |
+| `competition` | fond rouge GVVB, texte blanc | fond rouge très clair, texte rouge foncé |
+| `loisir` | fond teal, texte blanc | fond teal très clair, texte teal foncé |
 
 > Le loisir est en teal et non en orange : rouge et orange sont un couple de
 > confusion classique pour les daltonismes rouge-vert.
+
+> Le facteur de largeur de colonne (`largeurUnite`) est calé pour que la semaine
+> complète des adultes — sept largeurs plus le samedi — tienne dans le conteneur
+> sur un écran de bureau sans scroll horizontal. L'augmenter fait déborder le
+> dimanche hors du champ visible.
 
 ### `CalendrierClient`
 

@@ -8,12 +8,11 @@ import {
   CRENEAUX_COMPETITION,
   CRENEAUX_JEUNES,
   CRENEAUX_LOISIR,
-  JOURS_SEMAINE,
+  JOURS_AVEC_WEEKEND,
   LIBELLES_TYPE,
   NOTE_CRENEAUX,
   SAISON_CLUB,
   formatHoraire,
-  toMinutes,
   type Creneau,
 } from "@/lib/saison";
 
@@ -21,47 +20,6 @@ export const metadata: Metadata = {
   title: "Entraînements & Horaires",
   description: `Emploi du temps des entraînements du GVVB à Garches et Vaucresson pour la saison ${SAISON_CLUB}.`,
 };
-
-const COULEURS_BORDURE = {
-  competition: "border-gvvb-red",
-  formation: "border-gvvb-navy",
-  loisir: "border-gvvb-teal",
-} as const;
-
-/** Les créneaux du week-end, sortis de la grille hebdomadaire. */
-function BandeauWeekEnd({ creneaux }: { creneaux: Creneau[] }) {
-  const weekEnd = creneaux
-    .filter((c) => !(JOURS_SEMAINE as readonly string[]).includes(c.jour))
-    .sort((a, b) => toMinutes(a.debut) - toMinutes(b.debut));
-
-  if (weekEnd.length === 0) return null;
-
-  const jour = weekEnd[0].jour;
-
-  return (
-    <div className="mt-8 border border-gray-200">
-      <h3 className="bg-gvvb-navy text-white font-heading text-xs uppercase tracking-wider px-4 py-2.5">
-        {jour}
-      </h3>
-      <ul className="divide-y divide-gray-200">
-        {weekEnd.map((c) => (
-          <li
-            key={`${c.debut}-${c.groupe}`}
-            className={`flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 px-4 py-3 border-l-4 ${COULEURS_BORDURE[c.type]}`}
-          >
-            <span className="font-heading text-sm text-gvvb-navy tabular-nums sm:w-32 flex-shrink-0">
-              {formatHoraire(c)}
-            </span>
-            <span className="font-heading font-bold text-gvvb-navy flex-1">{c.groupe}</span>
-            <span className="text-sm text-gray-500">
-              {c.gymnase} · {c.ville}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 function TableauDetaille({ rows, groupeLabel }: { rows: Creneau[]; groupeLabel: string }) {
   return (
@@ -79,7 +37,7 @@ function TableauDetaille({ rows, groupeLabel }: { rows: Creneau[]; groupeLabel: 
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={`${row.jour}-${row.debut}-${row.groupe}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+            <tr key={`${row.jour}-${row.debut}-${row.groupe}-${row.type}`} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
               <td className="py-3 px-4 font-medium text-gvvb-navy">{row.jour}</td>
               <td className="py-3 px-4 text-gray-700 whitespace-nowrap tabular-nums">{formatHoraire(row)}</td>
               <td className="py-3 px-4 text-gray-600">{row.ville}</td>
@@ -162,9 +120,14 @@ export default function Entrainements() {
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl">
             Tous les créneaux jeunes ont lieu à Garches. Plusieurs catégories peuvent
-            partager le même gymnase au même horaire, sur deux terrains.
+            partager le même gymnase au même horaire, sur deux terrains — et les
+            créneaux M13 / M15 accueillent à la fois la compétition et le loisir.
           </p>
-          <EmploiDuTemps creneaux={CRENEAUX_JEUNES} legende={["competition", "formation"]} />
+          <EmploiDuTemps
+            creneaux={CRENEAUX_JEUNES}
+            legende={["competition", "loisir"]}
+            variante="pale"
+          />
         </div>
       </section>
 
@@ -178,11 +141,15 @@ export default function Entrainements() {
             Emploi du temps — Adultes
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl">
-            Loisir et compétition départementale. Le dimanche, plus étalé, est
-            présenté à part sous la grille.
+            Loisir et compétition départementale, du lundi au dimanche. Le dimanche
+            accueille le jeu libre du matin puis les matchs de l&apos;après-midi.
           </p>
-          <EmploiDuTemps creneaux={CRENEAUX_ADULTES} legende={["competition", "loisir"]} fond="bg-gray-50" />
-          <BandeauWeekEnd creneaux={CRENEAUX_ADULTES} />
+          <EmploiDuTemps
+            creneaux={CRENEAUX_ADULTES}
+            legende={["competition", "loisir"]}
+            jours={JOURS_AVEC_WEEKEND}
+            fond="bg-gray-50"
+          />
         </div>
       </section>
 
