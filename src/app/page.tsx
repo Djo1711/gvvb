@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { DATE_LIMITE, DOSSIER, SAISON_CLUB, TOUTES_EQUIPES } from "@/lib/saison";
 
 export const metadata: Metadata = {
   title: "GVVB - Club de Volley-Ball à Garches et Vaucresson (92)",
@@ -8,33 +9,33 @@ export const metadata: Metadata = {
     "Rejoignez le GVVB, club de volley-ball en Hauts-de-Seine ! Équipes compétition, loisir et jeunes à Garches et Vaucresson. Inscriptions ouvertes pour la saison 2026-2027.",
 };
 
-const teams = [
-  { name: "Départementale Masculine", level: "Compétition", gender: "Masculin", href: "/equipes#dep-masculine" },
-  { name: "Départementale Féminine", level: "Compétition", gender: "Féminin", href: "/equipes#dep-feminine" },
-  { name: "Loisir OR", level: "Loisir Compétition", gender: "Mixte", href: "/equipes#loisir-or" },
-  { name: "VSOP", level: "Ligue Loisir", gender: "Mixte", href: "/equipes#vsop" },
-  { name: "M15 Féminines", level: "Compétition Jeunes", gender: "Féminin", href: "/equipes#m15-feminine" },
-];
+/** Aperçu sur l'accueil : les 5 premières équipes, la page Équipes affiche tout. */
+const teams = TOUTES_EQUIPES.slice(0, 5).map((e) => ({
+  name: e.nom,
+  level: e.niveau,
+  gender: e.genre,
+  href: `/equipes#${e.id}`,
+}));
 
 const news = [
+  {
+    date: "Août 2026",
+    title: `Inscriptions ${SAISON_CLUB} ouvertes`,
+    excerpt:
+      `Le dossier d'inscription ${SAISON_CLUB} est en ligne. Les cotisations vont de 135 € (Loisir dimanche matin) à 195 € (Départementale), avec une remise de 15 € dès le 2ᵉ membre d'une même famille et la possibilité de régler en plusieurs fois. Les dossiers complets sont à remettre avant ${DATE_LIMITE} : retrouvez les tarifs, les pièces à fournir et le PDF à télécharger sur la page Inscription.`,
+    featured: true,
+  },
   {
     date: "Juin 2026",
     title: "Recrutement : nous cherchons des joueurs pour nos équipes départementales",
     excerpt:
       "Le GVVB recrute pour renforcer ses deux équipes compétition. La Départementale Féminine recherche une passeuse et une centrale. La Départementale Masculine recherche un passeur, un central et un pointu. Tous niveaux bienvenus. Pour toute question, contactez-nous au 06 52 18 41 42 ou sur Instagram @volley_gvvb.",
-    featured: true,
   },
   {
     date: "Juin 2026",
     title: "Nous recrutons un coach pour la Départementale Masculine",
     excerpt:
       "Le GVVB est à la recherche d'un coach pour encadrer son équipe Départementale Masculine. Nous avons une bonne base et souhaitons nous renforcer pour viser la montée en régional. Si vous êtes intéressé(e), contactez-nous au 06 52 18 41 42 ou sur Instagram @volley_gvvb.",
-  },
-  {
-    date: "Avril 2026",
-    title: "Inscriptions 2026-2027 bientôt ouvertes",
-    excerpt:
-      "La prochaine saison approche. Les inscriptions ouvriront en septembre. Contactez-nous pour plus d'infos.",
   },
   {
     date: "Avril 2026",
@@ -60,7 +61,8 @@ export default function Home() {
           src="/photos/hero-bg.jpg"
           alt=""
           fill
-          priority
+          sizes="100vw"
+          preload
           className="object-cover object-center opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-gvvb-navy/80 to-gvvb-red/60" />
@@ -85,7 +87,7 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-4 mt-2">
             <Link
-              href="/contact"
+              href="/inscription"
               className="bg-white text-gvvb-red font-heading font-semibold px-8 py-3 uppercase tracking-wider hover:bg-gray-100 transition-colors"
             >
               Nous rejoindre
@@ -120,9 +122,8 @@ export default function Home() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </Link>
-          <a
-            href="/docs/dossier-inscription-2025-2026.pdf"
-            download
+          <Link
+            href="/inscription"
             className="flex items-center gap-4 py-5 px-4 hover:bg-white/5 transition-colors group"
           >
             <div className="w-10 h-10 bg-gvvb-red flex items-center justify-center flex-shrink-0">
@@ -132,12 +133,12 @@ export default function Home() {
             </div>
             <div>
               <p className="font-heading text-xs uppercase tracking-widest text-gray-400">Inscription</p>
-              <p className="font-heading font-bold text-white group-hover:text-gvvb-red transition-colors">Dossier 2025-2026</p>
+              <p className="font-heading font-bold text-white group-hover:text-gvvb-red transition-colors">Tarifs & dossier {SAISON_CLUB}</p>
             </div>
             <svg className="w-4 h-4 text-gray-500 group-hover:text-gvvb-red transition-colors ml-auto" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -294,7 +295,7 @@ export default function Home() {
       <section className="bg-white py-10 px-4 border-t border-gray-100">
         <div className="max-w-7xl mx-auto">
           <a
-            href="/docs/dossier-inscription-2025-2026.pdf"
+            href={DOSSIER.href}
             download
             className="flex flex-col sm:flex-row items-center gap-6 bg-gray-50 border border-gray-200 hover:border-gvvb-red p-6 transition-colors group"
           >
@@ -305,10 +306,10 @@ export default function Home() {
             </div>
             <div className="text-center sm:text-left flex-1">
               <p className="font-heading font-bold text-gvvb-navy text-lg group-hover:text-gvvb-red transition-colors">
-                Dossier d&apos;inscription 2025-2026
+                Dossier d&apos;inscription {SAISON_CLUB}
               </p>
               <p className="text-gray-500 text-sm mt-1">
-                Téléchargez et complétez le dossier d&apos;inscription, puis transmettez-le à notre trésorier.
+                Téléchargez et complétez le dossier, puis transmettez-le à notre trésorier avant {DATE_LIMITE}.
               </p>
             </div>
             <span className="font-heading text-sm uppercase tracking-wider text-gvvb-red border border-gvvb-red px-5 py-2 flex-shrink-0 flex items-center gap-2 group-hover:bg-gvvb-red group-hover:text-white transition-colors">
@@ -334,14 +335,22 @@ export default function Home() {
           </h2>
           <p className="text-gray-300 max-w-md">
             Débutant ou confirmé, il y a une place pour vous au GVVB.
-            Contactez-nous pour en savoir plus sur les inscriptions.
+            Les inscriptions {SAISON_CLUB} sont ouvertes jusqu&apos;à {DATE_LIMITE}.
           </p>
-          <Link
-            href="/contact"
-            className="bg-gvvb-red text-white font-heading font-bold px-10 py-4 uppercase tracking-wider hover:bg-gvvb-red-dark transition-colors"
-          >
-            Nous contacter
-          </Link>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              href="/inscription"
+              className="bg-gvvb-red text-white font-heading font-bold px-10 py-4 uppercase tracking-wider hover:bg-gvvb-red-dark transition-colors"
+            >
+              S&apos;inscrire
+            </Link>
+            <Link
+              href="/contact"
+              className="border-2 border-white text-white font-heading font-bold px-10 py-4 uppercase tracking-wider hover:bg-white hover:text-gvvb-navy transition-colors"
+            >
+              Nous contacter
+            </Link>
+          </div>
         </div>
       </section>
 

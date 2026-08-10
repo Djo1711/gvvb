@@ -11,6 +11,7 @@ const links = [
   { href: "/equipes", label: "Équipes" },
   { href: "/entrainements", label: "Entraînements" },
   { href: "/calendrier", label: "Calendrier" },
+  { href: "/inscription", label: "Inscription" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -37,7 +38,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden lg:flex items-center gap-1">
           {links.map((l) => {
             const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
             return (
@@ -58,14 +59,14 @@ export default function Navbar() {
         </ul>
 
         <Link
-          href="/contact"
-          className="hidden md:inline-flex items-center bg-gvvb-red text-white font-heading text-sm uppercase tracking-wider px-4 py-2 hover:bg-gvvb-red-dark transition-colors"
+          href="/inscription"
+          className="hidden lg:inline-flex items-center bg-gvvb-red text-white font-heading text-sm uppercase tracking-wider px-4 py-2 hover:bg-gvvb-red-dark transition-colors"
         >
           Nous rejoindre
         </Link>
 
         <button
-          className="md:hidden p-2 rounded hover:bg-gray-100 transition-colors"
+          className="lg:hidden p-2 rounded hover:bg-gray-100 transition-colors"
           onClick={() => setOpen(!open)}
           aria-label="Ouvrir le menu"
         >
@@ -76,7 +77,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-md">
+        <div className="lg:hidden bg-white border-t border-gray-100 shadow-md">
           <ul className="flex flex-col px-4 py-3 gap-1">
             {links.map((l) => {
               const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
@@ -96,7 +97,7 @@ export default function Navbar() {
             })}
             <li className="mt-2 pt-2 border-t border-gray-100">
               <Link
-                href="/contact"
+                href="/inscription"
                 className="block bg-gvvb-red text-white font-heading text-sm uppercase tracking-wider px-4 py-2.5 text-center hover:bg-gvvb-red-dark transition-colors"
                 onClick={() => setOpen(false)}
               >

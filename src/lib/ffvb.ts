@@ -1,3 +1,5 @@
+import { ffvbUrl } from "@/lib/saison";
+
 export interface Match {
   code: string;
   date: string;   // DD/MM/YY
@@ -107,7 +109,7 @@ export function parseStandings(html: string): Standing[] {
 }
 
 export async function fetchPoule(poule: string): Promise<{ matches: Match[]; standings: Standing[] }> {
-  const url = `https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=${poule}`;
+  const url = ffvbUrl(poule);
   try {
     const res = await fetch(url, {
       next: { revalidate: 3600 },

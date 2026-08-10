@@ -1,46 +1,16 @@
 import PageHeader from "@/components/PageHeader";
 import type { Metadata } from "next";
+import { BUREAU } from "@/lib/saison";
 
 export const metadata: Metadata = {
   title: "Le Club",
   description: "Bureau, coachs et installations du GVVB - Garches Vaucresson Volley-Ball.",
 };
 
-const bureau = [
-  {
-    nom: "Stéphane Feldman",
-    role: "Président",
-    tel: "07 62 92 04 94",
-    email: "feldmans@hotmail.fr",
-    responsabilites: [],
-  },
-  {
-    nom: "Benoît Rousseau",
-    role: "Trésorier",
-    tel: "06 80 85 02 37",
-    email: "benrousseau@orange.fr",
-    responsabilites: [],
-  },
-  {
-    nom: "Christelle Mazzuchelli",
-    role: "Vice-présidente",
-    tel: "06 07 47 35 28",
-    email: "cmazzuchelli@gmail.com",
-    responsabilites: [],
-  },
-  {
-    nom: "Nicolas Rebière",
-    role: "Secrétaire",
-    tel: null,
-    email: null,
-    responsabilites: [],
-  },
-];
-
 const coachs = [
-  { nom: "Christelle Mazzuchelli", equipes: "Coach · Dep M", tel: "06 07 47 35 28" },
-  { nom: "Florian Champagne", equipes: "Coach · Dep F · M18", tel: "07 83 48 31 62" },
-  { nom: "Lily Fayet", equipes: "Coach · M15 F · M9/M11 · M13", tel: "07 86 12 80 71" },
+  { nom: "Christelle Mazzuchelli", equipes: "Coach · Départementale M", tel: "06 07 47 35 28" },
+  { nom: "Florian Champagne", equipes: "Coach · Départementale F · M18 · M21", tel: "07 83 48 31 62" },
+  { nom: "Lily Fayet", equipes: "Coach · M11 · M13 · M15", tel: "07 86 12 80 71" },
 ];
 
 export default function LeClub() {
@@ -63,7 +33,7 @@ export default function LeClub() {
             Le bureau
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {bureau.map((membre) => (
+            {BUREAU.map((membre) => (
               <div key={membre.nom} className="bg-white border border-gray-200 overflow-hidden">
                 {/* Photo placeholder */}
                 <div className="bg-gray-100 h-48 flex items-center justify-center border-b border-gray-200">
@@ -158,20 +128,33 @@ export default function LeClub() {
           <h2 className="font-heading font-bold text-3xl text-gvvb-navy mt-2 mb-10">
             Nos gymnases
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white border-l-4 border-gvvb-red p-6">
+              <h3 className="font-heading font-bold text-xl text-gvvb-navy mb-2">
+                Gymnase Yves Bodin
+              </h3>
+              <p className="text-gray-500 text-sm">20 rue de Suresnes, Garches (92)</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Départementales M et F · matchs du dimanche · M18 / M21 · Loisir · Jeu libre
+              </p>
+            </div>
+            <div className="bg-white border-l-4 border-gvvb-red p-6">
+              <h3 className="font-heading font-bold text-xl text-gvvb-navy mb-2">
+                Gymnase Le Rallec
+              </h3>
+              <p className="text-gray-500 text-sm">86 Grande Rue, Garches (92)</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Jeunes M11 à M18 · Loisir Mixte · 4×4 Féminine
+              </p>
+            </div>
             <div className="bg-white border-l-4 border-gvvb-red p-6">
               <h3 className="font-heading font-bold text-xl text-gvvb-navy mb-2">
                 Gymnase Yves du Manoir
               </h3>
-              <p className="text-gray-500 text-sm">Vaucresson (92)</p>
-              <p className="text-gray-500 text-sm mt-1">Compétition Garçons · Loisir Compétition</p>
-            </div>
-            <div className="bg-white border-l-4 border-gvvb-red p-6">
-              <h3 className="font-heading font-bold text-xl text-gvvb-navy mb-2">
-                Gymnase Yves Bodin / Le Rallec
-              </h3>
-              <p className="text-gray-500 text-sm">Garches (92)</p>
-              <p className="text-gray-500 text-sm mt-1">Compétition Féminines · Loisir · Jeunes</p>
+              <p className="text-gray-500 text-sm">13 allée des Lauriers, Vaucresson (92)</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Départementale Masculine · Loisir Compétition
+              </p>
             </div>
           </div>
         </div>

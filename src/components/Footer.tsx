@@ -49,6 +49,7 @@ export default function Footer() {
               { href: "/equipes", label: "Équipes" },
               { href: "/entrainements", label: "Entraînements & Horaires" },
               { href: "/calendrier", label: "Calendrier & Résultats" },
+              { href: "/inscription", label: "Inscription & Tarifs" },
             ].map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="text-gray-400 hover:text-white transition-colors">
@@ -70,7 +71,7 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-white transition-colors">
+              <Link href="/inscription" className="hover:text-white transition-colors">
                 Inscription au club
               </Link>
             </li>
@@ -78,8 +79,9 @@ export default function Footer() {
               <span className="block font-heading text-xs uppercase tracking-widest text-gray-500 mb-1">
                 Gymnases
               </span>
-              <span>Yves du Manoir - Garches</span><br />
-              <span>Yves Bodin - Vaucresson</span>
+              <span>Yves Bodin - Garches</span><br />
+              <span>Le Rallec - Garches</span><br />
+              <span>Yves du Manoir - Vaucresson</span>
             </li>
           </ul>
         </div>

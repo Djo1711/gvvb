@@ -2,79 +2,157 @@ import PageHeader from "@/components/PageHeader";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import {
+  EQUIPES_COMPETITION,
+  EQUIPES_JEUNES,
+  EQUIPES_LOISIR,
+  TOUTES_EQUIPES,
+  ffvbUrl,
+  type Equipe,
+} from "@/lib/saison";
 
 export const metadata: Metadata = {
   title: "Équipes",
-  description: "Toutes les équipes du GVVB : départementale masculine, féminine, loisir OR, VSOP et jeunes M15.",
+  description:
+    "Toutes les équipes du GVVB : départementales masculine et féminine, jeunes du M11 au M21, loisir et 4×4 féminine.",
 };
 
-const equipes = [
-  {
-    id: "dep-masculine",
-    nom: "Départementale Masculine",
-    niveau: "Compétition",
-    genre: "Masculin",
-    coach: "Christelle Mazzuchelli",
-    description:
-      "L'équipe masculine évolue en championnat départemental dans les Hauts-de-Seine. Après une phase principale en poule A, l'équipe a disputé la poule intermédiaire 2.",
-    photo: "/equipes/dep-masculine.jpg",
-    liens: [
-      { label: "Poule principale (AMA)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=AMA" },
-      { label: "Poule intermédiaire 2 (AMF)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=AMF" },
-    ],
-  },
-  {
-    id: "dep-feminine",
-    nom: "Départementale Féminine",
-    niveau: "Compétition",
-    genre: "Féminin",
-    coach: "Florian Champagne",
-    description:
-      "L'équipe féminine évolue en championnat départemental. Après la phase principale, l'équipe a disputé la poule basse.",
-    photo: "/equipes/dep-feminine.jpg",
-    liens: [
-      { label: "Poule principale (AFC)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=AFC" },
-      { label: "Poule basse (AFF)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=AFF" },
-    ],
-  },
-  {
-    id: "loisir-or",
-    nom: "Loisir OR",
-    niveau: "Loisir Compétition",
-    genre: "Mixte",
-    coach: null,
-    description:
-      "L'équipe Loisir OR évolue dans la poule OR du championnat loisir. Une équipe mixte pour ceux qui veulent conjuguer compétition et plaisir du jeu.",
-    photo: "/equipes/loisir-or.jpg",
-    liens: [
-      { label: "Poule OR", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=ORA" },
-    ],
-  },
-  {
-    id: "vsop",
-    nom: "VSOP",
-    niveau: "Ligue Loisir",
-    genre: "Mixte",
-    coach: null,
-    description:
-      "Le VSOP est une ligue loisir créée dans le sud-ouest parisien, réunissant des clubs de la région pour des rencontres conviviales à haut niveau de jeu.",
-    photo: null,
-    liens: [],
-  },
-  {
-    id: "m15-feminine",
-    nom: "M15 Féminines",
-    niveau: "Compétition Jeunes",
-    genre: "Féminin",
-    coach: "Lily Fayet",
-    description:
-      "Notre équipe de jeunes filles dispute le championnat départemental M15. Formation et compétition au programme pour nos futures championnes.",
-    photo: "/equipes/m15-feminine.jpg",
-    liens: [
-      { label: "Championnat M15 F (MFB)", url: "https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=MFB" },
-    ],
-  },
-];
+function FfvbLinks({ equipe, compact = false }: { equipe: Equipe; compact?: boolean }) {
+  if (equipe.liens.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-2">
+      {equipe.liens.map((lien) => (
+        <a
+          key={lien.poule}
+          href={ffvbUrl(lien.poule)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`font-heading uppercase tracking-wider text-gvvb-red border border-gvvb-red hover:bg-gvvb-red hover:text-white transition-colors ${
+            compact ? "text-[0.65rem] px-3 py-1.5" : "text-xs px-4 py-2"
+          }`}
+        >
+          {lien.label} ↗
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function Creneaux({ equipe }: { equipe: Equipe }) {
+  if (equipe.creneaux.length === 0) return null;
+  return (
+    <div className="mb-4">
+      <span className="font-heading text-xs uppercase tracking-widest text-gray-400 block mb-1.5">
+        Créneaux
+      </span>
+      <ul className="flex flex-col gap-1">
+        {equipe.creneaux.map((c) => (
+          <li key={c} className="text-sm text-gray-600 flex items-start gap-2">
+            <span className="text-gvvb-red mt-0.5 flex-shrink-0" aria-hidden="true">·</span>
+            <span>{c}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** Grand format alterné photo / texte, réservé aux équipes seniors compétition. */
+function EquipeFeature({ equipe, reverse }: { equipe: Equipe; reverse: boolean }) {
+  return (
+    <article
+      id={equipe.id}
+      className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} gap-8 items-start scroll-mt-20`}
+    >
+      <div className="w-full md:w-2/5 flex-shrink-0 order-2 md:order-1">
+        {equipe.photo ? (
+          <div className="relative aspect-video overflow-hidden">
+            <Image
+              src={equipe.photo}
+              alt={`Équipe ${equipe.nom} GVVB`}
+              fill
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <div className="aspect-video bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-200">
+            <span className="font-heading text-sm text-gray-400 uppercase tracking-wide">
+              Photo à venir
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex-1 py-2 order-1 md:order-2">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+            {equipe.niveau}
+          </span>
+          <span className="text-gray-300" aria-hidden="true">·</span>
+          <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
+            {equipe.genre}
+          </span>
+        </div>
+        <h3 className="font-heading font-bold text-3xl text-gvvb-navy mb-4">{equipe.nom}</h3>
+        <p className="text-gray-600 leading-relaxed mb-6">{equipe.description}</p>
+        <Creneaux equipe={equipe} />
+        {equipe.coach && (
+          <p className="text-sm text-gray-500 mb-6">
+            <span className="font-heading text-xs uppercase tracking-widest text-gray-400">Coach · </span>
+            {equipe.coach}
+          </p>
+        )}
+        <FfvbLinks equipe={equipe} />
+      </div>
+    </article>
+  );
+}
+
+/** Carte compacte, utilisée pour les groupes jeunes et loisir. */
+function EquipeCard({ equipe }: { equipe: Equipe }) {
+  return (
+    <article
+      id={equipe.id}
+      className="bg-white border border-gray-200 hover:border-gvvb-red transition-colors flex flex-col scroll-mt-20"
+    >
+      {equipe.photo && (
+        <div className="relative aspect-video overflow-hidden">
+          <Image
+            src={equipe.photo}
+            alt={`Équipe ${equipe.nom} GVVB`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
+          />
+        </div>
+      )}
+      <div className="p-6 flex flex-col flex-1">
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+            {equipe.niveau}
+          </span>
+          <span className="text-gray-300" aria-hidden="true">·</span>
+          <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
+            {equipe.genre}
+          </span>
+        </div>
+        <h3 className="font-heading font-bold text-xl text-gvvb-navy mb-3">{equipe.nom}</h3>
+        <p className="text-gray-600 text-sm leading-relaxed mb-5">{equipe.description}</p>
+        <div className="mt-auto">
+          <Creneaux equipe={equipe} />
+          {equipe.coach && (
+            <p className="text-sm text-gray-500 mb-4">
+              <span className="font-heading text-xs uppercase tracking-widest text-gray-400">Coach · </span>
+              {equipe.coach}
+            </p>
+          )}
+          <FfvbLinks equipe={equipe} compact />
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export default function Equipes() {
   return (
@@ -82,91 +160,88 @@ export default function Equipes() {
       <PageHeader
         label="GVVB"
         title="Nos équipes"
-        description="Cinq équipes pour tous les niveaux : compétition, loisir et jeunes."
+        description={`${TOUTES_EQUIPES.length} équipes et groupes pour tous les âges et tous les niveaux : compétition, formation et loisir.`}
         bgImage="/photos/volleyballs.jpg"
       />
 
+      {/* Compétition Seniors */}
       <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col gap-12">
-          {equipes.map((equipe, idx) => (
-            <article
-              key={equipe.id}
-              id={equipe.id}
-              className={`flex flex-col ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} gap-8 items-start scroll-mt-20`}
-            >
-              {/* Photo */}
-              <div className="w-full md:w-2/5 flex-shrink-0 order-2 md:order-1">
-                {equipe.photo ? (
-                  <div className="relative aspect-video overflow-hidden">
-                    <Image
-                      src={equipe.photo}
-                      alt={`Équipe ${equipe.nom} GVVB`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="aspect-video bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-200">
-                    <span className="font-heading text-sm text-gray-400 uppercase tracking-wide">
-                      Photo à venir
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Texte */}
-              <div className="flex-1 py-2 order-1 md:order-2">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
-                    {equipe.niveau}
-                  </span>
-                  <span className="text-gray-300">·</span>
-                  <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
-                    {equipe.genre}
-                  </span>
-                </div>
-                <h2 className="font-heading font-bold text-3xl text-gvvb-navy mb-4">
-                  {equipe.nom}
-                </h2>
-                <p className="text-gray-600 leading-relaxed mb-6">{equipe.description}</p>
-                {equipe.coach && (
-                  <p className="text-sm text-gray-500 mb-6">
-                    <span className="font-heading text-xs uppercase tracking-widest text-gray-400">Coach · </span>
-                    {equipe.coach}
-                  </p>
-                )}
-                {equipe.liens.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {equipe.liens.map((lien) => (
-                      <a
-                        key={lien.url}
-                        href={lien.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-heading text-xs uppercase tracking-wider text-gvvb-red border border-gvvb-red px-4 py-2 hover:bg-gvvb-red hover:text-white transition-colors"
-                      >
-                        {lien.label} ↗
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
+        <div className="max-w-7xl mx-auto">
+          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+            Championnat départemental
+          </span>
+          <h2 className="font-heading font-bold text-3xl text-gvvb-navy mt-2 mb-10">
+            Compétition Seniors
+          </h2>
+          <div className="flex flex-col gap-12">
+            {EQUIPES_COMPETITION.map((equipe, idx) => (
+              <EquipeFeature key={equipe.id} equipe={equipe} reverse={idx % 2 === 1} />
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="bg-gray-50 py-12 px-4">
+      {/* Jeunes */}
+      <section className="bg-gray-50 py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+            Du M11 au M21
+          </span>
+          <h2 className="font-heading font-bold text-3xl text-gvvb-navy mt-2 mb-2">
+            Jeunes
+          </h2>
+          <p className="text-gray-600 mb-10 max-w-2xl">
+            De l&apos;école de volley aux groupes compétition, nos jeunes s&apos;entraînent au gymnase
+            Le Rallec et à Yves Bodin, à Garches.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {EQUIPES_JEUNES.map((equipe) => (
+              <EquipeCard key={equipe.id} equipe={equipe} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Loisir */}
+      <section className="py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
+            Sans pression
+          </span>
+          <h2 className="font-heading font-bold text-3xl text-gvvb-navy mt-2 mb-2">
+            Loisir
+          </h2>
+          <p className="text-gray-600 mb-10 max-w-2xl">
+            Du jeu libre du dimanche matin au championnat loisir, plusieurs formats pour jouer
+            à son rythme.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {EQUIPES_LOISIR.map((equipe) => (
+              <EquipeCard key={equipe.id} equipe={equipe} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gray-50 py-12 px-4 border-t border-gray-200">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-600 mb-4">
             Vous voulez rejoindre une équipe ou vous n&apos;êtes pas sûr(e) de votre niveau ?
           </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center bg-gvvb-red text-white font-heading text-sm uppercase tracking-wider px-8 py-3 hover:bg-gvvb-red-dark transition-colors"
-          >
-            Contactez-nous
-          </Link>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              href="/inscription"
+              className="inline-flex items-center bg-gvvb-red text-white font-heading text-sm uppercase tracking-wider px-8 py-3 hover:bg-gvvb-red-dark transition-colors"
+            >
+              Tarifs & inscription
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center border border-gvvb-red text-gvvb-red font-heading text-sm uppercase tracking-wider px-8 py-3 hover:bg-gvvb-red hover:text-white transition-colors"
+            >
+              Nous contacter
+            </Link>
+          </div>
         </div>
       </section>
     </>

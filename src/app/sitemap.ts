@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: "/equipes", priority: 0.8 },
     { url: "/entrainements", priority: 0.7 },
     { url: "/calendrier", priority: 0.7 },
+    { url: "/inscription", priority: 0.9 },
     { url: "/contact", priority: 0.6 },
   ];
   return pages.map(({ url, priority }) => ({

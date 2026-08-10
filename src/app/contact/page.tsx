@@ -1,23 +1,12 @@
 import PageHeader from "@/components/PageHeader";
+import Link from "next/link";
 import type { Metadata } from "next";
+import { BUREAU, DATE_LIMITE, DOSSIER, SAISON_CLUB } from "@/lib/saison";
 
 export const metadata: Metadata = {
   title: "Contact & Inscription",
   description: "Contactez le GVVB ou inscrivez-vous au club de volley-ball de Garches et Vaucresson.",
 };
-
-const contacts = [
-  {
-    nom: "Stéphane Feldman",
-    role: "Président",
-    tel: "07 62 92 04 94",
-  },
-  {
-    nom: "Benoît Rousseau",
-    role: "Trésorier - Inscriptions",
-    tel: "06 80 85 02 37",
-  },
-];
 
 export default function Contact() {
   return (
@@ -56,15 +45,18 @@ export default function Contact() {
 
           <div>
             <span className="font-heading text-xs uppercase tracking-widest text-gvvb-red">
-              Téléphone
+              Gouvernance
             </span>
             <h2 className="font-heading font-bold text-2xl text-gvvb-navy mt-2 mb-4">
-              Nous téléphoner
+              Le bureau
             </h2>
+            <p className="text-gray-600 text-sm mb-4">
+              Pour tout renseignement, prenez contact avec l&apos;un des membres du bureau.
+            </p>
             <div className="flex flex-col gap-4">
-              {contacts.map((c) => (
+              {BUREAU.map((c) => (
                 <div key={c.nom} className="flex items-start gap-4 border-l-2 border-gvvb-red pl-4">
-                  <div>
+                  <div className="min-w-0">
                     <span className="font-heading text-xs uppercase tracking-widest text-gray-400 block">
                       {c.role}
                     </span>
@@ -74,6 +66,12 @@ export default function Contact() {
                       className="block text-gray-600 hover:text-gvvb-red transition-colors mt-1"
                     >
                       {c.tel}
+                    </a>
+                    <a
+                      href={`mailto:${c.email}`}
+                      className="block text-gray-500 text-sm hover:text-gvvb-red transition-colors truncate"
+                    >
+                      {c.email}
                     </a>
                   </div>
                 </div>
@@ -135,7 +133,7 @@ export default function Contact() {
             </h2>
             {/* Télécharger le dossier */}
             <a
-              href="/docs/dossier-inscription-2025-2026.pdf"
+              href={DOSSIER.href}
               download
               className="flex items-center gap-4 bg-gvvb-red text-white p-5 hover:bg-gvvb-red-dark transition-colors group"
             >
@@ -144,9 +142,9 @@ export default function Contact() {
               </svg>
               <div>
                 <p className="font-heading font-bold text-base uppercase tracking-wide">
-                  Dossier d&apos;inscription 2025-2026
+                  Dossier d&apos;inscription {SAISON_CLUB}
                 </p>
-                <p className="text-red-100 text-sm mt-0.5">Télécharger le PDF · 333 Ko</p>
+                <p className="text-red-100 text-sm mt-0.5">Télécharger le PDF · {DOSSIER.taille}</p>
               </div>
               <svg className="w-5 h-5 ml-auto flex-shrink-0 opacity-70 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -155,24 +153,30 @@ export default function Contact() {
 
             <div className="bg-gray-50 border border-gray-200 p-6 flex flex-col gap-4">
               <p className="text-gray-600 text-sm leading-relaxed">
-                Téléchargez et remplissez le dossier ci-dessus, puis transmettez-le
-                à notre trésorier Benoît Rousseau. Nous accueillons aussi les essais
-                - venez tester un créneau avant de vous engager.
+                Téléchargez et remplissez le dossier ci-dessus, puis transmettez-le complet
+                à notre trésorier Benoît Rousseau avant {DATE_LIMITE}. Nous accueillons aussi
+                les essais - venez tester un créneau avant de vous engager.
               </p>
               <div className="flex flex-col gap-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <span className="text-gvvb-red font-bold mt-0.5">→</span>
+                  <span className="text-gvvb-red font-bold mt-0.5" aria-hidden="true">→</span>
+                  <Link href="/inscription" className="text-gray-600 hover:text-gvvb-red transition-colors">
+                    Tarifs et pièces à fournir
+                  </Link>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-gvvb-red font-bold mt-0.5" aria-hidden="true">→</span>
                   <span className="text-gray-600">Benoît Rousseau au <a href="tel:0680850237" className="text-gvvb-red hover:underline">06 80 85 02 37</a></span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-gvvb-red font-bold mt-0.5">→</span>
+                  <span className="text-gvvb-red font-bold mt-0.5" aria-hidden="true">→</span>
                   <span className="text-gray-600">Par email : <a href="mailto:contact@gvvb.fr" className="text-gvvb-red hover:underline">contact@gvvb.fr</a></span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-gvvb-red font-bold mt-0.5">→</span>
-                  <a href="/entrainements" className="text-gray-600 hover:text-gvvb-red transition-colors">
+                  <span className="text-gvvb-red font-bold mt-0.5" aria-hidden="true">→</span>
+                  <Link href="/entrainements" className="text-gray-600 hover:text-gvvb-red transition-colors">
                     Voir les créneaux d&apos;entraînement
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

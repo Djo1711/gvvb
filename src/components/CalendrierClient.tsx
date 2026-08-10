@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { formatDate, matchResult, opponentName, type Match, type Standing } from "@/lib/ffvb";
+import { ffvbUrl } from "@/lib/saison";
 
 interface PouleData {
   code: string;
@@ -240,7 +241,7 @@ export default function CalendrierClient({ pouleData }: { pouleData: PouleData[]
           {pouleData.map((p) => (
             <a
               key={p.code}
-              href={`https://www.ffvbbeach.org/ffvbapp/resu/vbspo_calendrier.php?saison=2025/2026&codent=PTIDF92&poule=${p.code}`}
+              href={ffvbUrl(p.code)}
               target="_blank"
               rel="noopener noreferrer"
               className="font-heading text-xs uppercase tracking-wider text-gvvb-red border border-gvvb-red px-4 py-2 hover:bg-gvvb-red hover:text-white transition-colors"
