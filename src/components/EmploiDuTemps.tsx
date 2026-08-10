@@ -19,7 +19,7 @@ const LIGNES_ENTETE = 2;
 /** Mêmes deux couleurs dans toutes les grilles, jeunes comme adultes. */
 const COULEURS: Record<CreneauType, string> = {
   competition: "bg-gvvb-red text-white",
-  loisir: "bg-gvvb-blue text-white",
+  loisir: "bg-gvvb-navy text-white",
 };
 
 /** Créneau et sa position imbriquée au sein d'une largeur de colonne. */
@@ -333,16 +333,20 @@ export default function EmploiDuTemps({
                   <div
                     key={`gym-${j.jour}`}
                     aria-hidden="true"
-                    className={`bg-gvvb-navy-dark py-1.5 ${i > 0 ? "border-l-2 border-white/30" : ""}`}
+                    className={`bg-gvvb-navy-dark py-1.5 border-b-2 border-white ${
+                      i > 0 ? "border-l-2 border-l-white/30" : ""
+                    }`}
                     style={{ gridColumn: j.debutCol, gridRow: 2 }}
                   />,
                 ]
               : j.unites.map((u, k) => (
                   <div
                     key={`gym-${j.jour}-${u.gymnase}`}
-                    className={`bg-gvvb-navy-dark text-white/70 text-[0.68rem] text-center py-1.5 px-1 truncate ${
-                      i > 0 && k === 0 ? "border-l-2 border-white/30" : ""
-                    } ${k > 0 ? "border-l border-dashed border-white/30" : ""}`}
+                    /* Le filet blanc du bas évite qu'un bloc loisir, marine lui
+                       aussi, se fonde dans l'en-tête juste au-dessus. */
+                    className={`bg-gvvb-navy-dark text-white/70 text-[0.68rem] text-center py-1.5 px-1 truncate border-b-2 border-b-white ${
+                      i > 0 && k === 0 ? "border-l-2 border-l-white/30" : ""
+                    } ${k > 0 ? "border-l border-dashed border-l-white/30" : ""}`}
                     style={{ gridColumn: j.debutCol + k, gridRow: 2 }}
                   >
                     {u.gymnase}

@@ -310,11 +310,13 @@ toutes les grilles**, jeunes comme adultes :
 | Type | Couleur |
 |---|---|
 | `competition` | fond rouge GVVB, texte blanc |
-| `loisir` | fond bleu, texte blanc |
+| `loisir` | fond marine GVVB (`--color-gvvb-navy`), texte blanc |
 
-> Le bleu du loisir doit rester nettement plus clair et plus saturé que
-> `--color-gvvb-navy`, qui sert aux en-têtes de la grille juste au-dessus des
-> blocs, et garder un contraste suffisant avec du texte blanc (ici 6:1).
+> Le loisir réutilise le marine de la charte, donc **la même couleur que les
+> en-têtes de la grille**. C'est pour cela que la ligne des gymnases porte un
+> filet blanc de 2 px en bas : sans lui, un bloc loisir qui démarre à la
+> première ligne (le M11 du mardi, le jeu libre du dimanche) se fond dans
+> l'en-tête juste au-dessus. Ne pas retirer ce filet.
 
 ### Mention « Compétition » et couleur sont deux choses distinctes
 
