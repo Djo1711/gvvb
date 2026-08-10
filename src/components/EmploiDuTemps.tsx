@@ -26,8 +26,8 @@ const COULEURS: Record<"vif" | "pale", Record<CreneauType, string>> = {
     loisir: "bg-gvvb-teal text-white",
   },
   pale: {
-    competition: "bg-gvvb-red-pale text-gvvb-red-dark border border-gvvb-red/25",
-    loisir: "bg-gvvb-teal-pale text-gvvb-teal-dark border border-gvvb-teal/25",
+    competition: "bg-gvvb-red-pale text-gvvb-red-dark",
+    loisir: "bg-gvvb-teal-pale text-gvvb-teal-dark",
   },
 };
 
@@ -130,7 +130,7 @@ function placerJour(creneaux: Creneau[]): Unite[] {
 function placerSemaine(
   creneaux: Creneau[],
   jours: readonly string[],
-): { layout: JourLayout[]; gabarit: string; minWidth: string } {
+): { layout: JourLayout[]; gabarit: string; minWidth: string; maxWidth: string } {
   let debutCol = 2;
   const layout: JourLayout[] = [];
 
@@ -160,7 +160,14 @@ function placerSemaine(
     .map((j) => (j.vide ? ` + ${LARGEUR_VIDE}` : ` + ${j.nbCols} * ${largeurUnite}`))
     .join("")})`;
 
-  return { layout, gabarit, minWidth };
+  // Plafond de largeur : sans lui, une grille à peu de colonnes (le week-end)
+  // verrait ses `1fr` s'étirer sur toute la page. Ne mord que dans ce cas.
+  const largeurUniteMax = `${maxImbriques * 9}rem`;
+  const maxWidth = `calc(${GUTTER}${layout
+    .map((j) => (j.vide ? ` + ${LARGEUR_VIDE}` : ` + ${j.nbCols} * ${largeurUniteMax}`))
+    .join("")})`;
+
+  return { layout, gabarit, minWidth, maxWidth };
 }
 
 function Legende({ types, variante }: { types: CreneauType[]; variante: "vif" | "pale" }) {
@@ -203,27 +210,36 @@ export default function EmploiDuTemps({
   // Plage horaire calée sur les demi-heures encadrant les créneaux.
   const debutMin = Math.floor(Math.min(...affiches.map((c) => toMinutes(c.debut))) / 30) * 30;
   const finMin = Math.ceil(Math.max(...affiches.map((c) => toMinutes(c.fin))) / 30) * 30;
-  const nbLignes = (finMin - debutMin) / 15;
+  // Maillage vertical : 15 minutes seulement si un créneau en a besoin. Le
+  // dimanche tient sur les demi-heures, ce qui divise par deux sa hauteur.
+  const surDemiHeures = affiches.every(
+    (c) => toMinutes(c.debut) % 30 === 0 && toMinutes(c.fin) % 30 === 0,
+  );
+  const pasLigne = surDemiHeures ? 30 : 15;
+  const nbLignes = (finMin - debutMin) / pasLigne;
 
-  // Le dimanche étire la plage de 12 heures : on resserre les lignes pour que
-  // la grille reste d'une hauteur raisonnable, sans descendre sous le lisible.
+  // Hauteur de ligne calée pour viser une grille d'environ 620 px.
   const rowH = Math.max(12, Math.min(22, Math.round(620 / nbLignes)));
 
   /** Ligne de grille correspondant à une heure. */
-  const ligne = (minutes: number) => (minutes - debutMin) / 15 + 1 + LIGNES_ENTETE;
+  const ligne = (minutes: number) => (minutes - debutMin) / pasLigne + 1 + LIGNES_ENTETE;
   const derniereLigne = nbLignes + LIGNES_ENTETE;
   const corps = `${LIGNES_ENTETE + 1} / span ${nbLignes}`;
 
-  const { layout, gabarit, minWidth } = placerSemaine(affiches, jours);
+  const { layout, gabarit, minWidth, maxWidth } = placerSemaine(affiches, jours);
   const totalCols = layout.reduce((n, j) => n + j.nbCols, 0);
 
-  // Une graduation par demi-heure devient illisible quand les lignes sont
-  // resserrées : on passe alors à l'heure pleine.
-  const pas = rowH < 18 && (finMin - debutMin) % 60 === 0 ? 60 : 30;
-  const marques = Array.from(
-    { length: (finMin - debutMin) / pas + 1 },
-    (_, i) => debutMin + i * pas,
-  );
+  // Pas des graduations choisi sur l'écart réel en pixels, pas sur la durée :
+  // avec des lignes de 30 minutes, une graduation par demi-heure ne laisse
+  // qu'une hauteur de ligne entre deux libellés, qui se chevauchent alors.
+  const pas = (30 / pasLigne) * rowH >= 34 ? 30 : 60;
+
+  // La plage n'est pas toujours un multiple du pas (le dimanche démarre à
+  // 10h30) : on encadre donc des graduations alignées sur le pas par les deux
+  // bornes réelles. Les intervalles sont de ce fait irréguliers.
+  const marques = [debutMin];
+  for (let t = Math.ceil((debutMin + 1) / pas) * pas; t < finMin; t += pas) marques.push(t);
+  if (marques[marques.length - 1] !== finMin) marques.push(finMin);
 
   return (
     <>
@@ -234,6 +250,7 @@ export default function EmploiDuTemps({
           className="grid"
           style={{
             minWidth,
+            maxWidth,
             gridTemplateColumns: gabarit,
             gridTemplateRows: `auto auto repeat(${nbLignes}, ${rowH}px)`,
           }}
@@ -258,13 +275,16 @@ export default function EmploiDuTemps({
               />
             )),
           )}
-          {/* Bandes de demi-heure */}
-          {marques.slice(0, -1).map((t) => (
+          {/* Bandes entre deux graduations */}
+          {marques.slice(0, -1).map((t, i) => (
             <div
               key={`bande-${t}`}
               aria-hidden="true"
               className="border-t border-gray-200"
-              style={{ gridColumn: "2 / -1", gridRow: `${ligne(t)} / span ${pas / 15}` }}
+              style={{
+                gridColumn: "2 / -1",
+                gridRow: `${ligne(t)} / span ${(marques[i + 1] - t) / pasLigne}`,
+              }}
             />
           ))}
           <div

@@ -8,7 +8,7 @@ import {
   CRENEAUX_COMPETITION,
   CRENEAUX_JEUNES,
   CRENEAUX_LOISIR,
-  JOURS_AVEC_WEEKEND,
+  JOURS_WEEKEND,
   LIBELLES_TYPE,
   NOTE_CRENEAUX,
   SAISON_CLUB,
@@ -141,13 +141,26 @@ export default function Entrainements() {
             Emploi du temps — Adultes
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl">
-            Loisir et compétition départementale, du lundi au dimanche. Le dimanche
-            accueille le jeu libre du matin puis les matchs de l&apos;après-midi.
+            Loisir et compétition départementale, du lundi au vendredi.
           </p>
           <EmploiDuTemps
             creneaux={CRENEAUX_ADULTES}
             legende={["competition", "loisir"]}
-            jours={JOURS_AVEC_WEEKEND}
+            fond="bg-gray-50"
+          />
+
+          {/* Le dimanche a sa propre plage horaire : grille distincte */}
+          <h3 className="font-heading font-bold text-xl text-gvvb-navy mt-12 mb-2">
+            Le week-end
+          </h3>
+          <p className="text-gray-600 mb-6 max-w-2xl">
+            Le dimanche suit d&apos;autres horaires : jeu libre le matin, puis les
+            matchs des deux équipes départementales l&apos;après-midi.
+          </p>
+          <EmploiDuTemps
+            creneaux={CRENEAUX_ADULTES}
+            legende={["competition", "loisir"]}
+            jours={JOURS_WEEKEND}
             fond="bg-gray-50"
           />
         </div>

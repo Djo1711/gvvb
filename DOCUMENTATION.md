@@ -150,9 +150,10 @@ Deux **emplois du temps hebdomadaires** (voir `EmploiDuTemps` ci-dessous) :
 jeunes puis adultes. Chaque case affiche la catégorie, l'horaire et le gymnase,
 avec un code couleur par `type` de créneau — pâle pour les jeunes.
 
-La grille adultes couvre **lundi → dimanche** : le dimanche porte le jeu libre du
-matin et les matchs de l'après-midi, et le samedi, sans créneau, se réduit à une
-colonne « … ». La plage horaire s'étend donc de 10h30 à 22h30.
+La section adultes contient **deux grilles** : la semaine (lundi → vendredi,
+20h → 22h30) puis « Le week-end » (10h30 → 18h). Le dimanche a sa propre grille
+parce que ses horaires n'ont rien à voir avec ceux de la semaine : une grille
+unique étirée sur douze heures laissait six colonnes vides sur sept heures.
 
 Suivent les catégories d'âge et un bloc `<details>` « Voir la liste détaillée »
 avec les 3 tableaux jour / horaire / ville / gymnase / catégorie / type — c'est
@@ -287,9 +288,16 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
   Les jours occupés récupèrent la largeur ainsi libérée.
 - Lecture des jours : bordures de jour épaisses (`border-l-2`), fond alterné un
   jour sur deux, et séparation pointillée entre deux gymnases d'un même jour.
-- Hauteur de ligne adaptative : le dimanche étire la plage adultes à 12 h, les
-  lignes se resserrent alors (et les graduations passent à l'heure pleine) pour
-  que la grille reste d'une hauteur raisonnable.
+- **Maillage vertical adaptatif** : lignes de 15 minutes seulement si un créneau
+  en a besoin, sinon 30 minutes. Le dimanche tient sur les demi-heures, ce qui
+  divise par deux la hauteur de sa grille.
+- Le **pas des graduations** est choisi sur l'écart réel en pixels, pas sur la
+  durée : avec des lignes de 30 minutes, une graduation par demi-heure ne laisse
+  qu'une hauteur de ligne entre deux libellés, qui se chevauchent. Les
+  graduations sont alignées sur le pas et encadrées par les bornes réelles, donc
+  les intervalles peuvent être irréguliers (10h30, 11h, 12h…).
+- `maxWidth` plafonne la largeur : sans lui, une grille à peu de colonnes (le
+  week-end) verrait ses `1fr` s'étirer sur toute la page.
 - Colonne des heures **`sticky left-0`** — reste lisible pendant le scroll
   horizontal sur mobile ; d'où le paramètre `fond`, qui lui donne un fond opaque
 - Chaque bloc porte du texte `sr-only` (jour, ville) pour rester compréhensible
@@ -301,16 +309,16 @@ les deux grilles**, la variante `pale` étant réservée aux jeunes :
 
 | Type | Vif (adultes) | Pâle (jeunes) |
 |---|---|---|
-| `competition` | fond rouge GVVB, texte blanc | fond rouge très clair, texte rouge foncé |
-| `loisir` | fond teal, texte blanc | fond teal très clair, texte teal foncé |
+| `competition` | fond rouge GVVB, texte blanc | fond rose soutenu, texte rouge foncé |
+| `loisir` | fond teal, texte blanc | fond teal clair soutenu, texte teal foncé |
 
 > Le loisir est en teal et non en orange : rouge et orange sont un couple de
 > confusion classique pour les daltonismes rouge-vert.
 
-> Le facteur de largeur de colonne (`largeurUnite`) est calé pour que la semaine
-> complète des adultes — sept largeurs plus le samedi — tienne dans le conteneur
-> sur un écran de bureau sans scroll horizontal. L'augmenter fait déborder le
-> dimanche hors du champ visible.
+> Les variantes pâles inversent fond et texte plutôt que de délaver le rouge et
+> le teal : un rouge éclairci avec du texte blanc tombe sous le seuil de
+> contraste lisible. Elles doivent rester franchement teintées — un premier
+> essai en `#fbeef1` / `#e6f2f1` rendait la grille des jeunes quasi blanche.
 
 ### `CalendrierClient`
 

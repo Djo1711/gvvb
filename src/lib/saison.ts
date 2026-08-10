@@ -128,8 +128,12 @@ export const CRENEAUX_ADULTES: Creneau[] = [...CRENEAUX_LOISIR, ...CRENEAUX_COMP
 
 export const JOURS_SEMAINE = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"] as const;
 
-/** Semaine complète : le dimanche porte le jeu libre et les matchs. */
-export const JOURS_AVEC_WEEKEND = [...JOURS_SEMAINE, "Samedi", "Dimanche"] as const;
+/**
+ * Le week-end fait l'objet d'une grille séparée : le dimanche court de 10h30 à
+ * 18h alors que la semaine tient entre 20h et 22h30, et une grille unique
+ * étirée sur douze heures laissait un immense vide.
+ */
+export const JOURS_WEEKEND = ["Samedi", "Dimanche"] as const;
 
 export const LIBELLES_TYPE: Record<CreneauType, string> = {
   competition: "Compétition",
