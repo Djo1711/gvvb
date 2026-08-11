@@ -135,7 +135,12 @@ Header : `supporters.jpg`
 | Jeunes | M11, M13/M15 Garçons, M13/M15 Filles, M18 Filles, M18/M21 Mixte | grille de cartes |
 | Loisir | Loisir OR, 4×4 Féminine, Loisir Mixte, VSOP | grille de cartes |
 
-Chaque fiche affiche niveau, genre, description, **créneaux**, coach et liens FFVB.
+Chaque fiche affiche niveau, genre, description, **créneaux**, coachs et liens FFVB.
+
+`Equipe.coachs` est un **tableau** : un groupe peut être encadré à plusieurs (les
+M13 / M15 Filles le sont), et le libellé se met au pluriel tout seul. Les coachs
+sont désignés par leur **prénom seul**, ici comme sur `/le-club` : c'est plus
+convivial et c'est ainsi qu'on les appelle au gymnase.
 Les équipes sans photo utilisent le placeholder « Photo à venir ».
 
 > ⚠️ Les `id` servent d'**ancres** (`/equipes#dep-masculine`). L'équipe

@@ -234,7 +234,8 @@ export interface Equipe {
   nom: string;
   niveau: string;
   genre: string;
-  coach: string | null;
+  /** Un groupe peut être encadré à plusieurs. Vide si pas de coach attitré. */
+  coachs: string[];
   description: string;
   photo: string | null;
   /** Créneaux affichés sur la fiche de l'équipe. */
@@ -248,7 +249,7 @@ export const EQUIPES_COMPETITION: Equipe[] = [
     nom: "Départementale Masculine",
     niveau: "Compétition",
     genre: "Masculin",
-    coach: "Christelle Mazzuchelli",
+    coachs: ["Christelle"],
     description:
       "L'équipe masculine évolue en championnat départemental dans les Hauts-de-Seine. Après une phase principale en poule A, l'équipe a disputé la poule intermédiaire 2.",
     photo: "/equipes/dep-masculine.jpg",
@@ -267,7 +268,7 @@ export const EQUIPES_COMPETITION: Equipe[] = [
     nom: "Départementale Féminine",
     niveau: "Compétition",
     genre: "Féminin",
-    coach: "Florian Champagne",
+    coachs: ["Florian"],
     description:
       "L'équipe féminine évolue en championnat départemental. Après la phase principale, l'équipe a disputé la poule basse.",
     photo: "/equipes/dep-feminine.jpg",
@@ -289,7 +290,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     nom: "M11",
     niveau: "École de volley",
     genre: "Mixte",
-    coach: "Lily Fayet",
+    coachs: ["Manu"],
     description:
       "Premiers pas sur le terrain : motricité, jeu en petits effectifs et découverte du volley dans la bonne humeur.",
     photo: null,
@@ -301,7 +302,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     nom: "M13 / M15 Garçons",
     niveau: "Formation",
     genre: "Masculin",
-    coach: "Lily Fayet",
+    coachs: ["Manu"],
     description:
       "Apprentissage des fondamentaux techniques et du jeu à 6, avec une progression vers la compétition départementale.",
     photo: null,
@@ -314,7 +315,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     nom: "M13 / M15 Filles",
     niveau: "Compétition Jeunes",
     genre: "Féminin",
-    coach: "Lily Fayet",
+    coachs: ["Manu", "Charles"],
     description:
       "Nos jeunes filles disputent le championnat départemental M15. Formation et compétition au programme pour nos futures championnes.",
     photo: "/equipes/m15-feminine.jpg",
@@ -326,7 +327,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     nom: "M18 Filles",
     niveau: "Compétition Jeunes",
     genre: "Féminin",
-    coach: "Florian Champagne",
+    coachs: ["Lily"],
     description:
       "Groupe compétition pour les filles nées entre 2009 et 2011, avec deux entraînements hebdomadaires.",
     photo: null,
@@ -341,7 +342,7 @@ export const EQUIPES_JEUNES: Equipe[] = [
     nom: "M18 / M21 Mixte",
     niveau: "Formation",
     genre: "Mixte",
-    coach: "Florian Champagne",
+    coachs: ["Florian"],
     description:
       "Créneau mixte pour les grands jeunes : perfectionnement technique et transition vers les équipes seniors.",
     photo: null,
@@ -356,7 +357,7 @@ export const EQUIPES_LOISIR: Equipe[] = [
     nom: "Loisir OR",
     niveau: "Loisir Compétition",
     genre: "Mixte",
-    coach: null,
+    coachs: [],
     description:
       "L'équipe Loisir OR évolue dans la poule OR du championnat loisir. Une équipe mixte pour ceux qui veulent conjuguer compétition et plaisir du jeu.",
     photo: "/equipes/loisir-or.jpg",
@@ -368,7 +369,7 @@ export const EQUIPES_LOISIR: Equipe[] = [
     nom: "4×4 Féminine",
     niveau: "Loisir",
     genre: "Féminin",
-    coach: null,
+    coachs: [],
     description:
       "Un créneau féminin dédié au jeu à 4 contre 4 : plus de touches de balle, plus de rythme, dans une ambiance conviviale.",
     photo: null,
@@ -380,7 +381,7 @@ export const EQUIPES_LOISIR: Equipe[] = [
     nom: "Loisir Mixte",
     niveau: "Loisir",
     genre: "Mixte",
-    coach: null,
+    coachs: [],
     description:
       "Trois créneaux hebdomadaires sans compétition, plus le jeu libre du dimanche matin. Le format idéal pour reprendre le volley ou débuter.",
     photo: null,
@@ -397,7 +398,7 @@ export const EQUIPES_LOISIR: Equipe[] = [
     nom: "VSOP",
     niveau: "Ligue Loisir",
     genre: "Mixte",
-    coach: null,
+    coachs: [],
     description:
       "Le VSOP est une ligue loisir créée dans le sud-ouest parisien, réunissant des clubs de la région pour des rencontres conviviales à haut niveau de jeu.",
     photo: null,

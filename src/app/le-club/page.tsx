@@ -7,10 +7,13 @@ export const metadata: Metadata = {
   description: "Bureau, coachs et installations du GVVB - Garches Vaucresson Volley-Ball.",
 };
 
+/** Prénoms seuls : c'est plus convivial et c'est ainsi qu'on les appelle au gymnase. */
 const coachs = [
-  { nom: "Christelle Mazzuchelli", equipes: "Coach · Départementale M", tel: "06 07 47 35 28" },
-  { nom: "Florian Champagne", equipes: "Coach · Départementale F · M18 · M21", tel: "07 83 48 31 62" },
-  { nom: "Lily Fayet", equipes: "Coach · M11 · M13 · M15", tel: "07 86 12 80 71" },
+  { nom: "Christelle", equipes: "Coach · Départementale M", tel: "06 07 47 35 28" },
+  { nom: "Florian", equipes: "Coach · Départementale F · M18 / M21 Mixte", tel: "07 83 48 31 62" },
+  { nom: "Lily", equipes: "Coach · M18 Filles", tel: "07 86 12 80 71" },
+  { nom: "Manu", equipes: "Coach · M11 · M13 · M15", tel: null },
+  { nom: "Charles", equipes: "Coach · M15 compétition", tel: null },
 ];
 
 export default function LeClub() {

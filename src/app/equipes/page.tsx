@@ -38,6 +38,18 @@ function FfvbLinks({ equipe, compact = false }: { equipe: Equipe; compact?: bool
   );
 }
 
+function Coachs({ equipe, marge }: { equipe: Equipe; marge: string }) {
+  if (equipe.coachs.length === 0) return null;
+  return (
+    <p className={`text-sm text-gray-500 ${marge}`}>
+      <span className="font-heading text-xs uppercase tracking-widest text-gray-400">
+        {equipe.coachs.length > 1 ? "Coachs · " : "Coach · "}
+      </span>
+      {equipe.coachs.join(" et ")}
+    </p>
+  );
+}
+
 function Creneaux({ equipe }: { equipe: Equipe }) {
   if (equipe.creneaux.length === 0) return null;
   return (
@@ -97,12 +109,7 @@ function EquipeFeature({ equipe, reverse }: { equipe: Equipe; reverse: boolean }
         <h3 className="font-heading font-bold text-3xl text-gvvb-navy mb-4">{equipe.nom}</h3>
         <p className="text-gray-600 leading-relaxed mb-6">{equipe.description}</p>
         <Creneaux equipe={equipe} />
-        {equipe.coach && (
-          <p className="text-sm text-gray-500 mb-6">
-            <span className="font-heading text-xs uppercase tracking-widest text-gray-400">Coach · </span>
-            {equipe.coach}
-          </p>
-        )}
+        <Coachs equipe={equipe} marge="mb-6" />
         <FfvbLinks equipe={equipe} />
       </div>
     </article>
@@ -141,12 +148,7 @@ function EquipeCard({ equipe }: { equipe: Equipe }) {
         <p className="text-gray-600 text-sm leading-relaxed mb-5">{equipe.description}</p>
         <div className="mt-auto">
           <Creneaux equipe={equipe} />
-          {equipe.coach && (
-            <p className="text-sm text-gray-500 mb-4">
-              <span className="font-heading text-xs uppercase tracking-widest text-gray-400">Coach · </span>
-              {equipe.coach}
-            </p>
-          )}
+          <Coachs equipe={equipe} marge="mb-4" />
           <FfvbLinks equipe={equipe} compact />
         </div>
       </div>
