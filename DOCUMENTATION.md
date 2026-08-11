@@ -290,15 +290,25 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
   Les jours occupés récupèrent la largeur ainsi libérée.
 - Lecture des jours : bordures de jour épaisses (`border-l-2`), fond alterné un
   jour sur deux, et séparation pointillée entre deux gymnases d'un même jour.
-- **Échelle de temps fixe et partagée** (`PAS_LIGNE`, `PAS_GRADUATION`,
-  `ROW_H`) : une ligne = 15 minutes, une graduation toutes les 30 minutes, la
-  même hauteur dans toutes les grilles. C'est ce qui donne exactement 44 px
-  entre deux heures partout, et rend les durées comparables d'un tableau à
-  l'autre. Ne pas rendre ces valeurs adaptatives : l'espacement des heures
-  divergerait entre les grilles.
-- Une **ligne de débord** est ajoutée en bas du gabarit pour accueillir le
-  libellé de l'heure de fin. Sans elle, ce dernier libellé serait aligné en bas
-  de la dernière ligne, donc à mi-écart des autres.
+- **Hauteur de corps identique dans toutes les grilles** (`HAUTEUR_CORPS`,
+  330 px). C'est `echelle()` qui s'en charge : chaque grille calcule sa propre
+  hauteur de ligne pour arriver à ce total, quel que soit le temps couvert. Le
+  tableau du dimanche fait donc exactement la même hauteur que celui de la
+  semaine bien qu'il couvre trois fois plus de temps.
+  > Contrepartie assumée : l'échelle minutes/pixel diffère d'une grille à
+  > l'autre. Une demi-heure ne mesure pas la même chose au dimanche et en
+  > semaine. On ne peut pas avoir à la fois des hauteurs égales et une échelle
+  > commune quand les plages couvertes diffèrent.
+- Le **pas des graduations** est le plus fin qui laisse au moins
+  `ECART_MIN_GRADUATION` entre deux libellés, et **les bornes de la plage sont
+  arrondies sur ce pas**. Sans cet arrondi, le dimanche (qui démarre à 10h30)
+  aurait un dernier intervalle deux fois plus court avec des graduations
+  horaires. L'espacement reste donc régulier à l'intérieur de chaque grille.
+- Les libellés d'heure sont **centrés sur leur trait** (`-translate-y-1/2`) :
+  calés par le haut, le texte pendait sous la ligne et paraissait décalé, ce qui
+  se voit d'autant plus depuis le passage en `text-sm`. D'où la **ligne de
+  débord** (`LIGNE_DEBORD`) en bas du gabarit, qui laisse dépasser le libellé de
+  l'heure de fin.
 - `maxWidth` plafonne la largeur : sans lui, une grille à peu de colonnes (le
   week-end) verrait ses `1fr` s'étirer sur toute la page.
 - Colonne des heures **`sticky left-0`** — reste lisible pendant le scroll

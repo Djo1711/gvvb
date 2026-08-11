@@ -16,16 +16,39 @@ const LARGEUR_VIDE = "2rem";
 /** Deux lignes d'en-tête : le jour, puis le gymnase. */
 const LIGNES_ENTETE = 2;
 
-/**
- * Échelle de temps volontairement **fixe et partagée par toutes les grilles** :
- * une ligne = 15 minutes, une graduation toutes les 30 minutes, la même hauteur
- * partout. C'est ce qui donne le même espacement des heures dans la grille des
- * jeunes, celle de la semaine et celle du dimanche, et rend les durées
- * directement comparables d'un tableau à l'autre.
- */
+/** Une ligne de grille = un quart d'heure. */
 const PAS_LIGNE = 15;
-const PAS_GRADUATION = 30;
-const ROW_H = 22;
+/**
+ * Hauteur du corps, **identique dans toutes les grilles** : c'est elle qui rend
+ * le tableau du dimanche aussi haut que celui de la semaine, alors qu'il couvre
+ * trois fois plus de temps. Conséquence assumée : l'échelle minutes/pixel
+ * diffère d'une grille à l'autre.
+ */
+const HAUTEUR_CORPS = 330;
+/** Laisse respirer le libellé de l'heure de fin, centré sur le dernier trait. */
+const LIGNE_DEBORD = 12;
+/** Écart minimal acceptable entre deux libellés d'heure. */
+const ECART_MIN_GRADUATION = 34;
+
+/**
+ * Cale la plage horaire, le pas des graduations et la hauteur de ligne pour que
+ * le corps mesure toujours HAUTEUR_CORPS.
+ *
+ * Le pas retenu est le plus fin qui laisse au moins ECART_MIN_GRADUATION entre
+ * deux libellés, et les bornes sont arrondies **sur ce pas** — sans quoi le
+ * dimanche, qui démarre à 10h30, ne tomberait pas juste avec des graduations
+ * horaires et son dernier intervalle serait deux fois plus court.
+ */
+function echelle(minDebut: number, maxFin: number) {
+  const candidats = [30, 60].map((pas) => {
+    const debutMin = Math.floor(minDebut / pas) * pas;
+    const finMin = Math.ceil(maxFin / pas) * pas;
+    const nbLignes = (finMin - debutMin) / PAS_LIGNE;
+    const rowH = HAUTEUR_CORPS / nbLignes;
+    return { pas, debutMin, finMin, nbLignes, rowH, ecart: (pas / PAS_LIGNE) * rowH };
+  });
+  return candidats.find((c) => c.ecart >= ECART_MIN_GRADUATION) ?? candidats[candidats.length - 1];
+}
 
 /** Mêmes deux couleurs dans toutes les grilles, jeunes comme adultes. */
 const COULEURS: Record<CreneauType, string> = {
@@ -210,10 +233,10 @@ export default function EmploiDuTemps({
 }) {
   const affiches = creneaux.filter((c) => jours.includes(c.jour));
 
-  // Plage horaire calée sur les demi-heures encadrant les créneaux.
-  const debutMin = Math.floor(Math.min(...affiches.map((c) => toMinutes(c.debut))) / 30) * 30;
-  const finMin = Math.ceil(Math.max(...affiches.map((c) => toMinutes(c.fin))) / 30) * 30;
-  const nbLignes = (finMin - debutMin) / PAS_LIGNE;
+  const { pas, debutMin, finMin, nbLignes, rowH } = echelle(
+    Math.min(...affiches.map((c) => toMinutes(c.debut))),
+    Math.max(...affiches.map((c) => toMinutes(c.fin))),
+  );
 
   /** Ligne de grille correspondant à une heure. */
   const ligne = (minutes: number) => (minutes - debutMin) / PAS_LIGNE + 1 + LIGNES_ENTETE;
@@ -223,11 +246,10 @@ export default function EmploiDuTemps({
   const { layout, gabarit, minWidth, maxWidth } = placerSemaine(affiches, jours);
   const totalCols = layout.reduce((n, j) => n + j.nbCols, 0);
 
-  // Graduations régulières : les bornes sont calées sur les demi-heures, donc
-  // toutes les grilles ont le même espacement, à la même hauteur.
+  // Graduations régulières : les bornes sont arrondies sur le pas retenu.
   const marques = Array.from(
-    { length: (finMin - debutMin) / PAS_GRADUATION + 1 },
-    (_, i) => debutMin + i * PAS_GRADUATION,
+    { length: (finMin - debutMin) / pas + 1 },
+    (_, i) => debutMin + i * pas,
   );
 
   return (
@@ -241,10 +263,9 @@ export default function EmploiDuTemps({
             minWidth,
             maxWidth,
             gridTemplateColumns: gabarit,
-            /* Ligne de débord finale : elle accueille le libellé de l'heure de
-               fin, posé sous son trait comme tous les autres. Sans elle il
-               serait collé en bas de la dernière ligne, à mi-écart. */
-            gridTemplateRows: `auto auto repeat(${nbLignes}, ${ROW_H}px) ${ROW_H}px`,
+            /* Ligne de débord finale : les libellés d'heure étant centrés sur
+               leur trait, celui de l'heure de fin déborde sous le corps. */
+            gridTemplateRows: `auto auto repeat(${nbLignes}, ${rowH}px) ${LIGNE_DEBORD}px`,
           }}
         >
           {/* Fond alterné par jour + frontières de jour, pour distinguer les colonnes */}
@@ -275,7 +296,7 @@ export default function EmploiDuTemps({
               className="border-t border-gray-200"
               style={{
                 gridColumn: "2 / -1",
-                gridRow: `${ligne(t)} / span ${PAS_GRADUATION / PAS_LIGNE}`,
+                gridRow: `${ligne(t)} / span ${pas / PAS_LIGNE}`,
               }}
             />
           ))}
@@ -299,7 +320,9 @@ export default function EmploiDuTemps({
           {marques.map((t, i) => (
             <span
               key={`heure-${t}`}
-              className="sticky left-0 z-30 self-start pt-0.5 font-heading text-sm font-medium text-gvvb-navy tabular-nums pr-3 text-right"
+              /* Centré sur son trait via -translate-y-1/2 : calé par le haut, le
+                 texte pendait sous la ligne et paraissait décalé. */
+              className="sticky left-0 z-30 self-start -translate-y-1/2 leading-none font-heading text-sm font-medium text-gvvb-navy tabular-nums pr-3 text-right"
               style={{
                 gridColumn: 1,
                 // La dernière graduation tombe sur la ligne de débord.
