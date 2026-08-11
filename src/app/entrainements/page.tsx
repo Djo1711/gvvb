@@ -1,5 +1,5 @@
 import PageHeader from "@/components/PageHeader";
-import EmploiDuTemps from "@/components/EmploiDuTemps";
+import EmploiDuTemps, { Legende } from "@/components/EmploiDuTemps";
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
@@ -8,7 +8,7 @@ import {
   CRENEAUX_COMPETITION,
   CRENEAUX_JEUNES,
   CRENEAUX_LOISIR,
-  JOURS_WEEKEND,
+  JOURS_DIMANCHE,
   LIBELLES_TYPE,
   NOTE_CRENEAUX,
   SAISON_CLUB,
@@ -137,28 +137,30 @@ export default function Entrainements() {
             Emploi du temps - Adultes
           </h2>
           <p className="text-gray-600 mb-6 max-w-2xl">
-            Loisir et compétition départementale, du lundi au vendredi.
+            Loisir et compétition départementale. Le dimanche suit d&apos;autres horaires
+            - jeu libre le matin, puis les matchs des deux équipes départementales
+            l&apos;après-midi - il a donc sa propre colonne d&apos;heures.
           </p>
-          <EmploiDuTemps
-            creneaux={CRENEAUX_ADULTES}
-            legende={["competition", "loisir"]}
-            fond="bg-gray-50"
-          />
+          <Legende types={["competition", "loisir"]} />
 
-          {/* Le dimanche a sa propre plage horaire : grille distincte */}
-          <h3 className="font-heading font-bold text-xl text-gvvb-navy mt-12 mb-2">
-            Le week-end
-          </h3>
-          <p className="text-gray-600 mb-6 max-w-2xl">
-            Le dimanche suit d&apos;autres horaires : jeu libre le matin, puis les
-            matchs des deux équipes départementales l&apos;après-midi.
-          </p>
-          <EmploiDuTemps
-            creneaux={CRENEAUX_ADULTES}
-            legende={["competition", "loisir"]}
-            jours={JOURS_WEEKEND}
-            fond="bg-gray-50"
-          />
+          {/*
+            Deux grilles côte à côte, chacune avec sa colonne d'heures : celle du
+            dimanche sert de séparation avec la semaine. Deux échelles horaires
+            distinctes dans une même grille seraient impossibles, mais la hauteur
+            de ligne étant commune, les durées restent comparables.
+          */}
+          <div className="flex flex-col lg:flex-row lg:items-start gap-6 lg:gap-4">
+            <div className="min-w-0 lg:flex-1">
+              <EmploiDuTemps creneaux={CRENEAUX_ADULTES} fond="bg-gray-50" />
+            </div>
+            <div className="min-w-0 lg:flex-none">
+              <EmploiDuTemps
+                creneaux={CRENEAUX_ADULTES}
+                jours={JOURS_DIMANCHE}
+                fond="bg-gray-50"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

@@ -150,10 +150,13 @@ Deux **emplois du temps hebdomadaires** (voir `EmploiDuTemps` ci-dessous) :
 jeunes puis adultes. Chaque case affiche la catégorie, l'horaire et le gymnase,
 avec le même code couleur par `type` de créneau dans les deux grilles.
 
-La section adultes contient **deux grilles** : la semaine (lundi → vendredi,
-20h → 22h30) puis « Le week-end » (10h30 → 18h). Le dimanche a sa propre grille
-parce que ses horaires n'ont rien à voir avec ceux de la semaine : une grille
-unique étirée sur douze heures laissait six colonnes vides sur sept heures.
+La section adultes affiche **deux grilles côte à côte** (empilées sous `lg`) :
+la semaine (lundi → vendredi, 20h → 22h30) puis le dimanche (10h30 → 18h). Le
+dimanche a sa propre grille parce que ses horaires n'ont rien à voir avec ceux
+de la semaine : une grille unique étirée sur douze heures laissait six colonnes
+vides sur sept heures. **Sa colonne d'heures, à sa gauche, sert de séparation**
+avec la semaine. La légende est rendue une seule fois par la page via
+`<Legende>`, les deux grilles omettant alors la prop `legende`.
 
 Suivent les catégories d'âge et un bloc `<details>` « Voir la liste détaillée »
 avec les 3 tableaux jour / horaire / ville / gymnase / catégorie / type — c'est
@@ -287,14 +290,15 @@ Grille hebdomadaire en CSS Grid (Server Component, aucune interactivité).
   Les jours occupés récupèrent la largeur ainsi libérée.
 - Lecture des jours : bordures de jour épaisses (`border-l-2`), fond alterné un
   jour sur deux, et séparation pointillée entre deux gymnases d'un même jour.
-- **Maillage vertical adaptatif** : lignes de 15 minutes seulement si un créneau
-  en a besoin, sinon 30 minutes. Le dimanche tient sur les demi-heures, ce qui
-  divise par deux la hauteur de sa grille.
-- Le **pas des graduations** est choisi sur l'écart réel en pixels, pas sur la
-  durée : avec des lignes de 30 minutes, une graduation par demi-heure ne laisse
-  qu'une hauteur de ligne entre deux libellés, qui se chevauchent. Les
-  graduations sont alignées sur le pas et encadrées par les bornes réelles, donc
-  les intervalles peuvent être irréguliers (10h30, 11h, 12h…).
+- **Échelle de temps fixe et partagée** (`PAS_LIGNE`, `PAS_GRADUATION`,
+  `ROW_H`) : une ligne = 15 minutes, une graduation toutes les 30 minutes, la
+  même hauteur dans toutes les grilles. C'est ce qui donne exactement 44 px
+  entre deux heures partout, et rend les durées comparables d'un tableau à
+  l'autre. Ne pas rendre ces valeurs adaptatives : l'espacement des heures
+  divergerait entre les grilles.
+- Une **ligne de débord** est ajoutée en bas du gabarit pour accueillir le
+  libellé de l'heure de fin. Sans elle, ce dernier libellé serait aligné en bas
+  de la dernière ligne, donc à mi-écart des autres.
 - `maxWidth` plafonne la largeur : sans lui, une grille à peu de colonnes (le
   week-end) verrait ses `1fr` s'étirer sur toute la page.
 - Colonne des heures **`sticky left-0`** — reste lisible pendant le scroll

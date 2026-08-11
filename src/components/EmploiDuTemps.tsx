@@ -9,12 +9,23 @@ import {
   type CreneauType,
 } from "@/lib/saison";
 
-/** Largeur de la colonne des heures. */
-const GUTTER = "3.5rem";
+/** Largeur de la colonne des heures. Doit contenir « 10h30 » en `text-sm`. */
+const GUTTER = "4rem";
 /** Largeur d'une colonne de jour sans entraînement, réduite à un « … ». */
 const LARGEUR_VIDE = "2rem";
 /** Deux lignes d'en-tête : le jour, puis le gymnase. */
 const LIGNES_ENTETE = 2;
+
+/**
+ * Échelle de temps volontairement **fixe et partagée par toutes les grilles** :
+ * une ligne = 15 minutes, une graduation toutes les 30 minutes, la même hauteur
+ * partout. C'est ce qui donne le même espacement des heures dans la grille des
+ * jeunes, celle de la semaine et celle du dimanche, et rend les durées
+ * directement comparables d'un tableau à l'autre.
+ */
+const PAS_LIGNE = 15;
+const PAS_GRADUATION = 30;
+const ROW_H = 22;
 
 /** Mêmes deux couleurs dans toutes les grilles, jeunes comme adultes. */
 const COULEURS: Record<CreneauType, string> = {
@@ -161,7 +172,8 @@ function placerSemaine(
   return { layout, gabarit, minWidth, maxWidth };
 }
 
-function Legende({ types }: { types: CreneauType[] }) {
+/** Légende du code couleur. Exportée pour être partagée par plusieurs grilles. */
+export function Legende({ types }: { types: CreneauType[] }) {
   return (
     <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
       {types.map((t) => (
@@ -183,8 +195,11 @@ export default function EmploiDuTemps({
   fond = "bg-white",
 }: {
   creneaux: Creneau[];
-  /** Types affichés dans la légende, dans l'ordre voulu. */
-  legende: CreneauType[];
+  /**
+   * Types affichés dans la légende, dans l'ordre voulu. À omettre quand
+   * plusieurs grilles se partagent une légende unique rendue par la page.
+   */
+  legende?: CreneauType[];
   /** Jours affichés en colonnes, dans l'ordre. */
   jours?: readonly string[];
   /**
@@ -198,40 +213,26 @@ export default function EmploiDuTemps({
   // Plage horaire calée sur les demi-heures encadrant les créneaux.
   const debutMin = Math.floor(Math.min(...affiches.map((c) => toMinutes(c.debut))) / 30) * 30;
   const finMin = Math.ceil(Math.max(...affiches.map((c) => toMinutes(c.fin))) / 30) * 30;
-  // Maillage vertical : 15 minutes seulement si un créneau en a besoin. Le
-  // dimanche tient sur les demi-heures, ce qui divise par deux sa hauteur.
-  const surDemiHeures = affiches.every(
-    (c) => toMinutes(c.debut) % 30 === 0 && toMinutes(c.fin) % 30 === 0,
-  );
-  const pasLigne = surDemiHeures ? 30 : 15;
-  const nbLignes = (finMin - debutMin) / pasLigne;
-
-  // Hauteur de ligne calée pour viser une grille d'environ 620 px.
-  const rowH = Math.max(12, Math.min(22, Math.round(620 / nbLignes)));
+  const nbLignes = (finMin - debutMin) / PAS_LIGNE;
 
   /** Ligne de grille correspondant à une heure. */
-  const ligne = (minutes: number) => (minutes - debutMin) / pasLigne + 1 + LIGNES_ENTETE;
+  const ligne = (minutes: number) => (minutes - debutMin) / PAS_LIGNE + 1 + LIGNES_ENTETE;
   const derniereLigne = nbLignes + LIGNES_ENTETE;
   const corps = `${LIGNES_ENTETE + 1} / span ${nbLignes}`;
 
   const { layout, gabarit, minWidth, maxWidth } = placerSemaine(affiches, jours);
   const totalCols = layout.reduce((n, j) => n + j.nbCols, 0);
 
-  // Pas des graduations choisi sur l'écart réel en pixels, pas sur la durée :
-  // avec des lignes de 30 minutes, une graduation par demi-heure ne laisse
-  // qu'une hauteur de ligne entre deux libellés, qui se chevauchent alors.
-  const pas = (30 / pasLigne) * rowH >= 34 ? 30 : 60;
-
-  // La plage n'est pas toujours un multiple du pas (le dimanche démarre à
-  // 10h30) : on encadre donc des graduations alignées sur le pas par les deux
-  // bornes réelles. Les intervalles sont de ce fait irréguliers.
-  const marques = [debutMin];
-  for (let t = Math.ceil((debutMin + 1) / pas) * pas; t < finMin; t += pas) marques.push(t);
-  if (marques[marques.length - 1] !== finMin) marques.push(finMin);
+  // Graduations régulières : les bornes sont calées sur les demi-heures, donc
+  // toutes les grilles ont le même espacement, à la même hauteur.
+  const marques = Array.from(
+    { length: (finMin - debutMin) / PAS_GRADUATION + 1 },
+    (_, i) => debutMin + i * PAS_GRADUATION,
+  );
 
   return (
     <>
-      <Legende types={legende} />
+      {legende && <Legende types={legende} />}
 
       <div className="overflow-x-auto pb-2">
         <div
@@ -240,7 +241,10 @@ export default function EmploiDuTemps({
             minWidth,
             maxWidth,
             gridTemplateColumns: gabarit,
-            gridTemplateRows: `auto auto repeat(${nbLignes}, ${rowH}px)`,
+            /* Ligne de débord finale : elle accueille le libellé de l'heure de
+               fin, posé sous son trait comme tous les autres. Sans elle il
+               serait collé en bas de la dernière ligne, à mi-écart. */
+            gridTemplateRows: `auto auto repeat(${nbLignes}, ${ROW_H}px) ${ROW_H}px`,
           }}
         >
           {/* Fond alterné par jour + frontières de jour, pour distinguer les colonnes */}
@@ -264,14 +268,14 @@ export default function EmploiDuTemps({
             )),
           )}
           {/* Bandes entre deux graduations */}
-          {marques.slice(0, -1).map((t, i) => (
+          {marques.slice(0, -1).map((t) => (
             <div
               key={`bande-${t}`}
               aria-hidden="true"
               className="border-t border-gray-200"
               style={{
                 gridColumn: "2 / -1",
-                gridRow: `${ligne(t)} / span ${(marques[i + 1] - t) / pasLigne}`,
+                gridRow: `${ligne(t)} / span ${PAS_GRADUATION / PAS_LIGNE}`,
               }}
             />
           ))}
@@ -292,20 +296,19 @@ export default function EmploiDuTemps({
             className={`sticky left-0 z-20 ${fond}`}
             style={{ gridColumn: 1, gridRow: "1 / -1" }}
           />
-          {marques.map((t, i) => {
-            const dernier = i === marques.length - 1;
-            return (
-              <span
-                key={`heure-${t}`}
-                className={`sticky left-0 z-30 font-heading text-xs text-gray-400 tabular-nums pr-3 text-right ${
-                  dernier ? "self-end pb-0.5" : "self-start pt-0.5"
-                }`}
-                style={{ gridColumn: 1, gridRow: dernier ? derniereLigne : ligne(t) }}
-              >
-                {formatMinutes(t)}
-              </span>
-            );
-          })}
+          {marques.map((t, i) => (
+            <span
+              key={`heure-${t}`}
+              className="sticky left-0 z-30 self-start pt-0.5 font-heading text-sm font-medium text-gvvb-navy tabular-nums pr-3 text-right"
+              style={{
+                gridColumn: 1,
+                // La dernière graduation tombe sur la ligne de débord.
+                gridRow: i === marques.length - 1 ? derniereLigne + 1 : ligne(t),
+              }}
+            >
+              {formatMinutes(t)}
+            </span>
+          ))}
 
           {/* En-têtes : le jour, puis le gymnase de chaque largeur de colonne */}
           {layout.map((j, i) => (
